@@ -113,6 +113,18 @@ h1.display{font-family:var(--font-d);font-weight:800;text-transform:uppercase;fo
 .unit canvas.grabbing{cursor:grabbing}
 .unit-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:9.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
 footer{padding:48px 0 32px}
+/* PUBLISHED — auto-scanned live games shelf */
+.pub-note{margin:18px 0 22px;font-size:12.5px;letter-spacing:.04em;color:var(--dim)}
+.pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.pub-card{position:relative;border:1px solid var(--line);background:var(--bg2);padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:border-color .3s,transform .3s var(--ease)}
+.pub-card:hover{border-color:var(--acc,var(--mint));transform:translateY(-3px)}
+.pub-kind{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.pub-name{font-size:15px;color:var(--ink);overflow-wrap:anywhere}
+.pub-desc{font-size:11.5px;line-height:1.45;color:var(--dim);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pub-meta{font-size:10.5px;letter-spacing:.08em;color:var(--dim)}
+.pub-go{margin-top:auto;padding-top:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,var(--mint))}
+.pub-card.feat::after{content:"★ featured";position:absolute;top:12px;right:12px;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,var(--mint))}
+@media(prefers-reduced-motion:reduce){.pub-card:hover{transform:none}}
 .f-links{display:flex;flex-wrap:wrap;gap:10px 28px;margin-bottom:28px}
 .f-links a{font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:color .2s}
 .f-links a:hover{color:var(--mint)}
@@ -123,6 +135,17 @@ footer{padding:48px 0 32px}
 .f-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:22px;font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
 .f-bottom a{color:var(--dim);text-decoration:none}
 .f-bottom a:hover{color:var(--ink)}
+/* WHO — abstract identity mark (pure CSS, no text) */
+.who{display:flex;justify-content:center;margin:8px 0 36px}
+.who-mark{position:relative;width:120px;height:120px}
+.who-ring{position:absolute;border-radius:50%;border:1px solid var(--line)}
+.who-ring.r1{inset:0}
+.who-ring.r2{inset:18px;border-color:rgba(125,237,195,.35)}
+.who-core{position:absolute;inset:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--mint),transparent 70%);opacity:.7;animation:whoPulse 3.2s ease-in-out infinite}
+.who-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--amber);top:-3px;left:50%;margin-left:-3.5px;transform-origin:3.5px 63.5px;animation:whoOrbit 9s linear infinite}
+@keyframes whoPulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.85;transform:scale(1.05)}}
+@keyframes whoOrbit{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.who-core,.who-dot{animation:none}}
 html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 html.js .reveal.in{opacity:1;transform:none}
 h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
@@ -163,6 +186,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
     <div class="wrap stats">
       <div class="stat"><b id="statProjects">04</b><span>Projects</span></div>
       <div class="stat"><b id="statLive">—</b><span>Repos live</span></div>
+      <div class="stat"><b id="statAll">—</b><span>Published games live</span></div>
     </div>
   </div>
 </section>
@@ -170,9 +194,16 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
   <section id="work">
     <div class="wrap">
       <div class="sec-head"><span>Index — all projects</span><span>GitHub Pages</span></div>
+      <noscript><style>.js-only{display:none!important}#staticProjects{display:block!important}</style>
+      <div id="staticProjects" hidden><!-- plain links so the page works without JS -->
+        <p><a href="https://zakker111.github.io/aetheria/">Aetheria ↗</a></p>
+        <p><a href="https://zakker111.github.io/Roguelike_new_1/">Roguelike_new_1 ↗</a></p>
+        <p><a href="https://zakker111.github.io/multiplayer_voxel_game/">Multiplayer Voxel Game ↗</a></p>
+        <p><a href="https://zakker111.github.io/tampere-keikat/">Tampere-keikat ↗</a></p>
+      </div></noscript>
       <div id="projectList">
 
-        <article class="project" id="p-aetheria" data-num="01" data-title="Aetheria" style="--acc:#7dedc3">
+        <article class="project" id="p-aetheria" data-kind="Game" data-num="01" data-title="Aetheria" style="--acc:#7dedc3">
           <div class="cols">
             <div class="col-text">
               <div class="p-index reveal">Project 01 — Game</div>
@@ -204,7 +235,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
           </div>
         </article>
 
-        <article class="project" id="p-roguelike" data-num="02" data-title="Roguelike_new_1" style="--acc:#f6a83c">
+        <article class="project" id="p-roguelike" data-kind="Game" data-num="02" data-title="Roguelike_new_1" style="--acc:#f6a83c">
           <div class="cols">
             <div class="col-text">
               <div class="p-index reveal">Project 02 — Game</div>
@@ -236,7 +267,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
           </div>
         </article>
 
-        <article class="project" id="p-voxel" data-num="03" data-title="Multiplayer Voxel Game" style="--acc:#ff6146">
+        <article class="project" id="p-voxel" data-kind="Game" data-num="03" data-title="Multiplayer Voxel Game" style="--acc:#ff6146">
           <div class="cols">
             <div class="col-text">
               <div class="p-index reveal">Project 03 — Game</div>
@@ -268,7 +299,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
           </div>
         </article>
 
-        <article class="project" id="p-tampere" data-num="04" data-title="Tampere-keikat" style="--acc:#ff4f87">
+        <article class="project" id="p-tampere" data-kind="Web app" data-num="04" data-title="Tampere-keikat" style="--acc:#ff4f87">
           <div class="cols">
             <div class="col-text">
               <div class="p-index reveal">Project 04 — Web app</div>
@@ -300,68 +331,45 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
           </div>
         </article>
 
-        <!-- TEMPLATE — ADD A NEW PROJECT IN 3 STEPS
-             1. Copy everything between START OF TEMPLATE and END OF TEMPLATE.
-             2. Paste it ABOVE this comment and remove the comment markers
-                wrapping it (one at the top, one at the bottom).
-             3. Change: id (must start with p-), data-num, data-title,
-                --acc color, the three links, title, description,
-                data-tile (aetheria / roguelike / voxel / keikat).
-             The menu, counters and status checks update themselves.
-
-        START OF TEMPLATE
-
-        <article class="project" id="p-myproject" data-num="05" data-title="My Project" style="--acc:#7dedc3">
-          <div class="cols">
-            <div class="col-text">
-              <div class="p-index reveal">Project 05 — Game</div>
-              <h3 class="p-title reveal" style="transition-delay:.06s">My Project</h3>
-              <p class="p-blurb reveal" style="transition-delay:.12s">One sentence about what this project is.</p>
-              <div class="p-urls reveal" style="transition-delay:.18s">
-                <a class="u-live" href="https://zakker111.github.io/myproject/" target="_blank" rel="noopener">https://zakker111.github.io/myproject/ ↗</a>
-                <a class="u-src" href="https://github.com/zakker111/myproject" target="_blank" rel="noopener">source · github.com/zakker111/myproject</a>
-                <a class="u-rd" href="https://github.com/zakker111/myproject/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
-              </div>
-              <dl class="p-status reveal" style="transition-delay:.22s">
-                <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
-                <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
-                <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
-                <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
-              </dl>
-              <div class="p-links reveal" style="transition-delay:.26s">
-                <a class="btn primary" href="https://zakker111.github.io/myproject/" target="_blank" rel="noopener">Open project ↗</a>
-                <a class="btn" href="https://github.com/zakker111/myproject" target="_blank" rel="noopener">Source ↗</a>
-              </div>
-            </div>
-            <div class="col-media reveal" style="transition-delay:.15s">
-              <div class="unit">
-                <div class="unit-bar"><b>Sketch</b><span>auto</span></div>
-                <canvas data-tile="aetheria" aria-label="Animated sketch"></canvas>
-                <div class="unit-foot">sketch — short note</div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        END OF TEMPLATE -->
+        <!-- ═══ HOW TO ADD A PROJECT ═══════════════════════════════════════
+             Option A (easiest): add an entry to the PROJECTS array in the
+             script at the bottom of this file. The card, nav, counters and
+             live GitHub status checks are generated automatically.
+             Option B: paste a hand-written <article class="project">…</article>
+             into #projectList (see git history for examples). If both exist,
+             hand-written articles win and the matching array entry is skipped.
+             data-tile sketches: aetheria | roguelike | voxel | keikat | none
+             ══════════════════════════════════════════════════════════════ -->
 
       </div>
+    </div>
+  </section>
+  <section id="published">
+    <div class="wrap">
+      <div class="sec-head"><span>Published — live on GitHub Pages</span><span>auto · every visit</span></div>
+      <p class="pub-note" id="pubNote">Scanning every repo of this account and checking which ones have a published, working game…</p>
+      <div class="pub-grid" id="pubGrid"></div>
     </div>
   </section>
 </main>
 <footer>
   <div class="wrap">
-    <nav class="f-links" aria-label="Quick links">
-      <a href="https://zakker111.github.io/aetheria/" target="_blank" rel="noopener">Aetheria ↗</a>
-      <a href="https://zakker111.github.io/Roguelike_new_1/" target="_blank" rel="noopener">Roguelike ↗</a>
-      <a href="https://zakker111.github.io/multiplayer_voxel_game/" target="_blank" rel="noopener">Voxel ↗</a>
-      <a href="https://zakker111.github.io/tampere-keikat/" target="_blank" rel="noopener">Tampere-keikat ↗</a>
-    </nav>
-    <!-- EDIT: change the email below to your real one.
-         Change it in BOTH places: inside href="mailto:..." AND the visible text. -->
+    <div class="who" aria-hidden="true">
+      <div class="who-mark">
+        <span class="who-ring r1"></span>
+        <span class="who-ring r2"></span>
+        <span class="who-core"></span>
+        <span class="who-dot"></span>
+      </div>
+    </div>
+    <!-- quick links are generated from the PROJECTS array -->
+    <nav class="f-links" id="footerLinks" aria-label="Quick links"></nav>
+    <!-- EDIT: set your public GitHub email once for both the API check and this link:
+         const CONTACT_EMAIL = 'you@example.com';   // near the top of the script below.
+         Leaving it empty ('') shows a working link to your GitHub profile instead. -->
     <div class="f-mail">
       <span class="label">contact</span>
-      <a href="mailto:zakker111@example.com">zakker111@example.com ↗</a>
+      <a id="contactLink" href="#" target="_blank" rel="noopener">GitHub profile ↗</a>
     </div>
     <div class="f-bottom">
       <span>© <span id="yr"></span> zakker111</span>
@@ -370,25 +378,143 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
   </div>
 </footer>
 <script>
-const projects = Array.from(document.querySelectorAll('.project'));
+/* ═══ PROJECT DATA — ADD NEW PROJECTS HERE ══════════════════════════════
+   Copy one entry, edit the values, done. Everything else is automatic:
+   card layout, nav index, project counter and live GitHub status checks.
+
+   slug    → unique id (card anchor becomes #p-<slug>)
+   title   → project name shown in the card
+   kind    → small label, e.g. "Game" or "Web app"
+   blurb   → one sentence about the project
+   repo    → "owner/name" on GitHub (status checks + source link use this)
+   live    → URL of the hosted site; "" if none
+   acc     → accent color for the card (any CSS color)
+   tile    → animated sketch: aetheria | roguelike | voxel | keikat | none
+   note    → caption under the sketch (optional)
+   To hide a project without deleting it, add  hidden: true.               */
+const GITHUB_USER = 'zakker111';
+// Optional: your PUBLIC GitHub email (shown as the footer contact link and used
+// by the live email check). Leave '' to just link to your GitHub profile.
+const CONTACT_EMAIL = '';
+const PROJECTS = [
+  { slug:'aetheria',  title:'Aetheria', kind:'Game',
+    blurb:'A browser game with an ambient fantasy feel. Open the link and it runs — nothing to install.',
+    repo:'zakker111/aetheria', live:'https://zakker111.github.io/aetheria/',
+    acc:'#7dedc3', tile:'aetheria', note:'sketch — tile world with god rays, blessings, water shimmer' },
+  { slug:'roguelike', title:'Roguelike_new_1', kind:'Game',
+    blurb:'A roguelike dungeon crawler: every run generates a new map, and death is permanent.',
+    repo:'zakker111/Roguelike_new_1', live:'https://zakker111.github.io/Roguelike_new_1/',
+    acc:'#f6a83c', tile:'roguelike', note:'sketch — a real dungeon generator, new map every ~5s' },
+  { slug:'voxel', title:'Multiplayer Voxel Game', kind:'Game',
+    blurb:'A real-time 3D voxel sandbox with multiplayer — build and explore together with other players.',
+    repo:'zakker111/multiplayer_voxel_game', live:'https://zakker111.github.io/multiplayer_voxel_game/',
+    acc:'#ff6146', tile:'voxel', note:'sketch — fake 3d blocks, drag to spin' },
+  { slug:'tampere', title:'Tampere-keikat', kind:'Web app',
+    blurb:'A gig guide for Tampere — who is playing, where and when. In Finnish.',
+    repo:'zakker111/tampere-keikat', live:'https://zakker111.github.io/tampere-keikat/',
+    acc:'#ff4f87', tile:'keikat', note:'sketch — the real time and date' },
+];
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+// Render data-driven cards into #projectList (hand-written articles win).
+(function renderProjects(){
+  const list = document.getElementById('projectList');
+  if (!list) return;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const first = list.querySelector('.project');
+  let ref = first ? first : null; // insert before the first hand-written card, else append
+  const existing = new Set(Array.from(list.querySelectorAll('.project')).map(p => p.id));
+  PROJECTS.forEach(d => {
+    if (d.hidden || existing.has('p-' + d.slug)) return;
+    const tmp = document.createElement('template');
+    const ownerRepo = d.repo || (GITHUB_USER + '/' + d.slug);
+    const srcUrl = 'https://github.com/' + ownerRepo;
+    tmp.innerHTML = `
+      <article class="project" id="p-${esc(d.slug)}" data-kind="${esc(d.kind || '')}" data-num="" data-title="${esc(d.title)}" style="--acc:${esc(d.acc || '#7dedc3')}">
+        <div class="cols">
+          <div class="col-text">
+            <div class="p-index reveal"></div>
+            <h3 class="p-title reveal" style="transition-delay:.06s">${esc(d.title)}</h3>
+            <p class="p-blurb reveal" style="transition-delay:.12s">${esc(d.blurb || '')}</p>
+            <div class="p-urls reveal" style="transition-delay:.18s">
+              ${d.live ? `<a class="u-live" href="${esc(d.live)}" target="_blank" rel="noopener">${esc(d.live)} ↗</a>` : ''}
+              <a class="u-src" href="${esc(srcUrl)}" target="_blank" rel="noopener">source · ${esc(srcUrl.replace('https://',''))}</a>
+              <a class="u-rd" href="${esc(srcUrl)}/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+            </div>
+            <dl class="p-status reveal" style="transition-delay:.22s">
+              <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+              <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+              <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+              <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+            </dl>
+            <div class="p-links reveal" style="transition-delay:.26s">
+              ${d.live ? `<a class="btn primary" href="${esc(d.live)}" target="_blank" rel="noopener">Open project ↗</a>` : ''}
+              <a class="btn" href="${esc(srcUrl)}" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+          ${d.tile && d.tile !== 'none' ? `
+          <div class="col-media reveal" style="transition-delay:.15s">
+            <div class="unit">
+              <div class="unit-bar"><b>Sketch</b><span>auto</span></div>
+              <canvas data-tile="${esc(d.tile)}" aria-label="Animated sketch for ${esc(d.title)}"></canvas>
+              <div class="unit-foot">${esc(d.note || 'sketch')}</div>
+            </div>
+          </div>` : ''}
+        </div>
+      </article>`;
+    list.insertBefore(tmp.content.firstElementChild, ref);
+  });
+})();
+
 const pad2 = n => String(n).padStart(2, '0');
-projects.forEach(p => {
-  const a = document.createElement('a');
-  a.href = '#' + p.id;
-  a.textContent = p.dataset.num;
-  document.querySelector('.nav-index').appendChild(a);
+const projects = Array.from(document.querySelectorAll('#projectList .project'));
+// renumber + fill the "Project NN — kind" label from data attributes
+projects.forEach((p, i) => {
+  p.dataset.num = pad2(i + 1);
+  const idx = p.querySelector('.p-index');
+  if (!idx) return;
+  const kind = p.dataset.kind || (idx.textContent.match(/—\s*(.+)$/) || [,''])[1].trim();
+  idx.textContent = 'Project ' + p.dataset.num + (kind ? ' — ' + kind : '');
 });
+(function(){
+  const fl = document.getElementById('footerLinks');
+  if (!fl) return;
+  projects.forEach(p => {
+    const live = p.querySelector('a.u-live');
+    if (!live) return;
+    const a = document.createElement('a');
+    a.href = live.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = p.dataset.title + ' ↗';
+    fl.appendChild(a);
+  });
+})();
 document.getElementById('statProjects').textContent = pad2(projects.length);
-const revealIO = new IntersectionObserver(entries => {
+// Safe observer: older/embedded browsers without IntersectionObserver just show everything.
+const makeIO = (cb, opts) => ('IntersectionObserver' in window) ? new IntersectionObserver(cb, opts) : null;
+const revealIO = makeIO(entries => {
   for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
 }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+if (revealIO) document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+// build the header project index from the rendered cards (auto-updates with PROJECTS)
+(function(){
+  const nav = document.querySelector('.nav-index');
+  if (!nav) return;
+  projects.forEach(p => {
+    const a = document.createElement('a');
+    a.href = '#' + p.id;
+    a.textContent = p.dataset.num + '·' + (p.dataset.title || p.id.replace(/^p-/, ''));
+    nav.appendChild(a);
+  });
+})();
 const navLinks = {};
 document.querySelectorAll('.nav-index a').forEach(a => navLinks[a.getAttribute('href').slice(1)] = a);
-const secIO = new IntersectionObserver(entries => {
+const secIO = makeIO(entries => {
   for (const e of entries) { const a = navLinks[e.target.id]; if (a) a.classList.toggle('on', e.isIntersecting); }
 }, { rootMargin:'-40% 0px -50% 0px' });
-projects.forEach(p => secIO.observe(p));
+if (secIO) projects.forEach(p => secIO.observe(p));
 (function(){
   const statLive = document.getElementById('statLive');
   const topTxt   = document.getElementById('topStatusTxt');
@@ -447,7 +573,7 @@ projects.forEach(p => secIO.observe(p));
       const rr = await fetch(base + '/readme');
       if (rr.ok) {
         const rd = await rr.json();
-        setRow(article, 'readme', 'ok · ' + kb(rd.size), 'ok');
+        setRow(article, 'readme', (rd.size ? 'ok · ' + kb(rd.size) : 'ok'), 'ok');
         if (rdLink && rd.html_url) rdLink.href = rd.html_url;
       } else {
         setRow(article, 'readme', 'missing', 'bad');
@@ -471,9 +597,134 @@ projects.forEach(p => secIO.observe(p));
     }
   });
 })();
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Whole-account sweep: find EVERY published, working game of this GitHub
+// user and show it on the "Published" shelf. Runs on every visit — new
+// repos you publish appear here automatically, no code changes needed.
+// Re-scans periodically (self-rescheduling so runs can never overlap) and
+// when the tab comes back into focus.
+(async function(){
+  const statAll = document.getElementById('statAll');
+  const grid    = document.getElementById('pubGrid');
+  const note    = document.getElementById('pubNote');
+  if (!statAll || !grid) return;
+  statAll.textContent = '···';
+  // Contact link: prefer the public email on the GitHub profile (or the
+  // CONTACT_EMAIL constant above); fall back to a working profile link.
+  (async function(){
+    const cl = document.getElementById('contactLink');
+    if (!cl) return;
+    let mail = CONTACT_EMAIL;
+    if (!mail) {
+      try {
+        const r = await fetch('https://api.github.com/users/' + encodeURIComponent(GITHUB_USER));
+        if (r.ok) mail = (await r.json()).email || '';
+      } catch (e) { /* offline: keep the profile fallback */ }
+    }
+    if (mail && /@/.test(mail)) { cl.href = 'mailto:' + mail; cl.target = ''; cl.rel = ''; cl.textContent = mail + ' ↗'; }
+    else { cl.href = 'https://github.com/' + GITHUB_USER; cl.textContent = 'github.com/' + GITHUB_USER + ' ↗'; }
+  })();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  // match a featured PROJECTS entry by repo name to reuse its accent color
+  const featAcc = {};
+  PROJECTS.forEach(p => { if (p.repo) featAcc[p.repo.split('/')[1].toLowerCase()] = p.acc; });
+  const kindOf = r => {
+    const t = ((r.description || '') + ' ' + r.name).toLowerCase();
+    if (/game|roguelike|voxel|aetheria|arcade|play/.test(t)) return 'Game';
+    if (/site|app|page|keikat|guide/.test(t))                return 'Web app';
+    return 'Experiment';
+  };
+  let myGen = 0;   // generation counter: a stale run must never touch the DOM
+  async function scanOnce(OWNER){
+    const gen = ++myGen;
+    const fresh = () => gen === myGen;   // still the newest requested run?
+    const pagesUrl = n => 'https://' + OWNER + '.github.io/' + encodeURIComponent(n) + '/';
+    const cardHtml = (repo, href) => {
+      const acc  = featAcc[repo.name.toLowerCase()];
+      const feat = acc ? ' class="pub-card feat" style="--acc:' + esc(acc) + '"'
+                       : ' class="pub-card"';
+      const d = new Date(repo.pushed_at);
+      return `<a${feat} href="${esc(href)}" target="_blank" rel="noopener">
+        <span class="pub-kind">${esc(kindOf(repo))}</span>
+        <span class="pub-name">${esc(repo.name)}</span>
+        <span class="pub-desc">${esc(repo.description || '')}</span>
+        <span class="pub-meta">updated ${pad2(d.getMonth()+1)}/${pad2(d.getDate())}/${String(d.getFullYear()).slice(2)}</span>
+        <span class="pub-go">Play / open ↗</span>
+      </a>`;
+    };
+    try {
+      const r = await fetch('https://api.github.com/users/' + encodeURIComponent(OWNER) + '/repos?per_page=100&sort=pushed');
+      if (!r.ok) throw new Error('http ' + r.status);
+      const repos = (await r.json()).filter(x => !x.fork).slice(0, 500); // API caps at 100/page; extra guard only
+      const live = [], dead = [];
+      await Promise.all(repos.map(async repo => {
+        let h;
+        try {
+          h = await fetch(pagesUrl(repo.name), { method:'HEAD', cache:'no-store' });
+        } catch (e) { return; }          // network hiccup on one repo: ignore
+        if (!fresh()) return;            // a newer scan was requested mid-flight
+        if (h.status === 404) return;   // not published - skip
+        if (h.ok) { live.push(repo); return; }
+        dead.push(repo.name + ' (' + h.status + ')');
+      }));
+      if (!fresh()) return;
+      // newest-published first; featured projects get their card accent + star
+      live.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+      grid.innerHTML = live.map(repo => cardHtml(repo, pagesUrl(repo.name))).join('')
+        || '<p class="pub-note">Nothing published yet.</p>';
+      statAll.textContent = live.length + '/' + repos.length;
+      statAll.title = dead.length ? 'problems: ' + dead.join(', ') : 'all published repos respond';
+      if (note) note.textContent = live.length
+        ? live.length + ' of ' + repos.length + ' repos are published and answering right now — refreshed automatically every few minutes while you browse. Click any card to play.'
+        : 'No published sites found yet.';
+      if (dead.length) console.warn('[status] published-but-broken repos:', dead);
+    } catch (e) {
+      if (!fresh()) return;
+      // live check failed (offline / rate limit) -> fall back to the
+      // scheduled snapshot committed by the refresh.yml workflow
+      try {
+        const s = await (await fetch('data/published.json', { cache:'no-store' })).json();
+        if (!fresh()) return;
+        if (s && Array.isArray(s.repos)) {
+          grid.innerHTML = s.repos.map(repo => cardHtml(repo, repo.url)).join('');
+          statAll.textContent = s.repos.length + '+';
+          statAll.title = 'from scheduled snapshot (' + (s.updated || '?') + ')';
+          if (note) note.textContent = 'Showing the latest auto-refreshed snapshot — live re-check paused.';
+          return;
+        }
+      } catch (e2) { /* no snapshot available */ }
+      if (!fresh()) return;
+      statAll.textContent = '—';
+      if (note) note.textContent = 'Live check paused (offline or API rate limit) — the links above still work.';
+    }
+  }
+  let chainOn = false;                   // exactly one periodic chain exists
+  async function startScan(){            // manual trigger: bump generation + reuse chain
+    const OWNER = (location.hostname.endsWith('github.io')
+      ? location.hostname.split('.')[0] : GITHUB_USER);
+    myGen++;                             // invalidate any in-flight run
+    await scanOnce(OWNER);               // scanOnce bumps myGen again to its own gen
+    if (!chainOn){                       // (re)start the periodic chain if it died out
+      chainOn = true;
+      (async function tick(){
+        while (chainOn){
+          await new Promise(r => setTimeout(r, 5 * 60 * 1000));
+          if (!chainOn) break;
+          const o = (location.hostname.endsWith('github.io')
+            ? location.hostname.split('.')[0] : GITHUB_USER);
+          await scanOnce(o);
+        }
+      })();
+    }
+  }
+  startScan();                           // always fresh on load
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) startScan();   // refresh when tab comes back
+  });
+})();
+const REDUCED = ('matchMedia' in window) && matchMedia('(prefers-reduced-motion: reduce)').matches;
 function canvasState(canvas){
   const ctx = canvas.getContext('2d');
+  if (!ctx) return null; // no 2D support (very old/embedded browser) -> tile stays blank, page keeps working
   const st = { ctx, w:0, h:0 };
   const resize = () => {
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -484,11 +735,13 @@ function canvasState(canvas){
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
   resize();
-  new ResizeObserver(resize).observe(canvas);
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
+  else addEventListener('resize', resize);
   return st;
 }
 function makeAetheria(canvas){
   const st = canvasState(canvas);
+  if (!st) return () => {};
   const COLS = 14, ROWS = 9;
   let world = null, order = null, reveal = 0, count = 0, hold = 0, sparks = null;
   let bless = null, blessTimer = 2;
@@ -671,6 +924,7 @@ function makeDungeonMap(cols, rows){
 }
 function makeRoguelike(canvas){
   const st = canvasState(canvas);
+  if (!st) return () => {};
   const ROWS = 15;
   let d = null, reveal = 0, count = 0, hold = 0, curCols = 0;
   const regen = () => { d = makeDungeonMap(curCols, ROWS); reveal = 0; hold = 0; count++; };
@@ -714,6 +968,7 @@ function makeRoguelike(canvas){
 }
 function makeVoxel(canvas){
   const st = canvasState(canvas);
+  if (!st) return () => {};
   const cubes = [];
   for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) {
     if (Math.abs(x) === 2 && Math.abs(z) === 2) continue;
@@ -796,6 +1051,7 @@ function makeVoxel(canvas){
 }
 function makeClock(canvas){
   const st = canvasState(canvas);
+  if (!st) return () => {};
   const PINK = '#ff4f87';
   const pad = n => String(n).padStart(2, '0');
   const WD = ['SU','MA','TI','KE','TO','PE','LA'];
@@ -824,17 +1080,18 @@ function makeClock(canvas){
 }
 const MAKERS = { aetheria:makeAetheria, roguelike:makeRoguelike, voxel:makeVoxel, keikat:makeClock };
 const tiles = [];
-const tileIO = new IntersectionObserver(entries => {
+const tileIO = makeIO(entries => {
   for (const en of entries) {
     const rec = tiles.find(r => r.el === en.target);
     if (rec) rec.visible = en.isIntersecting;
   }
 }, { rootMargin:'120px' });
 function addTile(canvas, maker){
-  tiles.push({ el:canvas, api:maker(canvas), visible:false });
-  tileIO.observe(canvas);
+  const rec = { el:canvas, api:maker(canvas), visible:true }; // default visible so animation runs even without IO support
+  tiles.push(rec);
+  if (tileIO) { rec.visible = false; tileIO.observe(canvas); }
 }
-document.querySelectorAll('canvas[data-tile]').forEach(c => addTile(c, MAKERS[c.dataset.tile]));
+document.querySelectorAll('canvas[data-tile]').forEach(c => { const m = MAKERS[c.dataset.tile]; if (m) addTile(c, m); });
 let lastNow = performance.now();
 function loop(now){
   const dt = Math.min(.05, (now - lastNow) / 1000);

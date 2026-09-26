@@ -26,6 +26,10 @@ The workflow needs no Node, Python, npm install, build command, or personal acce
 
 Every push to `main` triggers the workflow. `workflow_dispatch` also allows a manual deployment from the Actions tab.
 
+## Adding a project
+
+Open `index.html`, find the `PROJECTS` array near the top of the `<script>` at the bottom, and add one entry (title, blurb, repo, link, color). Cards, numbering, counters and footer links update automatically. See `AGENTS.md` for the field reference.
+
 ## Local test
 
 Open `index.html` directly, or run `python -m http.server 8000` in the repository root and open http://localhost:8000/.
