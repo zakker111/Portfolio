@@ -372,10 +372,7 @@ const PROJECTS = [
     blurb:'A gig guide for Tampere — who is playing, where and when. In Finnish.',
     repo:'zakker111/tampere-keikat', live:'https://zakker111.github.io/tampere-keikat/',
     acc:'#ff4f87', tile:'keikat', note:'sketch — the real time and date' },
-  { slug:'bats', title:'BatsBatsBats (Godot)', kind:'Game',
-    blurb:'A bat-catching arcade game made with Godot. No hosted build yet — open the source repo.',
-    repo:'zakker111/BatsBatsBats_godot', live:'',
-    acc:'#9d7bff', tile:'none' },
+  // BatsBatsBats (slug 'bats') removed on request — do not re-add it.
 ];
 /* ═══════════════════════════════════════════════════════════════════════ */
 
@@ -603,6 +600,18 @@ if (secIO) projects.forEach(p => secIO.observe(p));
 // repos you publish appear here automatically, no code changes needed.
 // Re-scans periodically (self-rescheduling so runs can never overlap) and
 // when the tab comes back into focus.
+// SHELVE LIST: repos listed here are hidden from the Published shelf even
+// while their Pages site is still live. Add a name to take a card away
+// immediately; remove it to bring the card back. Edit data/published.json
+// too — otherwise the offline-snapshot fallback would re-add these cards.
+const SHELF_HIDDEN = [
+  'Portfolio', 'Perkele-Cats', 'aetheria', 'tampere-keikat',
+  'Roguelike_new_1', 'multiplayer_voxel_game', 'Coding_game-3_newest',
+  'Roguelike_whit_world', 'ROGUELIKE_NEW', 'Coding_game2', 'Coding_game1',
+  'Coding_game', 'Roguelike', 'Macros-for-euo', 'BatsBatsBats_godot',
+  'Shitty-javascript-html5-game'
+];
+const shelveOk = n => !SHELF_HIDDEN.map(s => s.toLowerCase()).includes(String(n).toLowerCase());
 (async function(){
   const statAll = document.getElementById('statAll');
   const grid    = document.getElementById('pubGrid');
@@ -641,7 +650,9 @@ if (secIO) projects.forEach(p => secIO.observe(p));
     try {
       const r = await fetch('https://api.github.com/users/' + encodeURIComponent(OWNER) + '/repos?per_page=100&sort=pushed');
       if (!r.ok) throw new Error('http ' + r.status);
-      const repos = (await r.json()).filter(x => !x.fork).slice(0, 500); // API caps at 100/page; extra guard only
+      const repos = (await r.json())
+        .filter(x => !x.fork && shelveOk(x.name))   // shelved repos: no card, no HEAD check
+        .slice(0, 500);                              // API caps at 100/page; extra guard only
       const live = [], dead = [];
       await Promise.all(repos.map(async repo => {
         let h;
@@ -662,7 +673,9 @@ if (secIO) projects.forEach(p => secIO.observe(p));
       statAll.title = dead.length ? 'problems: ' + dead.join(', ') : 'all published repos respond';
       if (note) note.textContent = live.length
         ? live.length + ' of ' + repos.length + ' repos are published and answering right now — refreshed automatically every few minutes while you browse. Click any card to play.'
-        : 'No published sites found yet.';
+        : (repos.length
+            ? 'No sites to show right now.'          // unshelved repos exist but none answer
+            : 'Nothing on the shelf yet — newly published repos appear here automatically.');
       if (dead.length) console.warn('[status] published-but-broken repos:', dead);
     } catch (e) {
       if (!fresh()) return;
@@ -672,8 +685,10 @@ if (secIO) projects.forEach(p => secIO.observe(p));
         const s = await (await fetch('data/published.json', { cache:'no-store' })).json();
         if (!fresh()) return;
         if (s && Array.isArray(s.repos)) {
-          grid.innerHTML = s.repos.map(repo => cardHtml(repo, repo.url)).join('');
-          statAll.textContent = s.repos.length + '+';
+          const shown = s.repos.filter(repo => shelveOk(repo.name)); // same shelve list for the snapshot
+          grid.innerHTML = shown.map(repo => cardHtml(repo, repo.url)).join('')
+            || '<p class="pub-note">Nothing published yet.</p>';
+          statAll.textContent = shown.length + '+';
           statAll.title = 'from scheduled snapshot (' + (s.updated || '?') + ')';
           if (note) note.textContent = 'Showing the latest auto-refreshed snapshot — live re-check paused.';
           return;
