@@ -92,6 +92,7 @@ h1.display{font-family:var(--font-d);font-weight:800;text-transform:uppercase;fo
 .u-rd{color:var(--dim);overflow-wrap:anywhere;transition:color .2s}
 .u-rd:hover{color:var(--ink)}
 .u-rd.gone{display:none}
+a.dead{color:#ff6146!important;text-decoration:line-through;opacity:.75}
 .p-status{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:16px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
 .p-status .st{display:flex;gap:8px;align-items:baseline}
 .p-status dt{color:var(--faint)}
@@ -335,7 +336,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
 </main>
 <!-- single bottom message box -->
 <div class="wrap">
-  <div class="msg-box">wut 47 take our pillow for lifting if you are in here</div>
+  <div class="msg-box">wut 47 take our pillow for lifting if you are in here — <a href="#work" style="color:var(--mint)">back to projects ↑</a></div>
 </div>
 <script>
 /* ═══ PROJECT DATA — ADD NEW PROJECTS HERE ══════════════════════════════
@@ -371,6 +372,10 @@ const PROJECTS = [
     blurb:'A gig guide for Tampere — who is playing, where and when. In Finnish.',
     repo:'zakker111/tampere-keikat', live:'https://zakker111.github.io/tampere-keikat/',
     acc:'#ff4f87', tile:'keikat', note:'sketch — the real time and date' },
+  { slug:'bats', title:'BatsBatsBats (Godot)', kind:'Game',
+    blurb:'A bat-catching arcade game made with Godot. No hosted build yet — open the source repo.',
+    repo:'zakker111/BatsBatsBats_godot', live:'',
+    acc:'#9d7bff', tile:'none' },
 ];
 /* ═══════════════════════════════════════════════════════════════════════ */
 
@@ -443,6 +448,57 @@ const revealIO = makeIO(entries => {
 }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
 if (revealIO) document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+/* ── LINK VERIFIER ───────────────────────────────────────────────────────
+   Every external link on this page gets checked in the background:
+   • github.com repo + README links  → verified via GitHub's API (CORS-safe);
+     a missing repo or README marks the link dead.
+   • zakker111.github.io pages       → best-effort CORS probe; only a clear
+     404/410 marks them dead (opaque network results are left alone).
+   Dead links get struck through and a "broken" tag — so if a link would
+   take you to an error page, you see it here instead of discovering it there. */
+(function(){
+  const markDead = a => {
+    if (!a || a.classList.contains('dead')) return;
+    a.classList.add('dead');
+    a.title = 'This link leads to an error page — it was broken when last checked.';
+    const tag = document.createElement('span');
+    tag.textContent = ' broken';
+    tag.style.cssText = 'color:#ff6146;font-weight:700';
+    a.appendChild(tag);
+  };
+  const GH_API = 'https://api.github.com/repos/';
+  // verify all github.com/OWNER/REPO(/blob/BRANCH/PATH) links
+  const srcLinks = Array.from(document.querySelectorAll('a[href^="https://github.com/"]'));
+  const repoCache = {};
+  srcLinks.forEach(a => {
+    const m = a.href.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/#?]+)(?:\/(.+))?$/);
+    if (!m) return;
+    const key = m[1] + '/' + m[2];
+    const tail = m[3] ? decodeURIComponent(m[3]) : '';
+    if (!repoCache[key]) {
+      repoCache[key] = fetch(GH_API + key, { cache:'no-store' })
+        .then(r => r.ok ? r.json() : null).catch(() => undefined); // undefined = can't tell
+    }
+    repoCache[key].then(info => {
+      if (info === undefined || info === null) { markDead(a); return; } // repo gone → everything under it errors
+      if (!tail) return;                                               // plain repo link is fine
+      let path = tail;
+      if (/^(blob|tree)\//.test(path)) path = path.replace(/^(?:blob|tree)\/[^\/]+\//, '');
+      const ref = (info.default_branch || 'main');
+      fetch(GH_API + key + '/contents/' + encodeURIComponent(path).replace(/%2F/g,'/') + '?ref=' + encodeURIComponent(ref), { method:'HEAD', cache:'no-store' })
+        .then(r => { if (r.status === 404 || r.status === 451) markDead(a); })
+        .catch(() => {}); // opaque failure: leave the link alone
+    });
+  });
+  // best-effort check of Pages links sharing this site's origin (e.g. /Portfolio/)
+  const sameOriginPages = Array.from(document.querySelectorAll('a[href]'))
+    .filter(a => a.host === location.host && location.hostname.endsWith('github.io') && /^https/.test(a.href));
+  sameOriginPages.forEach(a => {
+    fetch(a.href, { mode:'cors', cache:'no-store' })
+      .then(r => { if (r.status === 404 || r.status === 410) markDead(a); })
+      .catch(() => {}); // CORS blocks the result on other-project pages — can't tell, don't judge
+  });
+})();
 // build the header project index from the rendered cards (auto-updates with PROJECTS)
 (function(){
   const nav = document.querySelector('.nav-index');
