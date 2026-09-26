@@ -20,8 +20,9 @@ at the bottom of the file. Copy one entry and change the fields:
 | note    | caption under the sketch (optional)                            |
 | hidden  | set `true` to keep the entry but hide the card                 |
 
-The card HTML, nav index, "Project NN" numbering, hero counters and footer
-quick links are all generated from this array — never duplicate them by hand.
+The card HTML, nav index, "Project NN" numbering and hero counters are all
+generated from this array — never duplicate them by hand. (The old footer with
+its quick links was removed; there is no `#footerLinks` anymore.)
 
 Rules:
 - To add a new animated sketch, write a `makeX(canvas)` function returning
@@ -58,4 +59,4 @@ Two independent checkers run in the browser on every page load:
 1. Per-project cards — repo/pages/readme/last-push via `api.github.com/repos/<owner>/<repo>`.
 2. Account sweep — lists ALL public repos of the owner (`/users/<owner>/repos`), HEAD-checks each one's Pages URL, and renders every published-and-answering site as a clickable card in the `#published` shelf (newest first; featured projects reuse their accent color + ★; each card shows the repo description). Tally shows in hero stat `#statAll`. Owner is auto-detected from the github.io hostname (fallback: zakker111). Unpublished repos (404) are skipped silently; published-but-erroring ones go to the console + `#statAll` tooltip. The shelf is fully automatic — never hand-add cards to `#pubGrid`; publishing a new Pages repo makes it appear by itself.
 Both degrade gracefully: rate-limit/offline → snapshot fallback → dashes + "checks paused", never an error dialog. The sweep re-runs every 5 minutes while the tab is open and whenever the tab regains focus (generation-guarded so stale runs never overwrite fresh results). Note: unauthenticated api.github.com allows ~60 requests/hour per IP; a full sweep costs ~2 calls per repo. Keep the number of featured cards modest.
-Contact link: footer `#contactLink` uses `CONTACT_EMAIL` (top of the script) or the public email on the GitHub profile, falling back to a github.com/<user> link — never hard-code a mailto in the HTML.
+Contact link: removed — the footer `#contactLink` and the `CONTACT_EMAIL` constant were deleted along with the footer. (If a contact link is ever re-added, prefer the public GitHub profile email over hard-coding a mailto.)

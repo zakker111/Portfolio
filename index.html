@@ -112,7 +112,7 @@ h1.display{font-family:var(--font-d);font-weight:800;text-transform:uppercase;fo
 .unit canvas.grabbable{cursor:grab;touch-action:pan-y}
 .unit canvas.grabbing{cursor:grabbing}
 .unit-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:9.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
-footer{padding:48px 0 32px}
+/* footer removed — its CSS (.who mark, .f-links, .f-mail, .f-bottom) was deleted with it */
 /* PUBLISHED — auto-scanned live games shelf */
 .pub-note{margin:18px 0 22px;font-size:12.5px;letter-spacing:.04em;color:var(--dim)}
 .pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -125,27 +125,7 @@ footer{padding:48px 0 32px}
 .pub-go{margin-top:auto;padding-top:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,var(--mint))}
 .pub-card.feat::after{content:"★ featured";position:absolute;top:12px;right:12px;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,var(--mint))}
 @media(prefers-reduced-motion:reduce){.pub-card:hover{transform:none}}
-.f-links{display:flex;flex-wrap:wrap;gap:10px 28px;margin-bottom:28px}
-.f-links a{font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:color .2s}
-.f-links a:hover{color:var(--mint)}
-.f-mail{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin-bottom:28px;font-size:12px;letter-spacing:.06em}
-.f-mail .label{font-size:10px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
-.f-mail a{color:var(--ink);text-decoration:none;overflow-wrap:anywhere;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
-.f-mail a:hover{color:var(--mint);border-bottom-color:var(--mint)}
-.f-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:22px;font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
-.f-bottom a{color:var(--dim);text-decoration:none}
-.f-bottom a:hover{color:var(--ink)}
-/* WHO — abstract identity mark (pure CSS, no text) */
-.who{display:flex;justify-content:center;margin:8px 0 36px}
-.who-mark{position:relative;width:120px;height:120px}
-.who-ring{position:absolute;border-radius:50%;border:1px solid var(--line)}
-.who-ring.r1{inset:0}
-.who-ring.r2{inset:18px;border-color:rgba(125,237,195,.35)}
-.who-core{position:absolute;inset:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--mint),transparent 70%);opacity:.7;animation:whoPulse 3.2s ease-in-out infinite}
-.who-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--amber);top:-3px;left:50%;margin-left:-3.5px;transform-origin:3.5px 63.5px;animation:whoOrbit 9s linear infinite}
-@keyframes whoPulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.85;transform:scale(1.05)}}
-@keyframes whoOrbit{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.who-core,.who-dot{animation:none}}
+/* (footer styles removed along with the footer) */
 html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 html.js .reveal.in{opacity:1;transform:none}
 h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
@@ -352,31 +332,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
     </div>
   </section>
 </main>
-<footer>
-  <div class="wrap">
-    <div class="who" aria-hidden="true">
-      <div class="who-mark">
-        <span class="who-ring r1"></span>
-        <span class="who-ring r2"></span>
-        <span class="who-core"></span>
-        <span class="who-dot"></span>
-      </div>
-    </div>
-    <!-- quick links are generated from the PROJECTS array -->
-    <nav class="f-links" id="footerLinks" aria-label="Quick links"></nav>
-    <!-- EDIT: set your public GitHub email once for both the API check and this link:
-         const CONTACT_EMAIL = 'you@example.com';   // near the top of the script below.
-         Leaving it empty ('') shows a working link to your GitHub profile instead. -->
-    <div class="f-mail">
-      <span class="label">contact</span>
-      <a id="contactLink" href="#" target="_blank" rel="noopener">GitHub profile ↗</a>
-    </div>
-    <div class="f-bottom">
-      <span>© <span id="yr"></span> zakker111</span>
-      <a href="#hero">Back to top ↑</a>
-    </div>
-  </div>
-</footer>
+<!-- footer removed on request — quick links, contact block and copyright bar are gone -->
 <script>
 /* ═══ PROJECT DATA — ADD NEW PROJECTS HERE ══════════════════════════════
    Copy one entry, edit the values, done. Everything else is automatic:
@@ -393,9 +349,7 @@ h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
    note    → caption under the sketch (optional)
    To hide a project without deleting it, add  hidden: true.               */
 const GITHUB_USER = 'zakker111';
-// Optional: your PUBLIC GitHub email (shown as the footer contact link and used
-// by the live email check). Leave '' to just link to your GitHub profile.
-const CONTACT_EMAIL = '';
+// NOTE: CONTACT_EMAIL was removed together with the footer contact block.
 const PROJECTS = [
   { slug:'aetheria',  title:'Aetheria', kind:'Game',
     blurb:'A browser game with an ambient fantasy feel. Open the link and it runs — nothing to install.',
@@ -476,20 +430,7 @@ projects.forEach((p, i) => {
   const kind = p.dataset.kind || (idx.textContent.match(/—\s*(.+)$/) || [,''])[1].trim();
   idx.textContent = 'Project ' + p.dataset.num + (kind ? ' — ' + kind : '');
 });
-(function(){
-  const fl = document.getElementById('footerLinks');
-  if (!fl) return;
-  projects.forEach(p => {
-    const live = p.querySelector('a.u-live');
-    if (!live) return;
-    const a = document.createElement('a');
-    a.href = live.href;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.textContent = p.dataset.title + ' ↗';
-    fl.appendChild(a);
-  });
-})();
+// (footer removed — the old footerLinks builder block lived here)
 document.getElementById('statProjects').textContent = pad2(projects.length);
 // Safe observer: older/embedded browsers without IntersectionObserver just show everything.
 const makeIO = (cb, opts) => ('IntersectionObserver' in window) ? new IntersectionObserver(cb, opts) : null;
@@ -608,21 +549,7 @@ if (secIO) projects.forEach(p => secIO.observe(p));
   const note    = document.getElementById('pubNote');
   if (!statAll || !grid) return;
   statAll.textContent = '···';
-  // Contact link: prefer the public email on the GitHub profile (or the
-  // CONTACT_EMAIL constant above); fall back to a working profile link.
-  (async function(){
-    const cl = document.getElementById('contactLink');
-    if (!cl) return;
-    let mail = CONTACT_EMAIL;
-    if (!mail) {
-      try {
-        const r = await fetch('https://api.github.com/users/' + encodeURIComponent(GITHUB_USER));
-        if (r.ok) mail = (await r.json()).email || '';
-      } catch (e) { /* offline: keep the profile fallback */ }
-    }
-    if (mail && /@/.test(mail)) { cl.href = 'mailto:' + mail; cl.target = ''; cl.rel = ''; cl.textContent = mail + ' ↗'; }
-    else { cl.href = 'https://github.com/' + GITHUB_USER; cl.textContent = 'github.com/' + GITHUB_USER + ' ↗'; }
-  })();
+  // (footer removed — the old contactLink email-check block lived here)
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   // match a featured PROJECTS entry by repo name to reuse its accent color
   const featAcc = {};
@@ -1116,7 +1043,6 @@ addEventListener('scroll', () => {
     scrollQueued = false;
   });
 }, { passive:true });
-document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
