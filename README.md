@@ -28,7 +28,7 @@ Every push to `main` triggers the workflow. `workflow_dispatch` also allows a ma
 
 ## Adding a project
 
-Open `index.html`, find the `PROJECTS` array near the top of the `<script>` at the bottom, and add one entry (title, blurb, repo, link, color). Cards, numbering, counters and footer links update automatically. See `AGENTS.md` for the field reference.
+Open `index.html`, find the `PROJECTS` array near the top of the `<script>` at the bottom, and add one entry (title, blurb, repo, link, color). Cards, numbering and counters update automatically. See `AGENTS.md` for the field reference.
 
 ## Local test
 
