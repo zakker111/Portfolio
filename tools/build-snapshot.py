@@ -5,12 +5,26 @@ if the live GitHub API check fails or is rate-limited."""
 import sys, json, datetime
 
 owner, src, dst = sys.argv[1], sys.argv[2], sys.argv[3]
+
+# Shelve list — keep in sync with SHELF_HIDDEN in index.html.
+# Repos listed here are excluded from the snapshot (and thus from the
+# site's offline fallback shelf) even while their Pages site is live.
+SHELF_HIDDEN = {
+    "portfolio", "perkele-cats", "aetheria", "tampere-keikat",
+    "roguelike_new_1", "multiplayer_voxel_game", "coding_game-3_newest",
+    "roguelike_whit_world", "roguelike_new", "coding_game2", "coding_game1",
+    "coding_game", "roguelike", "macros-for-euo", "batsbatsbats_godot",
+    "shitty-javascript-html5-game",
+}
+
 with open(src) as f:
     repos = json.load(f)
 
 out = []
 for r in repos:
     if r.get("fork"):
+        continue
+    if r["name"].lower() in SHELF_HIDDEN:   # shelved — never snapshot it
         continue
     out.append({
         "name": r["name"],

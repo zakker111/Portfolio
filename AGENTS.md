@@ -48,6 +48,12 @@ Pushing to `main` runs `.github/workflows/pages.yml` (static upload, no npm).
    every 6 hours (also manual-dispatch) and regenerates `data/published.json`
    via `tools/build-snapshot.py`, committing it to `main` only when changed.
    That push then triggers the Pages deploy automatically.
+3. **Shelve list:** `SHELF_HIDDEN` in index.html (JS) and `SHELF_HIDDEN` in
+   tools/build-snapshot.py (Python) hide repos from the Published shelf even
+   while their Pages site is still live — use it to take down unwanted or
+   WIP repos without deleting them. The two lists must stay in sync (repo
+   names are compared case-insensitively). `data/published.json` should not
+   contain shelved repos; the browser filters it with the same list anyway.
 
 Rules:
 - `data/published.json` is machine-generated — never hand-edit it.
