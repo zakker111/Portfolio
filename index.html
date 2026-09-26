@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>My Projects</title>
+<meta name="description" content="A simple portfolio page for the GitHub Pages projects of zakker111.">
+<meta name="theme-color" content="#0f0f12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230f0f12'/%3E%3Crect x='4' y='4' width='8' height='8' fill='%237dedc3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+  --bg:#0f0f12;
+  --bg2:#0b0b0e;
+  --ink:#eceae2;
+  --dim:rgba(236,234,226,.55);
+  --faint:rgba(236,234,226,.3);
+  --line:rgba(236,234,226,.14);
+  --mint:#7dedc3;
+  --amber:#f6a83c;
+  --coral:#ff6146;
+  --pink:#ff4f87;
+  --font-d:'Syne',sans-serif;
+  --font-m:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(.22,.61,.21,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-m);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+::selection{background:var(--mint);color:#0f0f12}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--mint);z-index:60}
+#topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:60px;display:flex;align-items:center;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+#topbar.scrolled{background:rgba(15,15,18,.86);border-bottom-color:var(--line);backdrop-filter:blur(10px)}
+#topbar .wrap{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{font-family:var(--font-d);font-weight:800;font-size:17px;letter-spacing:.02em;text-decoration:none;flex:none}
+.brand em{font-style:normal;color:var(--mint)}
+.nav-index{display:flex;gap:18px}
+.nav-index a{font-size:11px;letter-spacing:.14em;color:var(--dim);text-decoration:none;transition:color .2s}
+.nav-index a:hover,.nav-index a.on{color:var(--mint)}
+.top-status{display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);padding:8px 14px;white-space:nowrap;min-width:0}
+.top-status .tdot{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:pulse 1.6s ease-in-out infinite;flex:none}
+.top-status .tdot.on{background:var(--mint)}
+.top-status span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@keyframes pulse{50%{opacity:.3}}
+@media(max-width:900px){.nav-index{display:none}.top-status{max-width:46vw}}
+@media(max-width:560px){.top-status{padding:7px 10px}}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-m);font-weight:500;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:13px 20px;border:1px solid var(--line);color:var(--ink);background:transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-align:center;min-width:0}
+.btn:hover{border-color:var(--ink);background:var(--ink);color:#101013}
+.btn.primary{background:var(--mint);border-color:var(--mint);color:#101013;font-weight:600}
+.btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+.project .btn.primary{background:var(--acc);border-color:var(--acc)}
+.project .btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+#hero{position:relative;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line);min-height:88vh;min-height:88svh}
+.hero-body{padding-top:110px;padding-bottom:52px}
+.kicker{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+.kicker::before{content:"";width:8px;height:8px;background:var(--mint);flex:none}
+h1.display{font-family:var(--font-d);font-weight:800;text-transform:uppercase;font-size:clamp(36px,7vw,84px);line-height:1;letter-spacing:-.01em;margin:26px 0 30px}
+.hero-cta{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap}
+.cue{margin-top:36px;font-size:10px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+.hero-strip{border-top:1px solid var(--line);margin-top:auto}
+.stats{display:flex}
+.stat{flex:1;padding:20px 24px;border-left:1px solid var(--line);display:flex;align-items:baseline;gap:12px;min-width:0}
+.stat:first-child{border-left:0;padding-left:0}
+.stat b{font-family:var(--font-d);font-weight:800;font-size:24px;line-height:1}
+.stat span{font-size:10px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+.sec-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;padding:26px 0;border-bottom:1px solid var(--line);font-size:10.5px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+.project{position:relative;padding:clamp(56px,9vw,110px) 0;border-bottom:1px solid var(--line)}
+.project::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+.project:hover::before{transform:scaleY(1)}
+.cols{display:flex;gap:clamp(36px,5vw,72px);align-items:flex-start;position:relative}
+.project:nth-of-type(even) .col-media{order:-1}
+.col-text{flex:1.08;min-width:0}
+.col-media{flex:1;min-width:0}
+@media(max-width:920px){.cols{flex-direction:column}.project:nth-of-type(even) .col-media{order:0}}
+.p-index{display:flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+.p-index::before{content:"";width:7px;height:7px;background:var(--acc);flex:none}
+.p-title{font-family:var(--font-d);font-weight:800;text-transform:uppercase;font-size:clamp(34px,4.6vw,56px);line-height:1;letter-spacing:-.01em;margin:16px 0 18px;text-wrap:balance}
+.p-blurb{color:rgba(236,234,226,.75);max-width:56ch;font-size:13.5px}
+.p-urls{display:flex;flex-wrap:wrap;gap:6px 24px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;letter-spacing:.04em}
+.p-urls a{text-decoration:none;max-width:100%}
+.u-live{color:var(--acc);overflow-wrap:anywhere;border-bottom:1px solid transparent;transition:border-color .2s}
+.u-live:hover{border-bottom-color:var(--acc)}
+.u-src{color:var(--dim);overflow-wrap:anywhere;transition:color .2s}
+.u-src:hover{color:var(--ink)}
+.u-rd{color:var(--dim);overflow-wrap:anywhere;transition:color .2s}
+.u-rd:hover{color:var(--ink)}
+.u-rd.gone{display:none}
+.p-status{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:16px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.p-status .st{display:flex;gap:8px;align-items:baseline}
+.p-status dt{color:var(--faint)}
+.p-status dd{color:var(--dim);transition:color .3s}
+.p-status dd.ok{color:var(--acc)}
+.p-status dd.live{color:var(--acc)}
+.p-status dd.live::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--acc);margin-right:7px;vertical-align:1px;animation:pulse 2.4s ease-in-out infinite}
+.p-status dd.bad{color:var(--faint);text-decoration:line-through}
+.p-status.muted{opacity:.4}
+.p-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.unit{border:1px solid var(--line);background:var(--bg2);transition:border-color .3s}
+.project .unit:hover{border-color:var(--acc)}
+.unit-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.unit-bar b{color:var(--ink);font-weight:600;min-width:0}
+.unit-bar span{min-width:0}
+.unit canvas{display:block;width:100%;aspect-ratio:4/3}
+.unit canvas.interactive{cursor:pointer}
+.unit canvas.grabbable{cursor:grab;touch-action:pan-y}
+.unit canvas.grabbing{cursor:grabbing}
+.unit-foot{padding:10px 14px;border-top:1px solid var(--line);font-size:9.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+footer{padding:48px 0 32px}
+/* PUBLISHED — auto-scanned live games shelf */
+.pub-note{margin:18px 0 22px;font-size:12.5px;letter-spacing:.04em;color:var(--dim)}
+.pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.pub-card{position:relative;border:1px solid var(--line);background:var(--bg2);padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:border-color .3s,transform .3s var(--ease)}
+.pub-card:hover{border-color:var(--acc,var(--mint));transform:translateY(-3px)}
+.pub-kind{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.pub-name{font-size:15px;color:var(--ink);overflow-wrap:anywhere}
+.pub-desc{font-size:11.5px;line-height:1.45;color:var(--dim);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pub-meta{font-size:10.5px;letter-spacing:.08em;color:var(--dim)}
+.pub-go{margin-top:auto;padding-top:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,var(--mint))}
+.pub-card.feat::after{content:"★ featured";position:absolute;top:12px;right:12px;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,var(--mint))}
+@media(prefers-reduced-motion:reduce){.pub-card:hover{transform:none}}
+.f-links{display:flex;flex-wrap:wrap;gap:10px 28px;margin-bottom:28px}
+.f-links a{font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);transition:color .2s}
+.f-links a:hover{color:var(--mint)}
+.f-mail{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin-bottom:28px;font-size:12px;letter-spacing:.06em}
+.f-mail .label{font-size:10px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
+.f-mail a{color:var(--ink);text-decoration:none;overflow-wrap:anywhere;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.f-mail a:hover{color:var(--mint);border-bottom-color:var(--mint)}
+.f-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:22px;font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase}
+.f-bottom a{color:var(--dim);text-decoration:none}
+.f-bottom a:hover{color:var(--ink)}
+/* WHO — abstract identity mark (pure CSS, no text) */
+.who{display:flex;justify-content:center;margin:8px 0 36px}
+.who-mark{position:relative;width:120px;height:120px}
+.who-ring{position:absolute;border-radius:50%;border:1px solid var(--line)}
+.who-ring.r1{inset:0}
+.who-ring.r2{inset:18px;border-color:rgba(125,237,195,.35)}
+.who-core{position:absolute;inset:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--mint),transparent 70%);opacity:.7;animation:whoPulse 3.2s ease-in-out infinite}
+.who-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--amber);top:-3px;left:50%;margin-left:-3.5px;transform-origin:3.5px 63.5px;animation:whoOrbit 9s linear infinite}
+@keyframes whoPulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.85;transform:scale(1.05)}}
+@keyframes whoOrbit{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.who-core,.who-dot{animation:none}}
+html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+html.js .reveal.in{opacity:1;transform:none}
+h1.display,.p-title,.p-blurb,.btn,.unit-bar,.unit-foot{overflow-wrap:break-word}
+@media(max-width:640px){
+  .hero-body{padding-top:96px;padding-bottom:40px}
+  .stat{padding:16px 14px}
+  .hero-cta .btn{flex:1 1 100%;justify-content:center}
+  .p-links{gap:8px}
+  .p-links .btn{flex:1 1 100%;justify-content:center}
+  .unit-bar{font-size:9px;letter-spacing:.12em}
+}
+@media(prefers-reduced-motion:reduce){
+  html.js .reveal{transition:none;opacity:1;transform:none}
+  .top-status .tdot,.p-status dd.live::before{animation:none}
+}
+</style>
+</head>
+<body>
+<noscript><div style="padding:16px 24px;border-bottom:1px solid rgba(236,234,226,.14);font-size:12px">JavaScript is off — the animated pictures and the live status lines will not work, but all the links still do.</div></noscript>
+<div id="progress"></div>
+<header id="topbar">
+  <div class="wrap">
+    <a class="brand" href="#hero">zakker<em>111</em></a>
+    <nav class="nav-index" aria-label="Project index"></nav>
+    <div class="top-status" id="topStatus"><span class="tdot" aria-hidden="true"></span><span id="topStatusTxt">checking repos…</span></div>
+  </div>
+</header>
+<section id="hero">
+  <div class="hero-body wrap">
+    <div class="kicker reveal">Portfolio — GitHub Pages</div>
+    <h1 class="display reveal" style="transition-delay:.08s">My Projects</h1>
+    <div class="hero-cta reveal" style="transition-delay:.24s">
+      <a class="btn primary" href="#work">Browse the projects ↓</a>
+    </div>
+    <div class="cue reveal" style="transition-delay:.3s">Scroll down</div>
+  </div>
+  <div class="hero-strip">
+    <div class="wrap stats">
+      <div class="stat"><b id="statProjects">04</b><span>Projects</span></div>
+      <div class="stat"><b id="statLive">—</b><span>Repos live</span></div>
+      <div class="stat"><b id="statAll">—</b><span>Published games live</span></div>
+    </div>
+  </div>
+</section>
+<main>
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><span>Index — all projects</span><span>GitHub Pages</span></div>
+      <noscript><style>.js-only{display:none!important}#staticProjects{display:block!important}</style>
+      <div id="staticProjects" hidden><!-- plain links so the page works without JS -->
+        <p><a href="https://zakker111.github.io/aetheria/">Aetheria ↗</a></p>
+        <p><a href="https://zakker111.github.io/Roguelike_new_1/">Roguelike_new_1 ↗</a></p>
+        <p><a href="https://zakker111.github.io/multiplayer_voxel_game/">Multiplayer Voxel Game ↗</a></p>
+        <p><a href="https://zakker111.github.io/tampere-keikat/">Tampere-keikat ↗</a></p>
+      </div></noscript>
+      <div id="projectList">
+
+        <article class="project" id="p-aetheria" data-kind="Game" data-num="01" data-title="Aetheria" style="--acc:#7dedc3">
+          <div class="cols">
+            <div class="col-text">
+              <div class="p-index reveal">Project 01 — Game</div>
+              <h3 class="p-title reveal" style="transition-delay:.06s">Aetheria</h3>
+              <p class="p-blurb reveal" style="transition-delay:.12s">A browser game with an ambient fantasy feel. Open the link and it runs — nothing to install.</p>
+              <div class="p-urls reveal" style="transition-delay:.18s">
+                <a class="u-live" href="https://zakker111.github.io/aetheria/" target="_blank" rel="noopener">https://zakker111.github.io/aetheria/ ↗</a>
+                <a class="u-src" href="https://github.com/zakker111/aetheria" target="_blank" rel="noopener">source · github.com/zakker111/aetheria</a>
+                <a class="u-rd" href="https://github.com/zakker111/aetheria/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+              </div>
+              <dl class="p-status reveal" style="transition-delay:.22s">
+                <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+                <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+                <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+                <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+              </dl>
+              <div class="p-links reveal" style="transition-delay:.26s">
+                <a class="btn primary" href="https://zakker111.github.io/aetheria/" target="_blank" rel="noopener">Open project ↗</a>
+                <a class="btn" href="https://github.com/zakker111/aetheria" target="_blank" rel="noopener">Source ↗</a>
+              </div>
+            </div>
+            <div class="col-media reveal" style="transition-delay:.15s">
+              <div class="unit">
+                <div class="unit-bar"><b>Sketch</b><span>God rays · click to regrow</span></div>
+                <canvas data-tile="aetheria" aria-label="Animated god-like tile world with rays, blessings and water"></canvas>
+                <div class="unit-foot">sketch — tile world with god rays, blessings, water shimmer</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" id="p-roguelike" data-kind="Game" data-num="02" data-title="Roguelike_new_1" style="--acc:#f6a83c">
+          <div class="cols">
+            <div class="col-text">
+              <div class="p-index reveal">Project 02 — Game</div>
+              <h3 class="p-title reveal" style="transition-delay:.06s">Roguelike_new_1</h3>
+              <p class="p-blurb reveal" style="transition-delay:.12s">A roguelike dungeon crawler: every run generates a new map, and death is permanent.</p>
+              <div class="p-urls reveal" style="transition-delay:.18s">
+                <a class="u-live" href="https://zakker111.github.io/Roguelike_new_1/" target="_blank" rel="noopener">https://zakker111.github.io/Roguelike_new_1/ ↗</a>
+                <a class="u-src" href="https://github.com/zakker111/Roguelike_new_1" target="_blank" rel="noopener">source · github.com/zakker111/Roguelike_new_1</a>
+                <a class="u-rd" href="https://github.com/zakker111/Roguelike_new_1/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+              </div>
+              <dl class="p-status reveal" style="transition-delay:.22s">
+                <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+                <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+                <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+                <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+              </dl>
+              <div class="p-links reveal" style="transition-delay:.26s">
+                <a class="btn primary" href="https://zakker111.github.io/Roguelike_new_1/" target="_blank" rel="noopener">Open project ↗</a>
+                <a class="btn" href="https://github.com/zakker111/Roguelike_new_1" target="_blank" rel="noopener">Source ↗</a>
+              </div>
+            </div>
+            <div class="col-media reveal" style="transition-delay:.15s">
+              <div class="unit">
+                <div class="unit-bar"><b>Sketch</b><span>Click to reroll</span></div>
+                <canvas data-tile="roguelike" aria-label="Animated sketch echoing Roguelike_new_1"></canvas>
+                <div class="unit-foot">sketch — a real dungeon generator, new map every ~5s</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" id="p-voxel" data-kind="Game" data-num="03" data-title="Multiplayer Voxel Game" style="--acc:#ff6146">
+          <div class="cols">
+            <div class="col-text">
+              <div class="p-index reveal">Project 03 — Game</div>
+              <h3 class="p-title reveal" style="transition-delay:.06s">Multiplayer Voxel Game</h3>
+              <p class="p-blurb reveal" style="transition-delay:.12s">A real-time 3D voxel sandbox with multiplayer — build and explore together with other players.</p>
+              <div class="p-urls reveal" style="transition-delay:.18s">
+                <a class="u-live" href="https://zakker111.github.io/multiplayer_voxel_game/" target="_blank" rel="noopener">https://zakker111.github.io/multiplayer_voxel_game/ ↗</a>
+                <a class="u-src" href="https://github.com/zakker111/multiplayer_voxel_game" target="_blank" rel="noopener">source · github.com/zakker111/multiplayer_voxel_game</a>
+                <a class="u-rd" href="https://github.com/zakker111/multiplayer_voxel_game/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+              </div>
+              <dl class="p-status reveal" style="transition-delay:.22s">
+                <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+                <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+                <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+                <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+              </dl>
+              <div class="p-links reveal" style="transition-delay:.26s">
+                <a class="btn primary" href="https://zakker111.github.io/multiplayer_voxel_game/" target="_blank" rel="noopener">Open project ↗</a>
+                <a class="btn" href="https://github.com/zakker111/multiplayer_voxel_game" target="_blank" rel="noopener">Source ↗</a>
+              </div>
+            </div>
+            <div class="col-media reveal" style="transition-delay:.15s">
+              <div class="unit">
+                <div class="unit-bar"><b>Sketch</b><span>Drag to spin</span></div>
+                <canvas data-tile="voxel" aria-label="Animated sketch echoing the Multiplayer Voxel Game"></canvas>
+                <div class="unit-foot">sketch — fake 3d blocks, drag to spin</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" id="p-tampere" data-kind="Web app" data-num="04" data-title="Tampere-keikat" style="--acc:#ff4f87">
+          <div class="cols">
+            <div class="col-text">
+              <div class="p-index reveal">Project 04 — Web app</div>
+              <h3 class="p-title reveal" style="transition-delay:.06s">Tampere-keikat</h3>
+              <p class="p-blurb reveal" style="transition-delay:.12s">A gig guide for Tampere — who is playing, where and when. In Finnish.</p>
+              <div class="p-urls reveal" style="transition-delay:.18s">
+                <a class="u-live" href="https://zakker111.github.io/tampere-keikat/" target="_blank" rel="noopener">https://zakker111.github.io/tampere-keikat/ ↗</a>
+                <a class="u-src" href="https://github.com/zakker111/tampere-keikat" target="_blank" rel="noopener">source · github.com/zakker111/tampere-keikat</a>
+                <a class="u-rd" href="https://github.com/zakker111/tampere-keikat/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+              </div>
+              <dl class="p-status reveal" style="transition-delay:.22s">
+                <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+                <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+                <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+                <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+              </dl>
+              <div class="p-links reveal" style="transition-delay:.26s">
+                <a class="btn primary" href="https://zakker111.github.io/tampere-keikat/" target="_blank" rel="noopener">Open project ↗</a>
+                <a class="btn" href="https://github.com/zakker111/tampere-keikat" target="_blank" rel="noopener">Source ↗</a>
+              </div>
+            </div>
+            <div class="col-media reveal" style="transition-delay:.15s">
+              <div class="unit">
+                <div class="unit-bar"><b>Sketch</b><span>Live clock</span></div>
+                <canvas data-tile="keikat" aria-label="A live clock"></canvas>
+                <div class="unit-foot">sketch — the real time and date</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══ HOW TO ADD A PROJECT ═══════════════════════════════════════
+             Option A (easiest): add an entry to the PROJECTS array in the
+             script at the bottom of this file. The card, nav, counters and
+             live GitHub status checks are generated automatically.
+             Option B: paste a hand-written <article class="project">…</article>
+             into #projectList (see git history for examples). If both exist,
+             hand-written articles win and the matching array entry is skipped.
+             data-tile sketches: aetheria | roguelike | voxel | keikat | none
+             ══════════════════════════════════════════════════════════════ -->
+
+      </div>
+    </div>
+  </section>
+  <section id="published">
+    <div class="wrap">
+      <div class="sec-head"><span>Published — live on GitHub Pages</span><span>auto · every visit</span></div>
+      <p class="pub-note" id="pubNote">Scanning every repo of this account and checking which ones have a published, working game…</p>
+      <div class="pub-grid" id="pubGrid"></div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="who" aria-hidden="true">
+      <div class="who-mark">
+        <span class="who-ring r1"></span>
+        <span class="who-ring r2"></span>
+        <span class="who-core"></span>
+        <span class="who-dot"></span>
+      </div>
+    </div>
+    <!-- quick links are generated from the PROJECTS array -->
+    <nav class="f-links" id="footerLinks" aria-label="Quick links"></nav>
+    <!-- EDIT: set your public GitHub email once for both the API check and this link:
+         const CONTACT_EMAIL = 'you@example.com';   // near the top of the script below.
+         Leaving it empty ('') shows a working link to your GitHub profile instead. -->
+    <div class="f-mail">
+      <span class="label">contact</span>
+      <a id="contactLink" href="#" target="_blank" rel="noopener">GitHub profile ↗</a>
+    </div>
+    <div class="f-bottom">
+      <span>© <span id="yr"></span> zakker111</span>
+      <a href="#hero">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+<script>
+/* ═══ PROJECT DATA — ADD NEW PROJECTS HERE ══════════════════════════════
+   Copy one entry, edit the values, done. Everything else is automatic:
+   card layout, nav index, project counter and live GitHub status checks.
+
+   slug    → unique id (card anchor becomes #p-<slug>)
+   title   → project name shown in the card
+   kind    → small label, e.g. "Game" or "Web app"
+   blurb   → one sentence about the project
+   repo    → "owner/name" on GitHub (status checks + source link use this)
+   live    → URL of the hosted site; "" if none
+   acc     → accent color for the card (any CSS color)
+   tile    → animated sketch: aetheria | roguelike | voxel | keikat | none
+   note    → caption under the sketch (optional)
+   To hide a project without deleting it, add  hidden: true.               */
+const GITHUB_USER = 'zakker111';
+// Optional: your PUBLIC GitHub email (shown as the footer contact link and used
+// by the live email check). Leave '' to just link to your GitHub profile.
+const CONTACT_EMAIL = '';
+const PROJECTS = [
+  { slug:'aetheria',  title:'Aetheria', kind:'Game',
+    blurb:'A browser game with an ambient fantasy feel. Open the link and it runs — nothing to install.',
+    repo:'zakker111/aetheria', live:'https://zakker111.github.io/aetheria/',
+    acc:'#7dedc3', tile:'aetheria', note:'sketch — tile world with god rays, blessings, water shimmer' },
+  { slug:'roguelike', title:'Roguelike_new_1', kind:'Game',
+    blurb:'A roguelike dungeon crawler: every run generates a new map, and death is permanent.',
+    repo:'zakker111/Roguelike_new_1', live:'https://zakker111.github.io/Roguelike_new_1/',
+    acc:'#f6a83c', tile:'roguelike', note:'sketch — a real dungeon generator, new map every ~5s' },
+  { slug:'voxel', title:'Multiplayer Voxel Game', kind:'Game',
+    blurb:'A real-time 3D voxel sandbox with multiplayer — build and explore together with other players.',
+    repo:'zakker111/multiplayer_voxel_game', live:'https://zakker111.github.io/multiplayer_voxel_game/',
+    acc:'#ff6146', tile:'voxel', note:'sketch — fake 3d blocks, drag to spin' },
+  { slug:'tampere', title:'Tampere-keikat', kind:'Web app',
+    blurb:'A gig guide for Tampere — who is playing, where and when. In Finnish.',
+    repo:'zakker111/tampere-keikat', live:'https://zakker111.github.io/tampere-keikat/',
+    acc:'#ff4f87', tile:'keikat', note:'sketch — the real time and date' },
+];
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+// Render data-driven cards into #projectList (hand-written articles win).
+(function renderProjects(){
+  const list = document.getElementById('projectList');
+  if (!list) return;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const first = list.querySelector('.project');
+  let ref = first ? first : null; // insert before the first hand-written card, else append
+  const existing = new Set(Array.from(list.querySelectorAll('.project')).map(p => p.id));
+  PROJECTS.forEach(d => {
+    if (d.hidden || existing.has('p-' + d.slug)) return;
+    const tmp = document.createElement('template');
+    const ownerRepo = d.repo || (GITHUB_USER + '/' + d.slug);
+    const srcUrl = 'https://github.com/' + ownerRepo;
+    tmp.innerHTML = `
+      <article class="project" id="p-${esc(d.slug)}" data-kind="${esc(d.kind || '')}" data-num="" data-title="${esc(d.title)}" style="--acc:${esc(d.acc || '#7dedc3')}">
+        <div class="cols">
+          <div class="col-text">
+            <div class="p-index reveal"></div>
+            <h3 class="p-title reveal" style="transition-delay:.06s">${esc(d.title)}</h3>
+            <p class="p-blurb reveal" style="transition-delay:.12s">${esc(d.blurb || '')}</p>
+            <div class="p-urls reveal" style="transition-delay:.18s">
+              ${d.live ? `<a class="u-live" href="${esc(d.live)}" target="_blank" rel="noopener">${esc(d.live)} ↗</a>` : ''}
+              <a class="u-src" href="${esc(srcUrl)}" target="_blank" rel="noopener">source · ${esc(srcUrl.replace('https://',''))}</a>
+              <a class="u-rd" href="${esc(srcUrl)}/blob/main/README.md" target="_blank" rel="noopener">readme ↗</a>
+            </div>
+            <dl class="p-status reveal" style="transition-delay:.22s">
+              <div class="st"><dt>repo</dt><dd data-st="repo">—</dd></div>
+              <div class="st"><dt>pages</dt><dd data-st="pages">—</dd></div>
+              <div class="st"><dt>readme</dt><dd data-st="readme">—</dd></div>
+              <div class="st"><dt>push</dt><dd data-st="push">—</dd></div>
+            </dl>
+            <div class="p-links reveal" style="transition-delay:.26s">
+              ${d.live ? `<a class="btn primary" href="${esc(d.live)}" target="_blank" rel="noopener">Open project ↗</a>` : ''}
+              <a class="btn" href="${esc(srcUrl)}" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+          ${d.tile && d.tile !== 'none' ? `
+          <div class="col-media reveal" style="transition-delay:.15s">
+            <div class="unit">
+              <div class="unit-bar"><b>Sketch</b><span>auto</span></div>
+              <canvas data-tile="${esc(d.tile)}" aria-label="Animated sketch for ${esc(d.title)}"></canvas>
+              <div class="unit-foot">${esc(d.note || 'sketch')}</div>
+            </div>
+          </div>` : ''}
+        </div>
+      </article>`;
+    list.insertBefore(tmp.content.firstElementChild, ref);
+  });
+})();
+
+const pad2 = n => String(n).padStart(2, '0');
+const projects = Array.from(document.querySelectorAll('#projectList .project'));
+// renumber + fill the "Project NN — kind" label from data attributes
+projects.forEach((p, i) => {
+  p.dataset.num = pad2(i + 1);
+  const idx = p.querySelector('.p-index');
+  if (!idx) return;
+  const kind = p.dataset.kind || (idx.textContent.match(/—\s*(.+)$/) || [,''])[1].trim();
+  idx.textContent = 'Project ' + p.dataset.num + (kind ? ' — ' + kind : '');
+});
+(function(){
+  const fl = document.getElementById('footerLinks');
+  if (!fl) return;
+  projects.forEach(p => {
+    const live = p.querySelector('a.u-live');
+    if (!live) return;
+    const a = document.createElement('a');
+    a.href = live.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = p.dataset.title + ' ↗';
+    fl.appendChild(a);
+  });
+})();
+document.getElementById('statProjects').textContent = pad2(projects.length);
+// Safe observer: older/embedded browsers without IntersectionObserver just show everything.
+const makeIO = (cb, opts) => ('IntersectionObserver' in window) ? new IntersectionObserver(cb, opts) : null;
+const revealIO = makeIO(entries => {
+  for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+}, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
+if (revealIO) document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+// build the header project index from the rendered cards (auto-updates with PROJECTS)
+(function(){
+  const nav = document.querySelector('.nav-index');
+  if (!nav) return;
+  projects.forEach(p => {
+    const a = document.createElement('a');
+    a.href = '#' + p.id;
+    a.textContent = p.dataset.num + '·' + (p.dataset.title || p.id.replace(/^p-/, ''));
+    nav.appendChild(a);
+  });
+})();
+const navLinks = {};
+document.querySelectorAll('.nav-index a').forEach(a => navLinks[a.getAttribute('href').slice(1)] = a);
+const secIO = makeIO(entries => {
+  for (const e of entries) { const a = navLinks[e.target.id]; if (a) a.classList.toggle('on', e.isIntersecting); }
+}, { rootMargin:'-40% 0px -50% 0px' });
+if (secIO) projects.forEach(p => secIO.observe(p));
+(function(){
+  const statLive = document.getElementById('statLive');
+  const topTxt   = document.getElementById('topStatusTxt');
+  const topDot   = document.querySelector('#topStatus .tdot');
+  let done = 0, alive = 0, apiDead = false;
+  document.querySelectorAll('.p-status dd').forEach(dd => dd.textContent = '···');
+  statLive.textContent = '···';
+  const timeAgo = iso => {
+    const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 60)    return 'just now';
+    const m = s / 60;  if (m < 60)  return Math.floor(m) + ' min ago';
+    const h = m / 60;  if (h < 24)  return Math.floor(h) + ' hr'  + (h >= 2 ? 's' : '') + ' ago';
+    const d = h / 24;  if (d < 7)   return Math.floor(d) + ' day' + (d >= 2 ? 's' : '') + ' ago';
+    const w = d / 7;   if (w < 5)   return Math.floor(w) + ' wk'  + (w >= 2 ? 's' : '') + ' ago';
+    const mo = d / 30; if (mo < 12) return Math.floor(mo) + ' mo ago';
+    return Math.floor(d / 365) + ' yr ago';
+  };
+  const kb = b => b >= 1024 ? (b / 1024).toFixed(1) + ' kb' : b + ' b';
+  function setRow(article, key, text, cls){
+    const dd = article.querySelector('[data-st="' + key + '"]');
+    if (dd) { dd.textContent = text; dd.className = cls || ''; }
+  }
+  function tally(){
+    if (apiDead) return;
+    statLive.textContent = alive + '/' + projects.length;
+    topTxt.textContent = alive + '/' + projects.length + ' repos live'
+      + (done - alive ? ' · ' + (done - alive) + ' missing' : '');
+    topDot.classList.add('on');
+  }
+  async function checkProject(article){
+    const src = article.querySelector('.u-src');
+    let owner, repo;
+    try {
+      const parts = new URL(src.href).pathname.split('/').filter(Boolean);
+      owner = parts[0]; repo = parts[1];
+    } catch (e) { return; }
+    if (!owner || !repo) return;
+    const base = 'https://api.github.com/repos/' + owner + '/' + repo;
+    const r = await fetch(base);
+    if (r.status === 403 || r.status === 429) throw { rateLimited:true };
+    if (r.status === 404) {
+      setRow(article, 'repo',   'not found', 'bad');
+      setRow(article, 'pages',  '—');
+      setRow(article, 'readme', '—');
+      setRow(article, 'push',   '—');
+      done++; tally();
+      return;
+    }
+    if (!r.ok) throw new Error('http ' + r.status);
+    const data = await r.json();
+    setRow(article, 'repo', 'live', 'live');
+    setRow(article, 'pages', data.has_pages ? 'on' : 'off', data.has_pages ? 'ok' : 'bad');
+    setRow(article, 'push', timeAgo(data.pushed_at), 'ok');
+    const rdLink = article.querySelector('.u-rd');
+    try {
+      const rr = await fetch(base + '/readme');
+      if (rr.ok) {
+        const rd = await rr.json();
+        setRow(article, 'readme', (rd.size ? 'ok · ' + kb(rd.size) : 'ok'), 'ok');
+        if (rdLink && rd.html_url) rdLink.href = rd.html_url;
+      } else {
+        setRow(article, 'readme', 'missing', 'bad');
+        if (rdLink) rdLink.classList.add('gone');
+      }
+    } catch (e) { setRow(article, 'readme', '—'); }
+    done++; alive++; tally();
+  }
+  Promise.allSettled(projects.map(checkProject)).then(rs => {
+    const limited = rs.some(x => x.status === 'rejected' && x.reason && x.reason.rateLimited);
+    const failed  = rs.some(x => x.status === 'rejected');
+    if (limited) {
+      apiDead = true;
+      statLive.textContent = '—';
+      topTxt.textContent = 'api limit · checks paused';
+      document.querySelectorAll('.p-status').forEach(el => el.classList.add('muted'));
+    } else if (failed) {
+      statLive.textContent = '—';
+      topTxt.textContent = 'offline · checks paused';
+      document.querySelectorAll('.p-status').forEach(el => el.classList.add('muted'));
+    }
+  });
+})();
+// Whole-account sweep: find EVERY published, working game of this GitHub
+// user and show it on the "Published" shelf. Runs on every visit — new
+// repos you publish appear here automatically, no code changes needed.
+// Re-scans periodically (self-rescheduling so runs can never overlap) and
+// when the tab comes back into focus.
+(async function(){
+  const statAll = document.getElementById('statAll');
+  const grid    = document.getElementById('pubGrid');
+  const note    = document.getElementById('pubNote');
+  if (!statAll || !grid) return;
+  statAll.textContent = '···';
+  // Contact link: prefer the public email on the GitHub profile (or the
+  // CONTACT_EMAIL constant above); fall back to a working profile link.
+  (async function(){
+    const cl = document.getElementById('contactLink');
+    if (!cl) return;
+    let mail = CONTACT_EMAIL;
+    if (!mail) {
+      try {
+        const r = await fetch('https://api.github.com/users/' + encodeURIComponent(GITHUB_USER));
+        if (r.ok) mail = (await r.json()).email || '';
+      } catch (e) { /* offline: keep the profile fallback */ }
+    }
+    if (mail && /@/.test(mail)) { cl.href = 'mailto:' + mail; cl.target = ''; cl.rel = ''; cl.textContent = mail + ' ↗'; }
+    else { cl.href = 'https://github.com/' + GITHUB_USER; cl.textContent = 'github.com/' + GITHUB_USER + ' ↗'; }
+  })();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  // match a featured PROJECTS entry by repo name to reuse its accent color
+  const featAcc = {};
+  PROJECTS.forEach(p => { if (p.repo) featAcc[p.repo.split('/')[1].toLowerCase()] = p.acc; });
+  const kindOf = r => {
+    const t = ((r.description || '') + ' ' + r.name).toLowerCase();
+    if (/game|roguelike|voxel|aetheria|arcade|play/.test(t)) return 'Game';
+    if (/site|app|page|keikat|guide/.test(t))                return 'Web app';
+    return 'Experiment';
+  };
+  let myGen = 0;   // generation counter: a stale run must never touch the DOM
+  async function scanOnce(OWNER){
+    const gen = ++myGen;
+    const fresh = () => gen === myGen;   // still the newest requested run?
+    const pagesUrl = n => 'https://' + OWNER + '.github.io/' + encodeURIComponent(n) + '/';
+    const cardHtml = (repo, href) => {
+      const acc  = featAcc[repo.name.toLowerCase()];
+      const feat = acc ? ' class="pub-card feat" style="--acc:' + esc(acc) + '"'
+                       : ' class="pub-card"';
+      const d = new Date(repo.pushed_at);
+      return `<a${feat} href="${esc(href)}" target="_blank" rel="noopener">
+        <span class="pub-kind">${esc(kindOf(repo))}</span>
+        <span class="pub-name">${esc(repo.name)}</span>
+        <span class="pub-desc">${esc(repo.description || '')}</span>
+        <span class="pub-meta">updated ${pad2(d.getMonth()+1)}/${pad2(d.getDate())}/${String(d.getFullYear()).slice(2)}</span>
+        <span class="pub-go">Play / open ↗</span>
+      </a>`;
+    };
+    try {
+      const r = await fetch('https://api.github.com/users/' + encodeURIComponent(OWNER) + '/repos?per_page=100&sort=pushed');
+      if (!r.ok) throw new Error('http ' + r.status);
+      const repos = (await r.json()).filter(x => !x.fork).slice(0, 500); // API caps at 100/page; extra guard only
+      const live = [], dead = [];
+      await Promise.all(repos.map(async repo => {
+        let h;
+        try {
+          h = await fetch(pagesUrl(repo.name), { method:'HEAD', cache:'no-store' });
+        } catch (e) { return; }          // network hiccup on one repo: ignore
+        if (!fresh()) return;            // a newer scan was requested mid-flight
+        if (h.status === 404) return;   // not published - skip
+        if (h.ok) { live.push(repo); return; }
+        dead.push(repo.name + ' (' + h.status + ')');
+      }));
+      if (!fresh()) return;
+      // newest-published first; featured projects get their card accent + star
+      live.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+      grid.innerHTML = live.map(repo => cardHtml(repo, pagesUrl(repo.name))).join('')
+        || '<p class="pub-note">Nothing published yet.</p>';
+      statAll.textContent = live.length + '/' + repos.length;
+      statAll.title = dead.length ? 'problems: ' + dead.join(', ') : 'all published repos respond';
+      if (note) note.textContent = live.length
+        ? live.length + ' of ' + repos.length + ' repos are published and answering right now — refreshed automatically every few minutes while you browse. Click any card to play.'
+        : 'No published sites found yet.';
+      if (dead.length) console.warn('[status] published-but-broken repos:', dead);
+    } catch (e) {
+      if (!fresh()) return;
+      // live check failed (offline / rate limit) -> fall back to the
+      // scheduled snapshot committed by the refresh.yml workflow
+      try {
+        const s = await (await fetch('data/published.json', { cache:'no-store' })).json();
+        if (!fresh()) return;
+        if (s && Array.isArray(s.repos)) {
+          grid.innerHTML = s.repos.map(repo => cardHtml(repo, repo.url)).join('');
+          statAll.textContent = s.repos.length + '+';
+          statAll.title = 'from scheduled snapshot (' + (s.updated || '?') + ')';
+          if (note) note.textContent = 'Showing the latest auto-refreshed snapshot — live re-check paused.';
+          return;
+        }
+      } catch (e2) { /* no snapshot available */ }
+      if (!fresh()) return;
+      statAll.textContent = '—';
+      if (note) note.textContent = 'Live check paused (offline or API rate limit) — the links above still work.';
+    }
+  }
+  let chainOn = false;                   // exactly one periodic chain exists
+  async function startScan(){            // manual trigger: bump generation + reuse chain
+    const OWNER = (location.hostname.endsWith('github.io')
+      ? location.hostname.split('.')[0] : GITHUB_USER);
+    myGen++;                             // invalidate any in-flight run
+    await scanOnce(OWNER);               // scanOnce bumps myGen again to its own gen
+    if (!chainOn){                       // (re)start the periodic chain if it died out
+      chainOn = true;
+      (async function tick(){
+        while (chainOn){
+          await new Promise(r => setTimeout(r, 5 * 60 * 1000));
+          if (!chainOn) break;
+          const o = (location.hostname.endsWith('github.io')
+            ? location.hostname.split('.')[0] : GITHUB_USER);
+          await scanOnce(o);
+        }
+      })();
+    }
+  }
+  startScan();                           // always fresh on load
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) startScan();   // refresh when tab comes back
+  });
+})();
+const REDUCED = ('matchMedia' in window) && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function canvasState(canvas){
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null; // no 2D support (very old/embedded browser) -> tile stays blank, page keeps working
+  const st = { ctx, w:0, h:0 };
+  const resize = () => {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const r = canvas.getBoundingClientRect();
+    st.w = r.width; st.h = r.height;
+    canvas.width = Math.max(1, Math.round(r.width * dpr));
+    canvas.height = Math.max(1, Math.round(r.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  resize();
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
+  else addEventListener('resize', resize);
+  return st;
+}
+function makeAetheria(canvas){
+  const st = canvasState(canvas);
+  if (!st) return () => {};
+  const COLS = 14, ROWS = 9;
+  let world = null, order = null, reveal = 0, count = 0, hold = 0, sparks = null;
+  let bless = null, blessTimer = 2;
+  const TILES = [
+    { max: -0.28, col: [13, 43, 38],   water: true  },
+    { max: -0.06, col: [23, 63, 55],   water: true  },
+    { max:  0.06, col: [58, 72, 63],   water: false },
+    { max:  0.24, col: [31, 107, 82],  water: false },
+    { max:  0.40, col: [20, 67, 47],   water: false },
+    { max:  0.60, col: [53, 84, 76],   water: false },
+    { max:  9.99, col: [183, 230, 208], water: false }
+  ];
+  function regen(){
+    const p1 = Math.random()*9, p2 = Math.random()*9;
+    const p3 = Math.random()*9, p4 = Math.random()*9;
+    world = [];
+    for (let y = 0; y < ROWS; y++){
+      const row = [];
+      for (let x = 0; x < COLS; x++){
+        const nx = x / COLS, ny = y / ROWS;
+        let e = Math.sin(nx*6.28 + p1) * Math.cos(ny*6.28 + p2);
+        e += 0.5 * Math.sin(nx*12.6 + p3) * Math.cos(ny*9.4 + p4);
+        e += 0.25 * Math.sin(nx*19 + p1*2) * Math.sin(ny*16 + p3);
+        row.push(e / 1.75);
+      }
+      world.push(row);
+    }
+    order = [];
+    for (let i = 0; i < COLS * ROWS; i++) order.push(i);
+    for (let i = order.length - 1; i > 0; i--){
+      const j = (Math.random() * (i + 1)) | 0;
+      const tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+    }
+    reveal = 0; hold = 0; count++;
+    bless = null; blessTimer = 2;
+    sparks = [];
+    for (let i = 0; i < 7; i++) sparks.push({
+      x: Math.random(), y: Math.random(),
+      spd: .02 + Math.random() * .04,
+      ph: Math.random() * 6.28,
+      r: 1 + Math.random() * 1.6,
+      a: .3 + Math.random() * .4
+    });
+  }
+  regen();
+  canvas.classList.add('interactive');
+  canvas.title = 'Click to grow a new world';
+  canvas.addEventListener('click', regen);
+  return (t, dt) => {
+    const { ctx, w, h } = st;
+    ctx.fillStyle = '#070b09';
+    ctx.fillRect(0, 0, w, h);
+    const cell = Math.floor(Math.min((w - 24) / COLS, (h - 46) / ROWS));
+    const gw = cell * COLS, gh = cell * ROWS;
+    const ox = Math.round((w - gw) / 2), oy = Math.round((h - gh) / 2) + 14;
+    const total = order.length;
+    if (reveal < total) reveal = Math.min(total, reveal + (total / 1.1) * dt);
+    else { hold += dt; if (hold > 5) regen(); }
+    if (reveal >= total){
+      blessTimer -= dt;
+      if (blessTimer <= 0){
+        bless = { tx: (Math.random() * COLS) | 0, ty: (Math.random() * ROWS) | 0, age: 0 };
+        blessTimer = 2 + Math.random() * 2.5;
+      }
+    }
+    if (bless){
+      bless.age += dt;
+      if (bless.age > 1.2) bless = null;
+    }
+    const lightX = ox + (((t * 0.07) % 1.5) - 0.25) * gw;
+    const band = Math.max(40, gw * 0.18);
+    const shown = Math.floor(reveal);
+    for (let i = 0; i < shown; i++){
+      const idx = order[i];
+      const tx = idx % COLS, ty = (idx / COLS) | 0;
+      const e = world[ty][tx];
+      let tile = TILES[TILES.length - 1];
+      for (const tl of TILES){ if (e < tl.max){ tile = tl; break; } }
+      let r = tile.col[0], g = tile.col[1], b = tile.col[2];
+      if (tile.water){
+        const sh = Math.sin(t * 1.8 + tx * 0.9 + ty * 0.6) * 14;
+        g += sh; b += sh;
+      }
+      const px = ox + tx * cell + cell / 2;
+      const boost = Math.max(0, 1 - Math.abs(px - lightX) / band) * 55;
+      r += boost; g += boost; b += boost;
+      const age = Math.max(0, 1 - (reveal - i) / 8) * 60;
+      r += age; g += age; b += age;
+      if (bless && tx === bless.tx && ty === bless.ty){
+        const ba = (1 - bless.age / 1.2) * 90;
+        r += ba; g += ba; b += ba;
+      }
+      ctx.fillStyle = 'rgb(' + Math.min(255, r|0) + ',' + Math.min(255, g|0) + ',' + Math.min(255, b|0) + ')';
+      ctx.fillRect(ox + tx * cell, oy + ty * cell, cell - 1, cell - 1);
+    }
+    for (let k = 0; k < 4; k++){
+      const rayX = w * (0.14 + 0.24 * k) + Math.sin(t * 0.12 + k * 1.7) * w * 0.06;
+      ctx.fillStyle = 'rgba(125,237,195,0.03)';
+      ctx.fillRect(rayX - w * 0.045, 0, w * 0.09, oy + gh);
+      ctx.fillStyle = 'rgba(125,237,195,0.05)';
+      ctx.fillRect(rayX - w * 0.014, 0, w * 0.028, oy + gh);
+    }
+    if (bless){
+      const bx = ox + bless.tx * cell + cell / 2;
+      const by = oy + bless.ty * cell + cell / 2;
+      const pr = bless.age / 1.2;
+      const ringR = pr * cell * 4;
+      ctx.strokeStyle = 'rgba(160,255,215,' + ((1 - pr) * 0.7).toFixed(3) + ')';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(bx, by, ringR, 0, 6.283); ctx.stroke();
+      ctx.strokeStyle = 'rgba(160,255,215,' + ((1 - pr) * 0.3).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(bx, by, ringR * 0.6, 0, 6.283); ctx.stroke();
+    }
+    for (const s of sparks){
+      s.y -= s.spd * dt * 6;
+      if (s.y < -0.05){ s.y = 1.05; s.x = Math.random(); }
+      const sx = ox + s.x * gw;
+      const sy = oy + s.y * gh;
+      const a = s.a * (.6 + .4 * Math.sin(t * 2 + s.ph));
+      ctx.fillStyle = 'rgba(125,237,195,' + (a * .25).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(sx, sy, s.r * 2.4, 0, 6.283); ctx.fill();
+      ctx.fillStyle = 'rgba(220,255,240,' + a.toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(sx, sy, s.r, 0, 6.283); ctx.fill();
+    }
+    ctx.textBaseline = 'alphabetic';
+    ctx.font = '600 9px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(236,234,226,0.55)';
+    ctx.fillText('AETHERIA · WORLD #' + String(count).padStart(3, '0'), 12, 15);
+    ctx.textAlign = 'right';
+    ctx.fillText(reveal < total ? 'GROWING…' : (w < 340 ? 'TAP FOR NEW' : 'CLICK FOR A NEW WORLD'), w - 12, 15);
+  };
+}
+function makeDungeonMap(cols, rows){
+  const map = new Uint8Array(cols * rows);
+  const rooms = []; let tries = 0;
+  while (rooms.length < 8 && tries < 300) {
+    tries++;
+    const rw = 3 + (Math.random() * 5 | 0), rh = 2 + (Math.random() * 3 | 0);
+    const rx = 1 + (Math.random() * (cols - rw - 2) | 0), ry = 1 + (Math.random() * (rows - rh - 2) | 0);
+    let ok = true;
+    for (const r of rooms)
+      if (rx < r.x + r.w + 2 && rx + rw + 2 > r.x && ry < r.y + r.h + 2 && ry + rh + 2 > r.y) { ok = false; break; }
+    if (ok) rooms.push({ x:rx, y:ry, w:rw, h:rh, cx:rx + (rw >> 1), cy:ry + (rh >> 1) });
+  }
+  if (rooms.length < 2) return makeDungeonMap(cols, rows);
+  rooms.sort((a, b) => a.cx - b.cx);
+  for (const r of rooms)
+    for (let y = r.y; y < r.y + r.h; y++)
+      for (let x = r.x; x < r.x + r.w; x++) map[y * cols + x] = 2;
+  const cor = (x, y) => { if (x > 0 && x < cols - 1 && y > 0 && y < rows - 1) map[y * cols + x] = Math.max(map[y * cols + x], 1); };
+  const hC = (x1, x2, y) => { for (let x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) cor(x, y); };
+  const vC = (y1, y2, x) => { for (let y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) cor(x, y); };
+  for (let i = 1; i < rooms.length; i++) {
+    const a = rooms[i - 1], b = rooms[i];
+    if (Math.random() < .5) { hC(a.cx, b.cx, a.cy); vC(a.cy, b.cy, b.cx); }
+    else { vC(a.cy, b.cy, a.cx); hC(a.cx, b.cx, b.cy); }
+  }
+  const order = [], seen = new Uint8Array(cols * rows);
+  const q = [[rooms[0].cx, rooms[0].cy]];
+  seen[rooms[0].cy * cols + rooms[0].cx] = 1;
+  while (q.length) {
+    const pair = q.shift();
+    order.push(pair[1] * cols + pair[0]);
+    const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+    for (let di = 0; di < 4; di++) {
+      const nx = pair[0] + dirs[di][0], ny = pair[1] + dirs[di][1];
+      if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
+      const k = ny * cols + nx;
+      if (!seen[k] && map[k]) { seen[k] = 1; q.push([nx, ny]); }
+    }
+  }
+  const mobs = [];
+  for (let i = 0; i < 5; i++) {
+    const r = rooms[1 + (Math.random() * (rooms.length - 1) | 0)];
+    mobs.push({ x: r.x + (Math.random() * r.w | 0), y: r.y + (Math.random() * r.h | 0) });
+  }
+  const seed = ((Math.random() * 0xffff) | 0).toString(16).toUpperCase().padStart(4, '0');
+  return { map, order, mobs, player:{ x:rooms[0].cx, y:rooms[0].cy }, seed };
+}
+function makeRoguelike(canvas){
+  const st = canvasState(canvas);
+  if (!st) return () => {};
+  const ROWS = 15;
+  let d = null, reveal = 0, count = 0, hold = 0, curCols = 0;
+  const regen = () => { d = makeDungeonMap(curCols, ROWS); reveal = 0; hold = 0; count++; };
+  canvas.classList.add('interactive');
+  canvas.title = 'Click to generate a new map';
+  canvas.addEventListener('click', regen);
+  return (t, dt) => {
+    const { ctx, w, h } = st;
+    const cols = w < 480 ? 18 : 26;
+    if (cols !== curCols) { curCols = cols; regen(); }
+    ctx.fillStyle = '#0c0a07'; ctx.fillRect(0, 0, w, h);
+    const cell = Math.floor(Math.min((w - 24) / curCols, (h - 42) / ROWS));
+    const ox = Math.round((w - cell * curCols) / 2), oy = Math.round((h - cell * ROWS) / 2) + 10;
+    const total = d.order.length;
+    if (reveal < total) reveal = Math.min(total, reveal + (total / 1.6) * dt);
+    else { hold += dt; if (hold > 3.4) regen(); }
+    for (let i = 0; i < Math.floor(reveal); i++) {
+      const k = d.order[i], x = k % curCols, y = (k / curCols) | 0;
+      const boost = Math.max(0, 1 - (reveal - i) / 10) * .7;
+      ctx.fillStyle = 'rgba(246,168,60,' + Math.min(1, (d.map[k] === 2 ? .55 : .30) + boost) + ')';
+      ctx.fillRect(ox + x * cell, oy + y * cell, cell - 1, cell - 1);
+    }
+    const frac = total ? reveal / total : 1;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    if (frac > .25) {
+      ctx.fillStyle = '#ffe9c2';
+      ctx.font = '700 ' + Math.round(cell * .95) + 'px "IBM Plex Mono", monospace';
+      ctx.fillText('@', ox + d.player.x * cell + cell / 2 - .5, oy + d.player.y * cell + cell / 2 + .5);
+    }
+    if (frac > .5) {
+      ctx.fillStyle = 'rgba(255,150,80,0.75)';
+      ctx.font = '600 ' + Math.round(cell * .8) + 'px "IBM Plex Mono", monospace';
+      for (const m of d.mobs) ctx.fillText('r', ox + m.x * cell + cell / 2 - .5, oy + m.y * cell + cell / 2 + .5);
+    }
+    ctx.textBaseline = 'alphabetic'; ctx.font = '600 9px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(236,234,226,0.55)';
+    ctx.fillText('MAP #' + String(count).padStart(3, '0') + ' · SEED ' + d.seed, 12, 15);
+    ctx.textAlign = 'right';
+    ctx.fillText(reveal < total ? 'CARVING…' : 'REGEN ' + Math.max(0, 3.4 - hold).toFixed(1) + 'S', w - 12, 15);
+  };
+}
+function makeVoxel(canvas){
+  const st = canvasState(canvas);
+  if (!st) return () => {};
+  const cubes = [];
+  for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) {
+    if (Math.abs(x) === 2 && Math.abs(z) === 2) continue;
+    cubes.push({ x:x, y:0, z:z });
+  }
+  for (let x = -1; x <= 1; x++) for (let z = -1; z <= 1; z++) cubes.push({ x:x, y:1, z:z });
+  cubes.push({ x:0, y:2, z:0 });
+  cubes.push({ x:0, y:4.3, z:0, fl:true });
+  const TILT = .44, BASE = [255, 97, 70], L = [-0.45, .75, .5];
+  const FACES = [
+    { n:[0,1,0],  c:[[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]] },
+    { n:[0,-1,0], c:[[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1]] },
+    { n:[1,0,0],  c:[[1,-1,-1],[1,1,-1],[1,1,1],[1,-1,1]] },
+    { n:[-1,0,0], c:[[-1,-1,-1],[-1,1,-1],[-1,1,1],[-1,-1,1]] },
+    { n:[0,0,1],  c:[[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]] },
+    { n:[0,0,-1], c:[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1]] }
+  ];
+  const ct = Math.cos(TILT), sn = Math.sin(TILT);
+  const rot = (x, y, z, th) => {
+    const c = Math.cos(th), s = Math.sin(th);
+    const x1 = x * c + z * s, z1 = -x * s + z * c;
+    return [x1, y * ct - z1 * sn, y * sn + z1 * ct];
+  };
+  const S = { th:.7, vel:0, drag:false, lastX:0, idle:0 };
+  canvas.classList.add('grabbable');
+  canvas.addEventListener('pointerdown', e => {
+    S.drag = true; S.lastX = e.clientX; S.idle = 0;
+    canvas.setPointerCapture(e.pointerId); canvas.classList.add('grabbing');
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!S.drag) return;
+    const dx = e.clientX - S.lastX; S.lastX = e.clientX;
+    S.th += dx * .012; S.vel = dx * .012; S.idle = 0;
+  });
+  const end = () => { S.drag = false; canvas.classList.remove('grabbing'); };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+  return (t, dt) => {
+    const { ctx, w, h } = st;
+    if (!S.drag) {
+      S.th += S.vel; S.vel *= .93; S.idle += dt;
+      if (S.idle > 2.2) S.th += .28 * dt;
+    }
+    ctx.fillStyle = '#0d0908'; ctx.fillRect(0, 0, w, h);
+    const scale = Math.min(w, h) / 9.2, cx = w / 2, cy = h / 2 + 20;
+    const rings = [[3.6, .14], [2.6, .08]];
+    for (let ri = 0; ri < rings.length; ri++) {
+      ctx.beginPath();
+      for (let i = 0; i <= 60; i++) {
+        const a = i / 60 * Math.PI * 2;
+        const p = rot(Math.cos(a) * rings[ri][0], 0, Math.sin(a) * rings[ri][0], S.th);
+        const sx = cx + p[0] * scale, sy = cy - p[1] * scale;
+        i === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+      }
+      ctx.strokeStyle = 'rgba(255,97,70,' + rings[ri][1] + ')'; ctx.lineWidth = 1; ctx.stroke();
+    }
+    const order = cubes.map(c => {
+      const y = c.y + (c.fl ? Math.sin(t * 1.1) * .35 : 0);
+      return { c:c, y:y, depth: rot(c.x, y, c.z, S.th)[2] };
+    }).sort((a, b) => a.depth - b.depth);
+    for (const o of order) {
+      for (const f of FACES) {
+        const n = rot(f.n[0], f.n[1], f.n[2], S.th);
+        if (n[2] <= 0) continue;
+        const b = .42 + .58 * Math.max(0, n[0]*L[0] + n[1]*L[1] + n[2]*L[2]);
+        const col = 'rgb(' + Math.round(BASE[0]*b) + ',' + Math.round(BASE[1]*b) + ',' + Math.round(BASE[2]*b) + ')';
+        ctx.beginPath();
+        for (let i = 0; i < 4; i++) {
+          const off = f.c[i];
+          const p = rot(o.c.x + off[0]*.5, o.y + off[1]*.5, o.c.z + off[2]*.5, S.th);
+          const sx = cx + p[0]*scale, sy = cy - p[1]*scale;
+          i === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+        }
+        ctx.closePath();
+        ctx.fillStyle = col; ctx.fill();
+        ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.stroke();
+      }
+    }
+  };
+}
+function makeClock(canvas){
+  const st = canvasState(canvas);
+  if (!st) return () => {};
+  const PINK = '#ff4f87';
+  const pad = n => String(n).padStart(2, '0');
+  const WD = ['SU','MA','TI','KE','TO','PE','LA'];
+  return (t) => {
+    const { ctx, w, h } = st;
+    ctx.fillStyle = '#0d0b0e'; ctx.fillRect(0, 0, w, h);
+    const d = new Date();
+    ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(236,234,226,0.5)';
+    ctx.font = '600 10px "IBM Plex Mono", monospace';
+    ctx.fillText('TAMPERE · LOCAL TIME', 14, 26);
+    ctx.fillStyle = 'rgba(255,79,135,' + (.35 + .65 * (Math.sin(t * 3) + 1) / 2).toFixed(3) + ')';
+    ctx.beginPath(); ctx.arc(w - 18, 22, 3, 0, 6.283); ctx.fill();
+    const big = Math.min(w, h) * .18;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '700 ' + Math.round(big) + 'px "IBM Plex Mono", monospace';
+    ctx.fillStyle = '#eceae2';
+    ctx.fillText(pad(d.getHours()) + ':' + pad(d.getMinutes()), w / 2, h / 2 - big * .18);
+    ctx.font = '600 ' + Math.round(big * .45) + 'px "IBM Plex Mono", monospace';
+    ctx.fillStyle = PINK;
+    ctx.fillText(':' + pad(d.getSeconds()), w / 2, h / 2 + big * .5);
+    ctx.font = '500 ' + Math.round(big * .38) + 'px "IBM Plex Mono", monospace';
+    ctx.fillStyle = 'rgba(236,234,226,0.55)';
+    ctx.fillText(WD[d.getDay()] + ' ' + d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear(), w / 2, h / 2 + big * 1.05);
+  };
+}
+const MAKERS = { aetheria:makeAetheria, roguelike:makeRoguelike, voxel:makeVoxel, keikat:makeClock };
+const tiles = [];
+const tileIO = makeIO(entries => {
+  for (const en of entries) {
+    const rec = tiles.find(r => r.el === en.target);
+    if (rec) rec.visible = en.isIntersecting;
+  }
+}, { rootMargin:'120px' });
+function addTile(canvas, maker){
+  const rec = { el:canvas, api:maker(canvas), visible:true }; // default visible so animation runs even without IO support
+  tiles.push(rec);
+  if (tileIO) { rec.visible = false; tileIO.observe(canvas); }
+}
+document.querySelectorAll('canvas[data-tile]').forEach(c => { const m = MAKERS[c.dataset.tile]; if (m) addTile(c, m); });
+let lastNow = performance.now();
+function loop(now){
+  const dt = Math.min(.05, (now - lastNow) / 1000);
+  lastNow = now;
+  for (const r of tiles) if (r.visible) r.api(now / 1000, dt);
+  if (!REDUCED) requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+if (REDUCED) setTimeout(() => {
+  for (const r of tiles) r.api(performance.now() / 1000, .016);
+}, 400);
+const progress = document.getElementById('progress');
+const topbar = document.getElementById('topbar');
+let scrollQueued = false;
+addEventListener('scroll', () => {
+  if (scrollQueued) return;
+  scrollQueued = true;
+  requestAnimationFrame(() => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+    topbar.classList.toggle('scrolled', scrollY > 8);
+    scrollQueued = false;
+  });
+}, { passive:true });
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
