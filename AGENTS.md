@@ -59,6 +59,11 @@ Rules:
 - `data/published.json` is machine-generated — never hand-edit it.
 - `tools/build-snapshot.py` takes args: `<owner> <input-repos.json> <output.json>`.
 - The intermediate `data/repos.json` is gitignored; don't commit it.
+- Machine-managed regions of index.html — do not hand-edit: the
+  `<!-- LAST-UPDATED:... -->` stamp + its bootstrap `<script>` (the visible
+  "updated N days ago" badge lives in the header as `span#lastUpdatedBadge`,
+  filled by that script from the stamp), the `AUTO-LINKS-BEGIN/END` block, and
+  `data/link-report.txt` (full link-check audit trail of every run).
 
 ## Live status checks (index.html)
 Two independent checkers run in the browser on every page load:
