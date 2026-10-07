@@ -17,7 +17,15 @@ import sys, json, datetime, re, os, urllib.request, urllib.error
 # The self-updating "updated N days ago" badge. The visible slot already lives
 # in the header (span#lastUpdatedBadge); this one-time bootstrap reads the
 # LAST-UPDATED marker and fills it. Idempotent: only written when missing.
-STAMP_SNIPPET = """<script>(function(){var m=document.body&&document.body.innerHTML.match(/LAST-UPDATED:([^\\s>-]+)/);if(!m)return;var t=Date.parse(m[1]);if(isNaN(t))return;var d=Math.floor((Date.now()-t)/864e5);var txt=d<=0?'updated today':'updated '+d+' day'+(d===1?'':'s')+' ago';var b=document.getElementById('lastUpdatedBadge');if(b){b.textContent=txt;b.style.display='inline';}})();</script>"""
+STAMP_SNIPPET = """<script>(function(){var m=document.body&&document.body.innerHTML.match(/LAST-UPDATED:([0-9TZ:.+-]+)/);if(!m)return;var t=Date.parse(m[1]);if(isNaN(t))return;var d=Math.floor((Date.now()-t)/864e5);var txt=d<=0?'updated today':'updated '+d+' day'+(d===1?'':'s')+' ago';var b=document.getElementById('lastUpdatedBadge');if(b){b.textContent=txt;b.style.display='inline';}})();</script>"""
+
+# One-time migration: the badge regex in earlier revisions of this file was
+# /LAST-UPDATED:([^\s>-]+)/, which stopped at the first '-' of the ISO date
+# (capturing only "2026" -> Date.parse fails -> badge never showed). Replace
+# any stale snippet with the current one so pushed pages self-heal.
+_STALE_BADGE_RE = re.compile(
+    r"<script>\(function\(\)\{var m=document\.body&&document\.body\.innerHTML"
+    r"\.match\(/LAST-UPDATED:\([^)]*?\)/\).*?</script>", re.S)
 
 owner, src, dst = sys.argv[1], sys.argv[2], sys.argv[3]
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -115,6 +123,11 @@ if html is not None:
     else:
         html = html.replace("<div id=\"progress\"></div>",
                             f"<div id=\"progress\"></div>\n<!-- LAST-UPDATED:{iso} -->", 1)
+    # migrate any stale badge snippet (old broken regex) to the current one —
+    # must run BEFORE the "inject once" check below so no duplicate is added
+    def _migrate_snippet(m):
+        return STAMP_SNIPPET if m.group(0) != STAMP_SNIPPET else m.group(0)
+    html = _STALE_BADGE_RE.sub(_migrate_snippet, html)
     # inject the badge markup once (idempotent — no churn on later runs)
     if 'id="lastUpdatedBadge"' not in html:
         html = re.sub(r"(<!--\s*LAST-UPDATED:[^>]*-->)",
@@ -127,7 +140,11 @@ if html is not None:
     marr = re.search(r"const\s+PROJECTS\s*=\s*\[(.*?)\n\];", html, re.S)
     # strip /* ... */ blocks and // line comments FIRST — the docs contain a
     # commented-out EXAMPLE entry whose fake repo must never be link-checked.
-    arr = re.sub(r"/\*.*?\*/|//[^\n]*", "", marr.group(1)) if marr else ""
+    # Order matters: block comments first, then line comments (a `//` inside a
+    # block comment would otherwise truncate the block-stripping regex).
+    arr = marr.group(1) if marr else ""
+    arr = re.sub(r"/\*.*?\*/", "", arr, flags=re.S)   # block comments
+    arr = re.sub(r"//[^\n]*", "", arr)                # line comments
     arr_entries = [e for e in re.split(r"\n\s*\{", "\n{" + arr) if "slug:" in e]
     arr_clean = "\n".join(arr_entries)
     arr_repos = re.findall(r"repo:\s*'([^']+)'", arr_clean)

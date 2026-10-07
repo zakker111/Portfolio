@@ -4,12 +4,9 @@ ok    https://github.com/zakker111/aetheria
 ok    https://github.com/zakker111/aetheria/blob/main/README.md
 ok    https://github.com/zakker111/multiplayer_voxel_game
 ok    https://github.com/zakker111/multiplayer_voxel_game/blob/main/README.md
-DEAD  https://github.com/zakker111/my-new-game (repo missing (API 404))
-DEAD  https://github.com/zakker111/my-new-game/blob/main/README.md (repo missing (API 404))
 ok    https://github.com/zakker111/tampere-keikat
 ok    https://github.com/zakker111/tampere-keikat/blob/main/README.md
 ok    https://zakker111.github.io/Roguelike_new_1/
 ok    https://zakker111.github.io/aetheria/
 ok    https://zakker111.github.io/multiplayer_voxel_game/
 ok    https://zakker111.github.io/tampere-keikat/
-WARN  PROJECTS entry 'my-new-game' → repo zakker111/my-new-game not found
