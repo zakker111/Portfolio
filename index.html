@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,470 +9,145 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --bg: #0f0f12;
-  --panel: #0b0b0e;
-  --ink: #eceae2;
-  --dim: #92918d;
-  --line: rgba(236,234,226,.14);
-  --mint: #7dedc3;
-  --amber: #f6a83c;
-  --coral: #ff6146;
-  --pink: #ff4f87;
-  --red: #ff6a73;
-  --mono: "IBM Plex Mono", monospace;
-  --display: "Syne", sans-serif;
-}
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font: 14px/1.7 var(--mono);
-}
-a { color: inherit; }
-a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--mint);
-  outline-offset: 4px;
-}
-.wrap {
-  width: min(1120px, calc(100% - 40px));
-  margin: auto;
-}
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(15,15,18,.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-.nav {
-  min-height: 62px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.brand {
-  font: 800 21px var(--display);
-  text-decoration: none;
-}
-.brand span { color: var(--mint); }
-.nav-note {
-  color: var(--dim);
-  font-size: 10px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.hero {
-  min-height: 420px;
-  padding: 100px 0 76px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-bottom: 1px solid var(--line);
-}
-.kicker, .number, .tag {
-  color: var(--dim);
-  font-size: 10px;
-  letter-spacing: .19em;
-  text-transform: uppercase;
-}
-.kicker::before {
-  content: "";
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  background: var(--mint);
-  margin-right: 10px;
-}
-h1 {
-  max-width: 850px;
-  margin: 22px 0;
-  font: 800 clamp(46px, 9vw, 100px)/.98 var(--display);
-  letter-spacing: -.035em;
-  text-transform: uppercase;
-}
-h1 span { color: var(--mint); }
-.intro {
-  max-width: 560px;
-  color: #b6b4ad;
-  font-size: 13px;
-}
-.hero-link {
-  display: inline-block;
-  margin-top: 24px;
-  width: fit-content;
-  color: var(--mint);
-  text-decoration: none;
-  border-bottom: 1px solid var(--mint);
-  padding-bottom: 4px;
-}
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--dim);
-  font-size: 10px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-.project {
-  --accent: var(--mint);
-  display: grid;
-  grid-template-columns: 1fr .9fr;
-  gap: clamp(28px, 5vw, 65px);
-  align-items: center;
-  padding: 65px 0;
-  border-bottom: 1px solid var(--line);
-  animation: appear .7s both;
-}
-.project:nth-child(even) .preview { order: -1; }
-.project:nth-child(1) { animation-delay: .04s; }
-.project:nth-child(2) { animation-delay: .08s; }
-.project:nth-child(3) { animation-delay: .12s; }
-.project:nth-child(4) { animation-delay: .16s; }
-.project:nth-child(5) { animation-delay: .20s; }
-@keyframes appear {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.number { color: var(--accent); }
-h2 {
-  margin: 13px 0 18px;
-  font: 800 clamp(31px, 4vw, 49px)/1.05 var(--display);
-  text-transform: uppercase;
-  overflow-wrap: anywhere;
-}
-.description {
-  max-width: 490px;
-  color: #b8b6b0;
-  font-size: 12.5px;
-}
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-}
-.tag {
-  border: 1px solid var(--line);
-  padding: 4px 8px;
-  letter-spacing: .08em;
-}
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 26px;
-}
-.btn {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 15px;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 10px;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  transition: .2s ease;
-}
-.btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #101013;
-  font-weight: 600;
-}
-.btn:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-.btn.primary:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-}
-.preview {
-  min-width: 0;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  transition: border-color .25s;
-}
-.project:hover .preview { border-color: var(--accent); }
-.preview-head, .preview-foot {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 11px 13px;
-  color: var(--dim);
-  font-size: 9px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.preview-head { border-bottom: 1px solid var(--line); }
-.preview-head strong { color: var(--ink); font-weight: 500; }
-.preview-foot { border-top: 1px solid var(--line); }
-.art {
-  position: relative;
-  height: 245px;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%),
-    #09090c;
-}
-.art::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: .5;
-  background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-.art-symbol {
-  position: relative;
-  z-index: 1;
-  color: var(--accent);
-  font: 800 clamp(58px, 8vw, 95px)/1 var(--mono);
-  text-shadow: 0 0 36px color-mix(in srgb, var(--accent) 35%, transparent);
-  animation: float 4s ease-in-out infinite;
-}
-.art-symbol.small { font-size: clamp(42px, 6vw, 70px); }
-.orbit {
-  position: absolute;
-  width: 165px;
-  height: 165px;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  border-radius: 50%;
-  animation: spin 16s linear infinite;
-}
-.orbit::before, .orbit::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  top: 22px;
-  left: 20px;
-}
-.orbit::after { top: auto; left: auto; bottom: 16px; right: 27px; }
-.orbit.two {
-  width: 210px;
-  height: 130px;
-  transform: rotate(-35deg);
-  animation-duration: 23s;
-}
-@keyframes spin { to { rotate: 360deg; } }
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
-}
-footer {
-  padding: 32px 0 45px;
-  color: var(--dim);
-  font-size: 10px;
-}
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-footer a { color: var(--mint); text-decoration: none; }
-
-@media(max-width:760px) {
-  .hero { min-height: 370px; padding: 75px 0 55px; }
-  .project { grid-template-columns: 1fr; padding: 48px 0; gap: 25px; }
-  .project:nth-child(even) .preview { order: 0; }
-  .art { height: 215px; }
-  .actions .btn { flex: 1 1 130px; }
-}
-@media(prefers-reduced-motion:reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-  }
-}
+:root{--bg:#0f0f12;--panel:#09090c;--ink:#eceae2;--dim:#92918d;--line:rgba(236,234,226,.14);--mint:#7dedc3;--amber:#f6a83c;--coral:#ff6146;--pink:#ff4f87;--red:#ff6a73;--mono:"IBM Plex Mono",monospace;--display:"Syne",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 var(--mono)}a{color:inherit}a:focus-visible{outline:2px solid var(--mint);outline-offset:4px}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:10;background:rgba(15,15,18,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font:800 21px var(--display);text-decoration:none}.brand span{color:var(--mint)}.nav-note,.kicker,.number,.tag{color:var(--dim);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.hero{min-height:400px;padding:90px 0 70px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line)}.kicker:before{content:"";display:inline-block;width:7px;height:7px;background:var(--mint);margin-right:10px}h1{max-width:850px;margin:22px 0;font:800 clamp(46px,9vw,100px)/.98 var(--display);letter-spacing:-.035em;text-transform:uppercase}h1 span{color:var(--mint)}.intro{max-width:560px;color:#b6b4ad;font-size:13px}.hero-link{display:inline-block;margin-top:24px;width:fit-content;color:var(--mint);text-decoration:none;border-bottom:1px solid var(--mint);padding-bottom:4px}
+.section-head{display:flex;justify-content:space-between;gap:12px;padding:24px 0;border-bottom:1px solid var(--line);color:var(--dim);font-size:10px;letter-spacing:.15em;text-transform:uppercase}.project{--accent:var(--mint);display:grid;grid-template-columns:1fr .9fr;gap:clamp(28px,5vw,65px);align-items:center;padding:60px 0;border-bottom:1px solid var(--line);animation:appear .7s both}.project:nth-child(even) .preview{order:-1}.project:nth-child(1){animation-delay:.04s}.project:nth-child(2){animation-delay:.08s}.project:nth-child(3){animation-delay:.12s}.project:nth-child(4){animation-delay:.16s}.project:nth-child(5){animation-delay:.20s}@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.number{color:var(--accent)}h2{margin:13px 0 18px;font:800 clamp(31px,4vw,49px)/1.05 var(--display);text-transform:uppercase;overflow-wrap:anywhere}.description{max-width:490px;color:#b8b6b0;font-size:12.5px}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tag{border:1px solid var(--line);padding:4px 8px;letter-spacing:.08em}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 15px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:10px;letter-spacing:.09em;text-transform:uppercase;transition:.2s ease}.btn.primary{background:var(--accent);border-color:var(--accent);color:#101013;font-weight:600}.btn:hover{border-color:var(--accent);transform:translateY(-2px)}.btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+.preview{min-width:0;border:1px solid var(--line);background:var(--panel);transition:border-color .25s}.project:hover .preview{border-color:var(--accent)}.preview-head,.preview-foot{display:flex;justify-content:space-between;gap:12px;padding:10px 13px;color:var(--dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase}.preview-head{border-bottom:1px solid var(--line)}.preview-head strong{color:var(--ink);font-weight:500}.preview-foot{border-top:1px solid var(--line);align-items:center}.updated{color:var(--accent);white-space:nowrap}.update-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px}.updated.changed .update-dot{animation:updatePulse 1s ease-in-out 5}@keyframes updatePulse{50%{transform:scale(2.1);box-shadow:0 0 12px var(--accent)}}
+.art{position:relative;height:245px;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 67%),#09090c}.art:before{content:"";position:absolute;inset:0;opacity:.45;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:22px 22px}
+.art svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.art .label{position:absolute;left:12px;top:10px;color:var(--dim);font-size:9px;letter-spacing:.12em;text-transform:uppercase;z-index:2}
+svg .glow{filter:drop-shadow(0 0 5px currentColor)}svg .slow{animation:drift 5s ease-in-out infinite}svg .slow2{animation:drift 7s ease-in-out infinite reverse}svg .spin{transform-box:fill-box;transform-origin:center;animation:spin 20s linear infinite}svg .blink{animation:blink 2.5s steps(2,end) infinite}svg .walk{animation:walk 1.2s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}svg .bob{animation:bob 2.4s ease-in-out infinite}svg .pulse{animation:pulse 2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{rotate:360deg}}@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes blink{50%{opacity:.35}}@keyframes walk{to{transform:translateX(9px)}}@keyframes bob{50%{transform:translateY(-4px)}}@keyframes pulse{50%{opacity:.4;transform:scale(1.08)}}
+.world-ground{fill:#12231e;stroke:#315849;stroke-width:1}.tree{fill:#214b3c;stroke:#7dedc3;stroke-opacity:.65}.house{fill:#182a27;stroke:#7dedc3;stroke-width:1}.creature{fill:#7dedc3}.dungeon-wall{fill:#473521;stroke:#f6a83c;stroke-opacity:.65}.dungeon-floor{fill:#17130f;stroke:#654a28;stroke-width:1}.voxel-top{fill:#ff8a6e}.voxel-front{fill:#a43f31}.voxel-side{fill:#6d2c28}.stick{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:4}.gig-card{fill:#181018;stroke:#ff4f87;stroke-opacity:.7}.gig-line{stroke:#ff4f87;stroke-width:2;opacity:.75}
+footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}footer a{color:var(--mint);text-decoration:none}
+@media(max-width:760px){.hero{min-height:350px;padding:70px 0 50px}.project{grid-template-columns:1fr;padding:44px 0;gap:24px}.project:nth-child(even) .preview{order:0}.art{height:215px}.actions .btn{flex:1 1 130px}.nav-note{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
 <body>
-<header>
-  <div class="wrap nav">
-    <a class="brand" href="#top">zakker<span>111</span></a>
-    <div class="nav-note">Independent projects · Finland</div>
-  </div>
-</header>
-
+<header><div class="wrap nav"><a class="brand" href="#top">zakker<span>111</span></a><div class="nav-note">Independent projects · Finland</div></div></header>
 <main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <div class="kicker">Portfolio — GitHub Pages</div>
-      <h1>Games.<br>Tools.<br><span>Experiments.</span></h1>
-      <p class="intro">
-        A collection of browser games and web projects built through
-        experimentation, code, and creative ideas. Open a project to try it.
-      </p>
-      <a class="hero-link" href="#projects">Explore the projects ↓</a>
-    </div>
-  </section>
+<section class="hero"><div class="wrap"><div class="kicker">Portfolio — GitHub Pages</div><h1>Games.<br>Tools.<br><span>Experiments.</span></h1><p class="intro">A collection of browser games and web projects built through experimentation, code, and creative ideas. Each preview is animated to reflect the project. Repository updates are checked automatically.</p><a class="hero-link" href="#projects">Explore the projects ↓</a></div></section>
+<section id="projects"><div class="wrap">
+<div class="section-head"><span>Selected projects</span><span>05 projects · <span id="check-status">checking GitHub…</span></span></div>
 
-  <section id="projects">
-    <div class="wrap">
-      <div class="section-head">
-        <span>Selected projects</span>
-        <span>05 projects</span>
-      </div>
+<article class="project" style="--accent:var(--mint)" data-repo="zakker111/aetheria">
+<div class="project-info"><div class="number">01 — Browser game</div><h2>Aetheria</h2><p class="description">An ambient fantasy god-simulation concept. Observe a world, explore its systems, and experiment with the lives unfolding in it.</p><div class="tags"><span class="tag">Fantasy</span><span class="tag">Simulation</span><span class="tag">Browser</span></div><div class="actions"><a class="btn primary" href="https://zakker111.github.io/aetheria/" target="_blank" rel="noopener">Play project ↗</a><a class="btn" href="https://github.com/zakker111/aetheria" target="_blank" rel="noopener">Source ↗</a></div></div>
+<div class="preview"><div class="preview-head"><strong>Aetheria</strong><span>Living world</span></div><div class="art"><span class="label">World simulation / live preview</span>
+<svg viewBox="0 0 420 245" aria-hidden="true">
+<path class="world-ground" d="M0 175 Q80 145 140 174 T280 168 T420 160 V245 H0Z"/><path d="M0 205 Q80 185 160 207 T320 199 T420 190" fill="none" stroke="#315849"/>
+<g class="slow"><path class="tree" d="M45 163 L62 105 L79 163Z"/><path class="tree" d="M57 136 L62 83 L68 136Z"/><rect x="59" y="162" width="6" height="19" fill="#75563b"/><path class="tree" d="M330 162 L351 91 L372 162Z"/><path class="tree" d="M342 128 L351 70 L360 128Z"/><rect x="348" y="160" width="6" height="22" fill="#75563b"/></g>
+<g class="slow2"><path class="house" d="M144 160 V127 L174 105 L204 127 V160Z"/><path d="M136 128 L174 99 L212 128" fill="none" stroke="#7dedc3" stroke-width="3"/><rect x="168" y="137" width="13" height="23" fill="#7dedc3" opacity=".55"/><path class="house" d="M226 167 V143 L249 126 L272 143 V167Z"/></g>
+<g class="walk"><circle class="creature" cx="112" cy="170" r="5"/><path d="M112 176 v13 m0 -8 l-7 7 m7 -7 l7 6 m-7 2 l-5 9 m5 -9 l6 8" fill="none" stroke="#7dedc3" stroke-width="2" stroke-linecap="round"/></g>
+<g class="walk" style="animation-delay:-.6s"><circle cx="292" cy="176" r="4" fill="#b6f9df"/><path d="M292 180 v11 m0 -6 l-6 4 m6 -4 l6 3 m-6 3 l-4 7 m4 -7 l5 6" fill="none" stroke="#b6f9df" stroke-width="2" stroke-linecap="round"/></g>
+<g class="pulse"><circle cx="250" cy="56" r="17" fill="none" stroke="#7dedc3" opacity=".7"/><circle cx="250" cy="56" r="5" fill="#7dedc3"/><path d="M250 30 V20 M250 92 V82 M224 56 H214 M286 56 H276" stroke="#7dedc3" opacity=".6"/></g>
+<g fill="#7dedc3"><circle cx="96" cy="66" r="1.5"/><circle cx="307" cy="42" r="1.5"/><circle cx="370" cy="61" r="1.5"/></g>
+</svg></div><div class="preview-foot"><span>Observe · intervene · evolve</span><span class="updated" data-updated>Checking update…</span></div></div></article>
 
-      <article class="project" style="--accent:var(--mint)">
-        <div class="project-info">
-          <div class="number">01 — Browser game</div>
-          <h2>Aetheria</h2>
-          <p class="description">
-            An ambient fantasy god-simulation concept. Observe a world,
-            explore its systems, and experiment with the lives unfolding in it.
-          </p>
-          <div class="tags">
-            <span class="tag">Fantasy</span>
-            <span class="tag">Simulation</span>
-            <span class="tag">Browser</span>
-          </div>
-          <div class="actions">
-            <a class="btn primary" href="https://zakker111.github.io/aetheria/" target="_blank" rel="noopener">Play project ↗</a>
-            <a class="btn" href="https://github.com/zakker111/aetheria" target="_blank" rel="noopener">Source ↗</a>
-          </div>
-        </div>
-        <div class="preview">
-          <div class="preview-head"><strong>Aetheria</strong><span>World preview</span></div>
-          <div class="art"><div class="orbit"></div><div class="orbit two"></div><div class="art-symbol">✳</div></div>
-          <div class="preview-foot"><span>01 / Explore</span><span>Mint system</span></div>
-        </div>
-      </article>
+<article class="project" style="--accent:var(--amber)" data-repo="zakker111/Roguelike_new_1">
+<div class="project-info"><div class="number">02 — Browser game</div><h2>Roguelike</h2><p class="description">A dungeon-crawling game built around generated maps, exploration, enemies, and replayable runs.</p><div class="tags"><span class="tag">Procedural maps</span><span class="tag">Dungeon</span><span class="tag">Roguelike</span></div><div class="actions"><a class="btn primary" href="https://zakker111.github.io/Roguelike_new_1/" target="_blank" rel="noopener">Play project ↗</a><a class="btn" href="https://github.com/zakker111/Roguelike_new_1" target="_blank" rel="noopener">Source ↗</a></div></div>
+<div class="preview"><div class="preview-head"><strong>Roguelike</strong><span>Dungeon crawl</span></div><div class="art"><span class="label">Explore / encounter / survive</span>
+<svg viewBox="0 0 420 245" aria-hidden="true">
+<g transform="translate(62 27)">
+<rect class="dungeon-floor" x="0" y="0" width="42" height="42"/><rect class="dungeon-floor" x="42" y="0" width="42" height="42"/><rect class="dungeon-wall" x="84" y="0" width="42" height="42"/><rect class="dungeon-wall" x="126" y="0" width="42" height="42"/><rect class="dungeon-wall" x="168" y="0" width="42" height="42"/><rect class="dungeon-floor" x="210" y="0" width="42" height="42"/><rect class="dungeon-floor" x="252" y="0" width="42" height="42"/>
+<rect class="dungeon-floor" x="0" y="42" width="42" height="42"/><rect class="dungeon-wall" x="42" y="42" width="42" height="42"/><rect class="dungeon-wall" x="84" y="42" width="42" height="42"/><rect class="dungeon-floor" x="126" y="42" width="42" height="42"/><rect class="dungeon-floor" x="168" y="42" width="42" height="42"/><rect class="dungeon-floor" x="210" y="42" width="42" height="42"/><rect class="dungeon-wall" x="252" y="42" width="42" height="42"/>
+<rect class="dungeon-floor" x="0" y="84" width="42" height="42"/><rect class="dungeon-floor" x="42" y="84" width="42" height="42"/><rect class="dungeon-wall" x="84" y="84" width="42" height="42"/><rect class="dungeon-wall" x="126" y="84" width="42" height="42"/><rect class="dungeon-floor" x="168" y="84" width="42" height="42"/><rect class="dungeon-wall" x="210" y="84" width="42" height="42"/><rect class="dungeon-floor" x="252" y="84" width="42" height="42"/>
+<rect class="dungeon-wall" x="0" y="126" width="42" height="42"/><rect class="dungeon-floor" x="42" y="126" width="42" height="42"/><rect class="dungeon-floor" x="84" y="126" width="42" height="42"/><rect class="dungeon-floor" x="126" y="126" width="42" height="42"/><rect class="dungeon-floor" x="168" y="126" width="42" height="42"/><rect class="dungeon-floor" x="210" y="126" width="42" height="42"/><rect class="dungeon-floor" x="252" y="126" width="42" height="42"/>
+<g class="walk"><text x="64" y="116" font-size="30" fill="#f6a83c" text-anchor="middle" class="glow">@</text></g><g class="pulse"><text x="190" y="75" font-size="24" fill="#ff6146" text-anchor="middle">g</text></g><text x="230" y="158" font-size="19" fill="#7dedc3">✦</text>
+</g><rect x="14" y="14" width="70" height="18" rx="2" fill="#241b11" stroke="#654a28"/><text x="21" y="26" font-size="8" fill="#f6a83c" letter-spacing="1">HP 08/10</text>
+</svg></div><div class="preview-foot"><span>Map · player · enemy · loot</span><span class="updated" data-updated>Checking update…</span></div></div></article>
 
-      <article class="project" style="--accent:var(--amber)">
-        <div class="project-info">
-          <div class="number">02 — Browser game</div>
-          <h2>Roguelike</h2>
-          <p class="description">
-            A dungeon-crawling game built around generated maps,
-            exploration, enemies, and replayable runs.
-          </p>
-          <div class="tags">
-            <span class="tag">Procedural maps</span>
-            <span class="tag">Dungeon</span>
-            <span class="tag">Roguelike</span>
-          </div>
-          <div class="actions">
-            <a class="btn primary" href="https://zakker111.github.io/Roguelike_new_1/" target="_blank" rel="noopener">Play project ↗</a>
-            <a class="btn" href="https://github.com/zakker111/Roguelike_new_1" target="_blank" rel="noopener">Source ↗</a>
-          </div>
-        </div>
-        <div class="preview">
-          <div class="preview-head"><strong>Roguelike</strong><span>Dungeon preview</span></div>
-          <div class="art"><div class="orbit two"></div><div class="art-symbol small">+ ┼ +<br>┼ @ ┼<br>+ ┼ +</div></div>
-          <div class="preview-foot"><span>02 / Discover</span><span>Amber system</span></div>
-        </div>
-      </article>
+<article class="project" style="--accent:var(--coral)" data-repo="zakker111/multiplayer_voxel_game">
+<div class="project-info"><div class="number">03 — Browser game</div><h2>Multiplayer Voxel Game</h2><p class="description">A block-based multiplayer sandbox experiment focused on building, digging, and combat in a voxel world.</p><div class="tags"><span class="tag">Voxel</span><span class="tag">Multiplayer</span><span class="tag">Sandbox</span></div><div class="actions"><a class="btn primary" href="https://zakker111.github.io/multiplayer_voxel_game/" target="_blank" rel="noopener">Play project ↗</a><a class="btn" href="https://github.com/zakker111/multiplayer_voxel_game" target="_blank" rel="noopener">Source ↗</a></div></div>
+<div class="preview"><div class="preview-head"><strong>Voxel world</strong><span>Build & dig</span></div><div class="art"><span class="label">Block terrain / first-person world</span>
+<svg viewBox="0 0 420 245" aria-hidden="true">
+<path d="M0 145 L105 108 L210 145 L315 102 L420 136 V245 H0Z" fill="#241815" stroke="#ff6146" stroke-opacity=".4"/>
+<g transform="translate(42 72)">
+<g><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+<g transform="translate(56 -15)"><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+<g transform="translate(56 49)"><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+<g transform="translate(112 17)"><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+<g transform="translate(168 -15)"><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+<g transform="translate(224 17)"><path class="voxel-top" d="M0 35 L28 20 L56 35 L28 51Z"/><path class="voxel-front" d="M0 35 L28 51 V83 L0 67Z"/><path class="voxel-side" d="M28 51 L56 35 V67 L28 83Z"/></g>
+</g>
+<g class="slow"><path d="M175 65 L205 65 L205 88 L175 88Z" fill="#ff6146" opacity=".15" stroke="#ff6146"/><path d="M190 76 H219 M205 61 V91" stroke="#ffb09e" stroke-width="1.5"/><path d="M210 76 L238 67" stroke="#ff6146" stroke-dasharray="3 3"/></g>
+<path d="M210 115 l-7 11 h14Z" fill="#eceae2" opacity=".9"/><path d="M210 115 V100 M198 116 H222" stroke="#eceae2" opacity=".6"/>
+</svg></div><div class="preview-foot"><span>Mine · build · fight</span><span class="updated" data-updated>Checking update…</span></div></div></article>
 
-      <article class="project" style="--accent:var(--coral)">
-        <div class="project-info">
-          <div class="number">03 — Browser game</div>
-          <h2>Multiplayer Voxel Game</h2>
-          <p class="description">
-            A block-based multiplayer sandbox experiment focused on
-            building, digging, and combat in a voxel world.
-          </p>
-          <div class="tags">
-            <span class="tag">Voxel</span>
-            <span class="tag">Multiplayer</span>
-            <span class="tag">Sandbox</span>
-          </div>
-          <div class="actions">
-            <a class="btn primary" href="https://zakker111.github.io/multiplayer_voxel_game/" target="_blank" rel="noopener">Play project ↗</a>
-            <a class="btn" href="https://github.com/zakker111/multiplayer_voxel_game" target="_blank" rel="noopener">Source ↗</a>
-          </div>
-        </div>
-        <div class="preview">
-          <div class="preview-head"><strong>Voxel world</strong><span>Block preview</span></div>
-          <div class="art"><div class="orbit"></div><div class="art-symbol">▧</div></div>
-          <div class="preview-foot"><span>03 / Build</span><span>Coral system</span></div>
-        </div>
-      </article>
+<article class="project" style="--accent:var(--pink)" data-repo="zakker111/tampere-keikat">
+<div class="project-info"><div class="number">04 — Web app</div><h2>Tampere-keikat</h2><p class="description">A Finnish gig guide for Tampere, bringing music events together in one place.</p><div class="tags"><span class="tag">Events</span><span class="tag">Music</span><span class="tag">Finland</span></div><div class="actions"><a class="btn primary" href="https://zakker111.github.io/tampere-keikat/" target="_blank" rel="noopener">Open project ↗</a><a class="btn" href="https://github.com/zakker111/tampere-keikat" target="_blank" rel="noopener">Source ↗</a></div></div>
+<div class="preview"><div class="preview-head"><strong>Tampere-keikat</strong><span>Upcoming gigs</span></div><div class="art"><span class="label">Tampere / live music listings</span>
+<svg viewBox="0 0 420 245" aria-hidden="true">
+<g class="slow"><rect class="gig-card" x="28" y="43" width="364" height="47" rx="2"/><rect x="39" y="52" width="42" height="28" fill="#ff4f87" opacity=".18"/><text x="60" y="64" text-anchor="middle" font-size="7" fill="#ff4f87">OCT</text><text x="60" y="75" text-anchor="middle" font-size="12" fill="#ff4f87" font-weight="bold">24</text><text x="94" y="62" font-size="11" fill="#eceae2">INDIE NIGHT</text><text x="94" y="77" font-size="8" fill="#92918d">Tavara-asema · Tampere</text><circle cx="368" cy="66" r="8" fill="none" stroke="#ff4f87"/><path d="M365 66 l3 3 5 -6" fill="none" stroke="#ff4f87"/></g>
+<g class="slow2"><rect class="gig-card" x="42" y="101" width="350" height="47" rx="2"/><rect x="53" y="110" width="42" height="28" fill="#ff4f87" opacity=".18"/><text x="74" y="122" text-anchor="middle" font-size="7" fill="#ff4f87">OCT</text><text x="74" y="133" text-anchor="middle" font-size="12" fill="#ff4f87" font-weight="bold">27</text><text x="108" y="120" font-size="11" fill="#eceae2">ROCK SHOW</text><text x="108" y="135" font-size="8" fill="#92918d">Olympia-kortteli · Tampere</text><circle cx="368" cy="124" r="8" fill="none" stroke="#ff4f87"/><path d="M365 124 l3 3 5 -6" fill="none" stroke="#ff4f87"/></g>
+<rect class="gig-card" x="28" y="159" width="364" height="47" rx="2" opacity=".65"/><rect x="39" y="168" width="42" height="28" fill="#ff4f87" opacity=".12"/><text x="60" y="180" text-anchor="middle" font-size="7" fill="#ff4f87">NOV</text><text x="60" y="191" text-anchor="middle" font-size="12" fill="#ff4f87" font-weight="bold">02</text><text x="94" y="178" font-size="11" fill="#eceae2">JAZZ SESSION</text><text x="94" y="193" font-size="8" fill="#92918d">Live venue · Tampere</text><path class="gig-line" d="M28 222 H392" stroke-dasharray="5 5"><animate attributeName="stroke-dashoffset" from="0" to="-40" dur="3s" repeatCount="indefinite"/></path>
+</svg></div><div class="preview-foot"><span>Find events · plan a night out</span><span class="updated" data-updated>Checking update…</span></div></div></article>
 
-      <article class="project" style="--accent:var(--pink)">
-        <div class="project-info">
-          <div class="number">04 — Web app</div>
-          <h2>Tampere-keikat</h2>
-          <p class="description">
-            A Finnish gig guide for Tampere, bringing music events
-            together in one place.
-          </p>
-          <div class="tags">
-            <span class="tag">Events</span>
-            <span class="tag">Music</span>
-            <span class="tag">Finland</span>
-          </div>
-          <div class="actions">
-            <a class="btn primary" href="https://zakker111.github.io/tampere-keikat/" target="_blank" rel="noopener">Open project ↗</a>
-            <a class="btn" href="https://github.com/zakker111/tampere-keikat" target="_blank" rel="noopener">Source ↗</a>
-          </div>
-        </div>
-        <div class="preview">
-          <div class="preview-head"><strong>Tampere-keikat</strong><span>Event preview</span></div>
-          <div class="art"><div class="orbit two"></div><div class="art-symbol">♫</div></div>
-          <div class="preview-foot"><span>04 / Find a gig</span><span>Pink system</span></div>
-        </div>
-      </article>
-
-      <article class="project" style="--accent:var(--red)">
-        <div class="project-info">
-          <div class="number">05 — Web experiment</div>
-          <h2>Sex Positions</h2>
-          <p class="description">
-            A simple, mobile-friendly random position picker for consenting
-            adults, with clear 2D stick-figure illustrations and practical
-            instructions.
-          </p>
-          <div class="tags">
-            <span class="tag">Web app</span>
-            <span class="tag">Mobile-friendly</span>
-            <span class="tag">2D illustrations</span>
-          </div>
-          <div class="actions">
-            <a class="btn primary" href="https://zakker111.github.io/Sex_positions/" target="_blank" rel="noopener">Open project ↗</a>
-            <a class="btn" href="https://github.com/zakker111/Sex_positions" target="_blank" rel="noopener">Source ↗</a>
-          </div>
-        </div>
-        <div class="preview">
-          <div class="preview-head"><strong>Sex Positions</strong><span>Web experiment</span></div>
-          <div class="art"><div class="orbit"></div><div class="orbit two"></div><div class="art-symbol small">○──○<br>│　│<br>╱　╲</div></div>
-          <div class="preview-foot"><span>05 / Explore</span><span>Red system</span></div>
-        </div>
-      </article>
-    </div>
-  </section>
+<article class="project" style="--accent:var(--red)" data-repo="zakker111/Sex_positions">
+<div class="project-info"><div class="number">05 — Web experiment</div><h2>Sex Positions</h2><p class="description">A simple, mobile-friendly random position picker for consenting adults, with clear 2D stick-figure illustrations and practical instructions.</p><div class="tags"><span class="tag">Web app</span><span class="tag">Mobile-friendly</span><span class="tag">2D illustrations</span></div><div class="actions"><a class="btn primary" href="https://zakker111.github.io/Sex_positions/" target="_blank" rel="noopener">Open project ↗</a><a class="btn" href="https://github.com/zakker111/Sex_positions" target="_blank" rel="noopener">Source ↗</a></div></div>
+<div class="preview"><div class="preview-head"><strong>Sex Positions</strong><span>2D figure preview</span></div><div class="art"><span class="label">Illustration concept / outline figures</span>
+<svg viewBox="0 0 420 245" aria-hidden="true">
+<ellipse cx="210" cy="194" rx="132" ry="12" fill="#ff6a73" opacity=".08"/>
+<g class="slow"><g class="stick" stroke="#56a9ff"><circle cx="144" cy="73" r="18"/><path d="M144 92 L144 143 M144 107 L112 128 M144 107 L174 123 M144 143 L119 180 M144 143 L169 180"/></g></g>
+<g class="slow2"><g class="stick" stroke="#ff6a73"><circle cx="271" cy="73" r="18"/><path d="M271 92 L271 143 M271 107 L242 124 M271 107 L301 128 M271 143 L247 180 M271 143 L296 180"/></g></g>
+<path d="M98 199 H322" stroke="#ff6a73" stroke-opacity=".5" stroke-dasharray="4 5"/><circle class="pulse" cx="210" cy="47" r="4" fill="#ff6a73"/><text x="144" y="219" text-anchor="middle" fill="#56a9ff" font-size="9" letter-spacing="2">FIGURE A</text><text x="271" y="219" text-anchor="middle" fill="#ff6a73" font-size="9" letter-spacing="2">FIGURE B</text>
+</svg></div><div class="preview-foot"><span>Simple · visual · mobile-first</span><span class="updated" data-updated>Checking update…</span></div></div></article>
+</div></section>
 </main>
-
-<footer>
-  <div class="wrap footer-inner">
-    <span>© zakker111 · Built for the browser</span>
-    <a href="#top">Back to top ↑</a>
-  </div>
-</footer>
+<footer><div class="wrap footer-inner"><span>© zakker111 · Built for the browser</span><span>Update labels are read from GitHub's public API.</span><a href="#top">Back to top ↑</a></div></footer>
+<script>
+(() => {
+  const projects = [...document.querySelectorAll('.project[data-repo]')];
+  const status = document.getElementById('check-status');
+  const previous = new Map();
+  const formatDate = value => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Date unavailable';
+    return 'Updated ' + date.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+  };
+  async function checkProject(project) {
+    const repo = project.dataset.repo;
+    const label = project.querySelector('[data-updated]');
+    try {
+      const response = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=1`, {
+        headers: { Accept: 'application/vnd.github+json' },
+        cache: 'no-store'
+      });
+      if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
+      const commits = await response.json();
+      if (!Array.isArray(commits) || !commits[0]) throw new Error('No public commit found');
+      const sha = commits[0].sha;
+      const date = commits[0].commit?.committer?.date || commits[0].commit?.author?.date;
+      label.innerHTML = '<span class="update-dot"></span>' + formatDate(date);
+      label.title = 'Latest repository commit: ' + sha.slice(0,7) + '. Click Source to view it.';
+      const oldSha = previous.get(repo);
+      if (oldSha && oldSha !== sha) {
+        label.classList.add('changed');
+        label.innerHTML = '<span class="update-dot"></span>New update detected';
+        label.title = 'A new commit was detected. Latest commit: ' + sha.slice(0,7);
+        setTimeout(() => {
+          label.classList.remove('changed');
+          label.innerHTML = '<span class="update-dot"></span>' + formatDate(date);
+        }, 7000);
+      }
+      previous.set(repo, sha);
+      project.dataset.latestCommit = sha;
+    } catch (error) {
+      label.textContent = 'Update status unavailable';
+      label.title = 'GitHub public API could not be reached. The project link still works.';
+    }
+  }
+  async function refresh() {
+    status.textContent = 'refreshing…';
+    await Promise.all(projects.map(checkProject));
+    status.textContent = 'checked ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  }
+  refresh();
+  window.setInterval(refresh, 5 * 60 * 1000);
+})();
+</script>
 </body>
 </html>
