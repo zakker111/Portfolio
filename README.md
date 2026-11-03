@@ -28,7 +28,19 @@ Every push to `main` triggers the workflow. `workflow_dispatch` also allows a ma
 
 ## Adding a project
 
-Open `index.html`, find the `PROJECTS` array near the top of the `<script>` at the bottom, and add one entry (title, blurb, repo, link, color). Cards, numbering and counters update automatically. See `AGENTS.md` for the field reference.
+The current page is a **static single file**: every project is a hand-written
+`<article class="project">` block inside `#projects` in `index.html`. To add one:
+
+1. Copy an existing `<article>` block (e.g. Pick One, project 07) and change:
+   number `0N`, title, kind label, blurb, buttons (`href`s), preview SVG,
+   `id="p-<slug>"` anchor, and the accent via `style="--accent:…"` if desired.
+2. Add `.project:nth-child(N){animation-delay:…}` to the CSS block that lists
+   the per-card entrance delays (keep it in sync with the card count).
+3. External apps (no GitHub repo) skip the live "Updated …" check — give their
+   footer span no `data-updated` attribute, like Pick One does.
+
+There is **no `PROJECTS` array** anymore — ignore older instructions that
+mention it. See `AGENTS.md` for the full structure reference.
 
 ## Local test
 
@@ -47,17 +59,17 @@ The portfolio's GitHub API status indicators are optional enhancements; temporar
 tab ("Refresh portfolio" → Run workflow). Each run:
 
 1. pulls your repo list from the GitHub API,
-2. regenerates `data/published.json` (offline fallback for the Published shelf),
-3. checks every link in `index.html` — GitHub repos/READMEs via the API, Pages
-   URLs via HEAD — removes dead links and refreshes the machine-managed
-   `AUTO-LINKS` block,
-4. rewrites the `LAST-UPDATED` stamp; the header badge shows "updated N days
-   ago", recomputed live in the browser between runs,
-5. writes an audit trail to `data/link-report.txt`,
-6. commits & pushes back to `main` only when something changed — which then
+2. regenerates `data/published.json` (snapshot of non-fork, non-shelved repos),
+3. checks every link it knows about — GitHub repos/READMEs via the API, Pages
+   URLs via HEAD — and writes an audit trail to `data/link-report.txt`,
+4. commits & pushes back to `main` only when something changed — which then
    triggers the Pages deploy automatically.
 
 No secrets or extra setup needed; the built-in `GITHUB_TOKEN` is used.
-Files touched by the bot (`data/published.json`, `data/link-report.txt`, the
-stamp/AUTO-LINKS regions of `index.html`) are machine-managed — don't hand-edit
-them.
+
+⚠️ Note: the page was simplified to a fully static single file (hand-written
+`<article>` cards, inline SVG previews, per-card live check in the browser).
+The refresh script's older page-maintenance features (`LAST-UPDATED` stamp,
+`AUTO-LINKS` block, `PROJECTS` array parsing) find no matching markup and are
+skipped harmlessly — the script never breaks the page. Its main remaining job
+is regenerating `data/published.json` and the link report.
