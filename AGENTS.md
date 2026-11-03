@@ -34,6 +34,14 @@ no frameworks — everything (markup, CSS, inline SVG animations, JS) lives in
 - K-18 styling: `.k18-frame` (glowing corners `.k18-corner` + `.scanline`) and
   `.k18-badge` exist solely for the Pick One card. Reuse them only for other
   age-restricted projects; keep the badge visible on the card and the preview.
+- **Analytics & cookie consent**: a commented "Google Analytics 4 —
+  human-visitor-only tracking" `<script>` block sits in `<head>`. It shows a
+  banner with **Yes / No / Why**, stores the answer in the `ga_consent` cookie,
+  runs `looksHuman()` bot checks, and loads gtag ONLY after a human clicks Yes
+  (and only if `GA_MEASUREMENT_ID` was replaced from its `G-XXXXXXXXXX`
+  placeholder). Never make GA load without explicit Yes, never remove the bot
+  checks, and never add ad/personalization storage. Full docs: README.md →
+  "Analytics & cookie consent".
 
 ## Adding a project
 
