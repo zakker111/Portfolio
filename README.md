@@ -4,7 +4,8 @@ Static GitHub Pages portfolio.
 
 ## Files
 
-- `index.html` — complete website
+- `index.html` — complete website (includes the cookie banner + human-only
+  Google Analytics code, inline in `<head>`)
 - `.nojekyll` — empty static-site marker
 - `robots.txt` — crawler rules
 - `AGENTS.md` — AI editing instructions
@@ -73,3 +74,90 @@ The refresh script's older page-maintenance features (`LAST-UPDATED` stamp,
 `AUTO-LINKS` block, `PROJECTS` array parsing) find no matching markup and are
 skipped harmlessly — the script never breaks the page. Its main remaining job
 is regenerating `data/published.json` and the link report.
+
+## Analytics & cookie consent (Google Analytics)
+
+The site now has a **cookie banner** and optional **Google Analytics 4**
+tracking built into `index.html`. The rule of this site is simple:
+
+> **It only tracks where human visitors come from — nothing more.**
+> No ads, no user profiles, no personal data, no marketing cookies.
+> Bots and crawlers are never tracked.
+
+### How the cookie works
+
+There is one first-party consent cookie called **`ga_consent`**. It stores
+only the word `yes` or `no` for 365 days. Nothing else is ever written to it.
+
+When a visitor opens the page, a small banner appears at the bottom with two
+buttons and an explanation:
+
+| Element | What it does |
+|---|---|
+| **Yes, track me** | Sets `ga_consent=yes`, then loads Google Analytics (gtag). Only after this click does GA set its own `_ga` cookie and send any hit to Google. |
+| **No, don't track me** | Sets `ga_consent=no`. GA is **never loaded**, no analytics cookie is ever created, and no request goes to Google. The banner never returns for a year. |
+| **Why?** (shown in the banner) | Explains that the site tracks *only where human visitors come from* (country/city and page viewed) — nothing more; bots are excluded automatically. |
+
+On later visits the stored answer is respected silently: `yes` → GA loads
+directly, `no` → GA never loads, absent → banner shows again.
+
+### Human-only guarantee (bots are never counted)
+
+Before even showing the banner, the script runs a `looksHuman()` check. A
+visitor must pass **all** of these, otherwise nothing happens at all — no
+banner, no cookie, no gtag script tag, no network request to Google:
+
+1. Real browser environment (`document.createElement`, `navigator.plugins` exist).
+2. `navigator.webdriver !== true` (blocks Selenium/Puppeteer automation).
+3. User-Agent contains none of `bot, crawler, spider, headless, scraping, python, curl, wget, phantom, slurp`.
+4. Tracking additionally requires an explicit human **Yes** click — a bot
+   cannot press a button, so even a scripted scraper that fakes 1–3 still
+   sends zero data.
+
+So the only traffic that can ever reach your Google Analytics reports is a
+real person in a real browser who clicked **Yes**. And what GA receives is
+just: page viewed + coarse location derived from the connection (country/city)
++ generic device/browser info — with `ad_storage`, `ad_user_data` and
+`ad_personalization` all hard-set to `denied`, IP addresses truncated at the
+network level by GA4 itself (GA4 never logs or stores full IPs), and the `_ga`
+cookie capped at ~11 months.
+
+### How to connect it to Google Analytics (one-time setup)
+
+1. Go to <https://analytics.google.com> → **Admin → Create property** → choose
+   **GA4**, enter the site name/time zone/currency.
+2. Under the property: **Data streams → Add stream → Web**, give the URL
+   `https://zakker111.github.io/Portfolio/` and create the stream.
+3. Copy the **Measurement ID** shown at the top of the stream details —
+   it looks like `G-ABC1234DEF`.
+4. Open `index.html` and find near the top of `<head>`:
+   ```js
+   window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+   ```
+   Replace `'G-XXXXXXXXXX'` with your Measurement ID, save, commit, push.
+   GitHub Actions deploys automatically.
+5. That's it. Until you replace the placeholder, the code does **nothing**
+   (safe default — no tracking at all).
+6. Verify: open the live site as a normal browser, click **Yes, track me**,
+   then in GA go to **Reports → Realtime** — a visit should appear within a
+   couple of minutes. Clicking **No** produces no request at all (check
+   DevTools → Network: no `google-analytics.com` call).
+
+Optional extra safety in the GA console: **Admin → Data settings → Traffic
+filtering → Define internal traffic / filter bot traffic** (GA also has a
+built-in "exclude all known computer and internet traffic" option — turn it
+on).
+
+### Local test
+
+Serve the folder (`python -m http.server 8000`), open http://localhost:8000/.
+The banner appears; DevTools → Application → Cookies shows only `ga_consent`
+after clicking Yes or No. With the placeholder ID, GA never loads even on Yes.
+
+### Changing the wording
+
+The banner text and buttons live in `showBanner()` inside the commented
+"Google Analytics 4 — human-visitor-only tracking" block in `index.html`.
+Keep both buttons: **Yes** must be what enables loading, **No** must leave
+everything off, and the **Why** line should stay honest — human origin only,
+nothing more.

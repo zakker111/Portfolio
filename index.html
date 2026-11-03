@@ -25,6 +25,134 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<!-- ============================================================
+     Google Analytics 4 — human-visitor-only tracking.
+     NOTHING is sent to Google until BOTH conditions are true:
+       1. a real human passed the bot checks (looksHuman below), AND
+       2. the human clicked "Yes, track me" in the cookie banner
+          (consent stored in the `ga_consent` cookie).
+     Bots, crawlers and headless scrapers never see the gtag
+     script tag, never get cookies set, and never appear in your
+     reports. See README.md → "Analytics & cookie consent".
+     ============================================================ -->
+<script>
+// ▼▼ REPLACE THIS WITH YOUR OWN GA4 MEASUREMENT ID (from
+//    Google Analytics → Admin → Data streams → Measurement ID)
+window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+
+(function () {
+  // ---- Cookie helpers -------------------------------------------------
+  function setCookie(name, value, days) {
+    var d = new Date();
+    d.setTime(d.getTime() + days * 864e5);
+    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() +
+      ';path=/;SameSite=Lax';
+  }
+  function getCookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  // ---- Human / bot detection ------------------------------------------
+  // A real browser driven by a real person passes ALL of these; bots,
+  // curl-style fetchers and headless scrapers fail at least one.
+  function looksHuman() {
+    try {
+      if (!window.isSecureContext && !/^https?:$/.test(location.protocol)) return false;
+      if (navigator.webdriver === true) return false;               // Selenium/Puppeteer flag
+      if (!window.chrome && !/firefox|safari/i.test(navigator.userAgent)) {
+        // non-browser JS environments (Node fetch, python, curl shims)
+        if (typeof document.createElement !== 'function') return false;
+      }
+      if (typeof navigator.plugins === 'undefined') return false;   // no plugin array → not a normal browser
+      if (navigator.userAgent && /bot|crawler|spider|headless|scraping|python|curl|wget|phantom|slurp/i.test(navigator.userAgent)) return false;
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ---- Load GA ONLY after explicit Yes ----------------------------------
+  window.__loadGA = function () {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    var id = window.GA_MEASUREMENT_ID;
+    if (!id || id === 'G-XXXXXXXXXX') return; // not configured yet → do nothing
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', id, {
+      cookie_flags: 'SameSite=Lax;Secure',   // GA sets only the _ga analytics cookie
+      cookie_expires: 335 * 86400,           // _ga cookie lives ~11 months max
+      transport_type: 'beacon'
+    });
+    // Consent mode: only analytics storage granted, nothing else, ever.
+    gtag('consent', 'update', {
+      analytics_storage: 'granted',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+    // Inject the actual gtag.js loader — this is the ONLY point where any
+    // request to Google can ever happen, and it requires human + Yes.
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+    document.head.appendChild(s);
+  };
+
+  // ---- The cookie / consent banner --------------------------------------
+  function showBanner() {
+    var style = document.createElement('style');
+    style.textContent =
+      '.cc-banner{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#15151a;' +
+      'border-top:1px solid rgba(236,234,226,.2);padding:14px 20px;display:flex;gap:14px;' +
+      'flex-wrap:wrap;align-items:center;font:12.5px/1.6 "IBM Plex Mono",monospace;color:#eceae2}' +
+      '.cc-banner p{margin:0;flex:1 1 320px}' +
+      '.cc-banner button{font:inherit;cursor:pointer;border-radius:6px;padding:8px 16px;border:1px solid transparent}' +
+      '.cc-yes{background:#7dedc3;color:#0f0f12;font-weight:600}' +
+      '.cc-no{background:transparent;color:#eceae2;border-color:rgba(236,234,226,.3)}' +
+      '.cc-why{color:#92918d;font-size:10.5px;flex-basis:100%}';
+    document.head.appendChild(style);
+
+    var banner = document.createElement('div');
+    banner.className = 'cc-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Cookie consent');
+    banner.innerHTML =
+      '<p><strong>Cookie question.</strong> May I use one analytics cookie ' +
+      '(Google Analytics) to count visits? It is only set if you click Yes.</p>' +
+      '<button class="cc-yes" type="button">Yes, track me</button>' +
+      '<button class="cc-no" type="button">No, don\'t track me</button>' +
+      '<span class="cc-why"><strong>Why?</strong> This site tracks <u>only where human visitors come from</u> ' +
+      '(country / city and page viewed) — nothing more. No ads, no profiles, no personal data, ' +
+      'no third-party marketing cookies. Bots and crawlers are excluded automatically and are never tracked.</span>';
+
+    banner.querySelector('.cc-yes').addEventListener('click', function () {
+      setCookie('ga_consent', 'yes', 365);
+      banner.remove();
+      window.__loadGA();
+    });
+    banner.querySelector('.cc-no').addEventListener('click', function () {
+      setCookie('ga_consent', 'no', 365);
+      banner.remove(); // No cookie was set before this point — nothing to delete.
+    });
+    document.body.appendChild(banner);
+  }
+
+  function init() {
+    // 1. Bots never trigger anything: no banner, no cookie, no GA request.
+    if (!looksHuman()) return;
+    var consent = getCookie('ga_consent');
+    if (consent === 'yes') { window.__loadGA(); return; }
+    if (consent === 'no') return;
+    showBanner();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+})();
+</script>
 <style>
 :root{--bg:#0f0f12;--panel:#09090c;--ink:#eceae2;--dim:#92918d;--line:rgba(236,234,226,.14);--mint:#7dedc3;--amber:#f6a83c;--coral:#ff6146;--pink:#ff4f87;--red:#ff6a73;--cyan:#65d9f3;--mono:"IBM Plex Mono",monospace;--display:"Syne",sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 var(--mono)}a{color:inherit}a:focus-visible{outline:2px solid var(--mint);outline-offset:4px}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
