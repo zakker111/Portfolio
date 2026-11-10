@@ -65,7 +65,7 @@ committing.
 ## Deploy & automation
 
 - Pushing to `main` runs `.github/workflows/pages.yml` (static upload → GitHub
-  Pages at https://zakker111.github.io/portfolio/).
+  Pages at https://zakker111.github.io/Portfolio/).
 - `.github/workflows/refresh.yml` (Mon/Thu + every 6h + manual dispatch) runs
   `tools/build-snapshot.py <owner> data/repos.json data/published.json`:
   regenerates the repo snapshot and writes `data/link-report.txt`. Its older
