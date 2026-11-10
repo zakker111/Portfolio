@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7BEHR86TWY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7BEHR86TWY');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0f0f12">
@@ -45,9 +36,9 @@
      reports. See README.md → "Analytics & cookie consent".
      ============================================================ -->
 <script>
-// ▼▼ REPLACE THIS WITH YOUR OWN GA4 MEASUREMENT ID (from
-//    Google Analytics → Admin → Data streams → Measurement ID)
-//window.GA_MEASUREMENT_ID = 'G-7BEHR86TWY';
+// GA4 measurement ID. gtag itself is only loaded after a human clicks "Yes"
+// in the cookie banner — see __loadGA() below.
+window.GA_MEASUREMENT_ID = 'G-7BEHR86TWY';
 
 (function () {
   // ---- Cookie helpers -------------------------------------------------
