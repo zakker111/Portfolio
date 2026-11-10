@@ -1,7 +1,15 @@
 {
-  "updated": "2026-11-10T01:03:59Z",
+  "updated": "2026-11-10T08:52:31Z",
   "owner": "zakker111",
   "repos": [
+    {
+      "name": "freeway",
+      "url": "https://zakker111.github.io/freeway/",
+      "html_url": "https://github.com/zakker111/freeway",
+      "description": "Freeway \u2014 free models, real tools. A local and cloud chat workspace with Plan, Build, Preview, and Secrets.",
+      "pushed_at": "2026-11-10T08:31:50Z",
+      "default_branch": "main"
+    },
     {
       "name": "Sex_positions",
       "url": "https://zakker111.github.io/Sex_positions/",
