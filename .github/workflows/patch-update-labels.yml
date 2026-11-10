@@ -1,0 +1,53 @@
+name: Patch update labels
+
+# Temporary helper: index.html is too large to push through the file API, so
+# this workflow applies tools/patch-update-labels.py and commits the result.
+# Both files are deleted once the change is live.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  # lets the job ask pages.yml to deploy the bot-authored commit
+  actions: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply the cached update-label script
+        run: python3 tools/patch-update-labels.py
+
+      - name: Verify the result is the reviewed build
+        # Refuses to deploy anything that is not byte-for-byte the file that
+        # was tested locally (node --check, browser run, console clean).
+        run: |
+          echo "9d4fc82d452f29913c7a548fb2f7650e8b3ed37c31ba8dedce282f678f0106d7  index.html" | sha256sum -c -
+
+      - name: Commit (only if changed)
+        id: commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Cache update labels so the GitHub rate limit cannot exhaust them"
+            git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger Pages deployment
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method POST \
+            "repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" \
+            -f ref=main
