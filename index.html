@@ -481,6 +481,20 @@ footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display
   }
 
   let sweeping = false;
+  const lastChecked = () => {
+    const times = Object.values(cache).map(entry => entry && entry.checkedAt).filter(Boolean);
+    if (!times.length) return null;
+    return new Date(Math.max(...times)).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  };
+  const markUnknown = text => {
+    for (const project of projects) {
+      const entry = cache[project.dataset.repo];
+      if (entry && entry.date) continue;
+      const label = labelOf(project);
+      if (!label || label.textContent.trim() !== 'Checking update…') continue;
+      label.textContent = text;
+    }
+  };
   async function sweep() {
     if (sweeping || document.hidden) return;
     if (exhausted()) {
@@ -488,10 +502,18 @@ footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display
         const mins = Math.max(1, Math.round((limit.reset - now()) / 60000));
         status.textContent = 'github limit reached · retrying in ' + mins + ' min';
       }
+      // never leave a card claiming to check something that will not run
+      markUnknown('Rate limited — retrying later');
       return;
     }
     const queue = projects.filter(stale);
-    if (!queue.length) return;
+    if (!queue.length) {
+      // nothing is stale, so report the newest cached check instead of leaving
+      // the initial "checking …" text on screen forever
+      const stamp = lastChecked();
+      if (status && stamp) status.textContent = 'checked ' + stamp;
+      return;
+    }
     sweeping = true;
     if (status) status.textContent = 'refreshing…';
     for (const project of queue) {
