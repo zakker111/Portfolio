@@ -19,7 +19,7 @@ Static GitHub Pages portfolio.
 4. Open **Settings → Pages**.
 5. Under **Build and deployment → Source**, select **GitHub Actions**.
 6. Open **Actions** and run **Deploy portfolio to GitHub Pages** if it did not start automatically.
-7. After the workflow succeeds, the site is: https://zakker111.github.io/portfolio/
+7. After the workflow succeeds, the site is: https://zakker111.github.io/Portfolio/
 
 The workflow needs no Node, Python, npm install, build command, or personal access token. It uploads the repository root directly as the Pages artifact.
 
