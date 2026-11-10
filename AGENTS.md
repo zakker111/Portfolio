@@ -26,6 +26,14 @@ no frameworks — everything (markup, CSS, inline SVG animations, JS) lives in
   sets `#check-status` ("checked HH:MM" / "Update status unavailable"). It
   degrades gracefully offline — never replace that with anything that can
   throw uncaught errors.
+  **Respect the request budget:** GitHub allows 60 unauthenticated requests per
+  hour per IP, shared by everyone behind that IP. The script therefore caches
+  each repo's date in `localStorage` for 6 hours (`gh-updates:cache:v1`),
+  sweeps only stale repos every 15 minutes, prefills from
+  `data/published.json` (same origin, no limit) and stops while
+  `x-ratelimit-remaining` is low (`gh-updates:limit:v1`), keeping any date it
+  already knows. Never reintroduce a fetch-per-card-per-load loop — that is what
+  used to exhaust the budget and blank the dates.
 - **External apps without a GitHub repo** (e.g. Pick One, project 07, deployed
   on Cloudflare Workers): give the footer span NO `data-updated` attribute and
   set a static dim caption instead (e.g. "Deployed on Cloudflare Workers"), so
@@ -64,8 +72,16 @@ committing.
 
 ## Deploy & automation
 
-- Pushing to `main` runs `.github/workflows/pages.yml` (static upload → GitHub
-  Pages at https://zakker111.github.io/Portfolio/).
+**The page only rebuilds when the page changes.** Both workflows enforce this;
+keep it that way.
+
+- `.github/workflows/pages.yml` deploys a push to `main` only when the push
+  touches `index.html`, `assets/**`, `og-image.png`, `og-image.svg`, `robots.txt`,
+  `.nojekyll` or `pages.yml` itself (static upload → GitHub Pages at
+  https://zakker111.github.io/Portfolio/). A commit that only changes `data/`,
+  `tools/` or the docs does **not** rebuild the site. When you add a new
+  top-level file the page needs, add it to that `paths:` list too, otherwise a
+  push that only adds the file will not deploy it.
 - `.github/workflows/refresh.yml` (Mon/Thu + every 6h + manual dispatch) runs
   `tools/build-snapshot.py <owner> data/repos.json data/published.json`:
   regenerates the repo snapshot and writes `data/link-report.txt`. Its older
@@ -73,6 +89,20 @@ committing.
   link parsing) target markup this page no longer has and are skipped
   harmlessly — the script never rewrites `index.html` anymore. Don't hand-edit
   `data/published.json`; `data/repos.json` is gitignored intermediate state.
+- The refresh never commits a timestamp-only change. `build-snapshot.py` always
+  writes a fresh `updated` stamp, so a dedicated step restores the previous
+  stamp whenever the repo list is otherwise identical; the file then stays
+  byte-identical, the push is skipped and the run finishes green with
+  "No changes.".
+- A `GITHUB_TOKEN` push cannot trigger `pages.yml`, so the refresh dispatches it
+  explicitly — but only when the commit it just made contained a site file
+  (`site=true` in the `commit` step output). A data-only snapshot commit updates
+  the repo without redeploying the page, so the live `data/published.json` may
+  lag `main`; that is intended and harmless, because the cards read their dates
+  from the GitHub API at view time.
+- `tools/check-links.py` is the last step of every refresh: any non-200 link on
+  the page or in the docs fails the run (and GitHub emails the owner about
+  failed scheduled runs).
 
 ## Verification checklist (run before pushing)
 
