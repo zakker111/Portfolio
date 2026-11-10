@@ -13,7 +13,7 @@ Static GitHub Pages portfolio.
 
 ## GitHub setup
 
-1. Create a GitHub repository named `portfolio` under `zakker111`.
+1. Create a GitHub repository named `Portfolio` under `zakker111`.
 2. Upload this package with the same folder structure.
 3. Commit/push everything to the `main` branch.
 4. Open **Settings → Pages**.
