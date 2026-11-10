@@ -1,0 +1,39 @@
+name: Tweak update labels
+
+# Temporary helper for the status-text change; removed once it is live.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  tweak:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply the tweak
+        run: python3 tools/tweak-update-labels.py
+
+      - name: Verify the result is the reviewed build
+        run: |
+          echo "92de7bc80b520410625aec8678f053429d5ccb2055b1bd76276fa07c1d56e073  index.html" | sha256sum -c -
+
+      - name: Commit and deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "::error::index.html unchanged — the sweep block has moved."
+            exit 1
+          fi
+          git commit -m "Keep the update status honest on cached and rate-limited visits"
+          git push origin HEAD:main
+          gh api --method POST "repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" -f ref=main
