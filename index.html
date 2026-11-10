@@ -22,9 +22,6 @@
 <meta name="twitter:title" content="zakker111 — Projects">
 <meta name="twitter:description" content="Browser games and web experiments by zakker111.">
 <meta name="twitter:image" content="https://zakker111.github.io/Portfolio/og-image.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <!-- ============================================================
      Google Analytics 4 — human-visitor-only tracking.
      NOTHING is sent to Google until BOTH conditions are true:
@@ -154,6 +151,12 @@ window.GA_MEASUREMENT_ID = 'G-7BEHR86TWY';
 })();
 </script>
 <style>
+/* Self-hosted fonts (latin subset) — no request leaves the visitor's browser until they consent. */
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/ibm-plex-mono-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/ibm-plex-mono-500.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/ibm-plex-mono-600.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Syne';font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/syne-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Syne';font-style:normal;font-weight:800;font-display:swap;src:url(assets/fonts/syne-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{--bg:#0f0f12;--panel:#09090c;--ink:#eceae2;--dim:#92918d;--line:rgba(236,234,226,.14);--mint:#7dedc3;--amber:#f6a83c;--coral:#ff6146;--pink:#ff4f87;--red:#ff6a73;--cyan:#65d9f3;--mono:"IBM Plex Mono",monospace;--display:"Syne",sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 var(--mono)}a{color:inherit}a:focus-visible{outline:2px solid var(--mint);outline-offset:4px}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
 header{position:sticky;top:0;z-index:10;background:rgba(15,15,18,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font:800 21px var(--display);text-decoration:none}.brand span{color:var(--mint)}.nav-note,.kicker,.number,.tag{color:var(--dim);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
