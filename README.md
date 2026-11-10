@@ -25,7 +25,17 @@ The workflow needs no Node, Python, npm install, build command, or personal acce
 
 ## Automatic deployment
 
-Every push to `main` triggers the workflow. `workflow_dispatch` also allows a manual deployment from the Actions tab.
+Pushing to `main` deploys the site — but only when a file that makes up the site
+changes. `pages.yml` is path-filtered to `index.html`, `assets/**`,
+`og-image.png`, `og-image.svg`, `robots.txt`, `.nojekyll` and the workflow
+itself, so a commit that only touches `data/`, `tools/` or the docs never
+rebuilds the page. `workflow_dispatch` also allows a manual deployment from the
+Actions tab.
+
+The scheduled refresh obeys the same rule. A commit pushed with `GITHUB_TOKEN`
+cannot start `pages.yml` on its own, so `refresh.yml` dispatches it explicitly —
+and only when the commit it just made touched one of the site files above.
+Deploys are therefore tied to real page changes, not to the calendar.
 
 ## Adding a project
 
@@ -63,8 +73,12 @@ tab ("Refresh portfolio" → Run workflow). Each run:
 2. regenerates `data/published.json` (snapshot of non-fork, non-shelved repos),
 3. checks every link it knows about — GitHub repos/READMEs via the API, Pages
    URLs via HEAD — and writes an audit trail to `data/link-report.txt`,
-4. commits & pushes back to `main` only when something changed — which then
-   triggers the Pages deploy automatically.
+4. commits & pushes back to `main` only when something actually changed: the
+   snapshot's `updated` stamp is kept from the previous run when the repo list is
+   identical, so a run where nothing happened produces no commit at all,
+5. and never redeploys the page for a data-only commit — the site is rebuilt only
+   when a site file (`index.html`, `assets/**`, `og-image.*`, `robots.txt`,
+   `.nojekyll`) is part of the change.
 
 No secrets or extra setup needed; the built-in `GITHUB_TOKEN` is used.
 
