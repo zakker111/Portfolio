@@ -17,6 +17,8 @@ on:
 
 permissions:
   contents: write
+  # needed to ask pages.yml to deploy after a bot-authored commit
+  actions: write
 
 concurrency:
   group: refresh
@@ -44,13 +46,28 @@ jobs:
         run: cat data/link-report.txt || true
 
       - name: Commit & push (only if changed)
+        id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/published.json data/link-report.txt index.html
           if git diff --cached --quiet; then
             echo "No changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Weekly refresh: snapshot, link checks, updated-days"
             git push origin HEAD:main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Trigger Pages deployment
+        # Commits pushed with GITHUB_TOKEN never start push-triggered workflows,
+        # so without this the live site would stay on the previous build.
+        # workflow_dispatch is the one event GitHub allows from GITHUB_TOKEN.
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method POST \
+            "repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" \
+            -f ref=main
