@@ -71,3 +71,9 @@ jobs:
           gh api --method POST \
             "repos/${{ github.repository }}/actions/workflows/pages.yml/dispatches" \
             -f ref=main
+
+      - name: Fail when any link on the page or in the docs is dead
+        # Runs last on purpose: the snapshot and the deploy above should still
+        # happen, but a single non-200 link turns the whole refresh red (and
+        # GitHub emails the owner about failed scheduled runs).
+        run: python3 tools/check-links.py
