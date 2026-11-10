@@ -3,6 +3,16 @@ name: Deploy portfolio to GitHub Pages
 on:
   push:
     branches: ["main"]
+    # Redeploy only when the site's own files change. The scheduled refresh
+    # commits data/ and docs updates; those must never rebuild the page.
+    paths:
+      - "index.html"
+      - "assets/**"
+      - "og-image.png"
+      - "og-image.svg"
+      - "robots.txt"
+      - ".nojekyll"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:

@@ -42,6 +42,30 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 tools/build-snapshot.py "${{ github.repository_owner }}" data/repos.json data/published.json
 
+      - name: Ignore timestamp-only snapshot churn
+        # The snapshot always comes back with a fresh "updated" stamp, so
+        # without this every scheduled run would commit and redeploy the page
+        # even when no repository actually changed. Keeping the previous stamp
+        # leaves the file byte-for-byte identical, so nothing is committed.
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          path = 'data/published.json'
+          with open(path, encoding='utf-8') as handle:
+              new = json.load(handle)
+          try:
+              old = json.loads(subprocess.run(['git', 'show', 'HEAD:' + path],
+                                              capture_output=True, text=True,
+                                              check=True).stdout)
+          except Exception:
+              raise SystemExit(0)
+          if new.get('repos') == old.get('repos') and new.get('owner') == old.get('owner'):
+              new['updated'] = old.get('updated', new['updated'])
+              with open(path, 'w', encoding='utf-8') as handle:
+                  handle.write(json.dumps(new, indent=2))
+              print('repo list unchanged - kept the previous snapshot stamp')
+          PY
+
       - name: Show link report
         run: cat data/link-report.txt || true
 
@@ -54,7 +78,13 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes."
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "site=false" >> "$GITHUB_OUTPUT"
           else
+            if git diff --cached --name-only | grep -qE '^(index\.html|assets/|og-image|robots\.txt|\.nojekyll)'; then
+              echo "site=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "site=false" >> "$GITHUB_OUTPUT"
+            fi
             git commit -m "Weekly refresh: snapshot, link checks, updated-days"
             git push origin HEAD:main
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -62,9 +92,9 @@ jobs:
 
       - name: Trigger Pages deployment
         # Commits pushed with GITHUB_TOKEN never start push-triggered workflows,
-        # so without this the live site would stay on the previous build.
-        # workflow_dispatch is the one event GitHub allows from GITHUB_TOKEN.
-        if: steps.commit.outputs.changed == 'true'
+        # so this dispatch is what deploys a bot commit — but only when the
+        # commit actually touched the site itself.
+        if: steps.commit.outputs.changed == 'true' && steps.commit.outputs.site == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -73,7 +103,7 @@ jobs:
             -f ref=main
 
       - name: Fail when any link on the page or in the docs is dead
-        # Runs last on purpose: the snapshot and the deploy above should still
-        # happen, but a single non-200 link turns the whole refresh red (and
-        # GitHub emails the owner about failed scheduled runs).
+        # Runs last on purpose: a dead link turns the whole refresh red (and
+        # GitHub emails the owner about failed scheduled runs) without blocking
+        # the snapshot above.
         run: python3 tools/check-links.py
