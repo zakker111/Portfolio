@@ -247,14 +247,20 @@ svg .glow{filter:drop-shadow(0 0 5px currentColor)}svg .slow{animation:drift 5s 
 footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}footer a,footer .footer-btn{color:var(--mint);text-decoration:none}.footer-btn{background:none;border:0;padding:0;font:inherit;cursor:pointer;letter-spacing:inherit}.footer-btn:hover,.footer-btn:focus-visible{text-decoration:underline}
 @media(max-width:760px){.hero{min-height:350px;padding:70px 0 50px}.project{grid-template-columns:1fr;padding:44px 0;gap:24px}.project:nth-child(even) .preview{order:0}.art{height:215px}.actions .btn{flex:1 1 130px}.nav-note{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+.nav-links{display:flex;gap:18px;margin-left:auto}
+.nav-links a{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:3px 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--ink);border-bottom-color:var(--mint)}
+.tool .monogram{aspect-ratio:16/10;border-bottom:1px solid var(--line);background:#17140f}
+.tool .monogram svg{display:block;width:100%;height:100%}
+@media(max-width:520px){.nav-note{display:none}.nav-links{gap:14px;margin-left:0}}
 </style>
 </head>
 <body>
-<header><div class="wrap nav"><a class="brand" href="#top">zakker<span>111</span></a><div class="nav-note">Independent projects · Finland</div></div></header>
+<header><div class="wrap nav"><a class="brand" href="#top">zakker<span>111</span></a><nav class="nav-links" aria-label="Sections"><a href="#projects">Projects</a><a href="#tools">Tools</a></nav><div class="nav-note">Independent projects · Finland</div></div></header>
 <main id="top">
 <section class="hero"><div class="wrap"><div class="kicker">Portfolio — GitHub Pages</div><h1>Games.<br>Tools.<br><span>Experiments.</span></h1><p class="intro">A collection of browser games and web projects built through experimentation, code, and creative ideas. Each preview is animated to reflect the project. Repository updates are checked automatically.</p><a class="hero-link" href="#projects">Explore the projects ↓</a></div></section>
 <section id="projects" style="scroll-margin-top:80px"><div class="wrap">
-<div class="section-head"><span>Selected projects</span><span>09 projects · <span id="check-status">checking GitHub…</span></span></div>
+<div class="section-head"><span>Selected projects</span><span>09 projects · <span id="check-status">loading snapshot…</span></span></div>
 
 <div class="card-grid">
 <article class="project" style="--accent:var(--mint)" data-repo="zakker111/aetheria">
@@ -424,44 +430,66 @@ footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display
 </svg></div><div class="preview-foot"><span>Day · hour · street heat</span><span class="updated" data-updated>Checking update…</span></div></div></article>
 </div>
 </div></section>
+
+<section id="tools" style="scroll-margin-top:80px"><div class="wrap">
+<div class="section-head"><span>Tools I use</span><span>03 tools · external links</span></div>
+<div class="card-grid tools-grid">
+<article class="project tool" style="--accent:var(--cyan)">
+<div class="preview">
+<div class="preview-head"><span>Chat</span><strong>QWEN</strong></div>
+<div class="monogram"><svg viewBox="0 0 320 200" role="img" aria-label="Qwen monogram"><rect width="320" height="200" fill="#17140f"/><text x="160" y="133" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="94" font-weight="800" fill="var(--accent)">Q</text></svg></div>
+<div class="preview-foot"><span>Long context · chat</span><span>chat.qwen.ai</span></div>
+</div>
+<div class="project-info">
+<div class="number">01 — Assistant</div>
+<h2>Qwen</h2>
+<p class="description">The chat model I reach for when a task needs a long context window or a second opinion in another language.</p>
+<div class="tags"><span class="tag">Chat</span><span class="tag">Multilingual</span><span class="tag">Research</span></div>
+<div class="actions"><a class="btn primary" href="https://chat.qwen.ai/" target="_blank" rel="noopener">Open Qwen ↗</a></div>
+</div>
+</article>
+<article class="project tool" style="--accent:var(--mint)">
+<div class="preview">
+<div class="preview-head"><span>Coding agent</span><strong>FREEBUFF</strong></div>
+<div class="monogram"><svg viewBox="0 0 320 200" role="img" aria-label="Freebuff monogram"><rect width="320" height="200" fill="#17140f"/><text x="160" y="133" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="94" font-weight="800" fill="var(--accent)">fb</text></svg></div>
+<div class="preview-foot"><span>Agent · desktop</span><span>freebuff.com</span></div>
+</div>
+<div class="project-info">
+<div class="number">02 — Build environment</div>
+<h2>Freebuff</h2>
+<p class="description">The coding-agent environment this site was built, audited and fixed in — from the responsive grid to the Lighthouse pass.</p>
+<div class="tags"><span class="tag">Coding agent</span><span class="tag">Desktop</span><span class="tag">Audit</span></div>
+<div class="actions"><a class="btn primary" href="https://freebuff.com/" target="_blank" rel="noopener">Open Freebuff ↗</a></div>
+</div>
+</article>
+<article class="project tool" style="--accent:var(--amber)">
+<div class="preview">
+<div class="preview-head"><span>Gemini</span><strong>AI STUDIO</strong></div>
+<div class="monogram"><svg viewBox="0 0 320 200" role="img" aria-label="Google AI Studio monogram"><rect width="320" height="200" fill="#17140f"/><text x="160" y="133" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="94" font-weight="800" fill="var(--accent)">AI</text></svg></div>
+<div class="preview-foot"><span>Prompts · API keys</span><span>aistudio.google.com</span></div>
+</div>
+<div class="project-info">
+<div class="number">03 — Prompt lab</div>
+<h2>Google AI Studio</h2>
+<p class="description">Where prompts get prototyped against Gemini models, and where the API keys for small experiments come from.</p>
+<div class="tags"><span class="tag">Gemini</span><span class="tag">Prototyping</span><span class="tag">API</span></div>
+<div class="actions"><a class="btn primary" href="https://aistudio.google.com/" target="_blank" rel="noopener">Open AI Studio ↗</a></div>
+</div>
+</article>
+</div>
+</div></section>
 </main>
-<footer><div class="wrap footer-inner"><span>© zakker111 · Built for the browser</span><span>Update labels are read from GitHub's public API.</span><button type="button" class="footer-btn" data-cookie-settings>Cookie settings</button><a href="#top">Back to top ↑</a></div></footer>
+<footer><div class="wrap footer-inner"><span>© zakker111 · Built for the browser</span><span>Update labels come from a snapshot refreshed every six hours.</span><button type="button" class="footer-btn" data-cookie-settings>Cookie settings</button><a href="#top">Back to top ↑</a></div></footer>
 <script>
 (() => {
   const projects = [...document.querySelectorAll('.project[data-repo]')];
   const status = document.getElementById('check-status');
-  if (!projects.length) return;
 
-  // ── Request budget ────────────────────────────────────────────────────
-  // GitHub's unauthenticated API allows 60 requests per hour per IP, shared
-  // by everybody behind that IP. The previous version asked once per card on
-  // every page load and re-ran the whole sweep every 5 minutes — about 84
-  // requests/hour from a single open tab — with no memory between visits, so
-  // dates vanished as soon as the budget ran out. Now a repo is re-checked at
-  // most once every 6 hours, answers are cached in localStorage (a reload
-  // costs nothing), sweeps only touch repos that are actually stale, and the
-  // rate-limit headers are obeyed instead of guessed.
-  const CACHE_KEY = 'gh-updates:cache:v1';
-  const LIMIT_KEY = 'gh-updates:limit:v1';
-  const FRESH_MS = 6 * 60 * 60 * 1000;   // per-repo freshness window
-  const SWEEP_MS = 15 * 60 * 1000;       // background sweep cadence
-  const GAP_MS = 700;                    // spacing between requests
-  const LOW_WATER = 3;                   // stop while this few requests remain
-
-  const read = (key, fallback) => {
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch (error) { return fallback; }
-  };
-  const write = (key, value) => {
-    try { localStorage.setItem(key, JSON.stringify(value)); }
-    catch (error) { /* private mode or quota — page still works */ }
-  };
-
-  const cache = read(CACHE_KEY, null) || {};
-  let limit = read(LIMIT_KEY, null) || {remaining: 60, reset: 0};
-
+  // Update labels come from data/published.json, rewritten by the "Refresh update
+  // snapshot" workflow every six hours (authenticated, 5 000 requests/hour) and
+  // committed next to this page. The page makes one same-origin request for it
+  // and never calls api.github.com, so no visitor can hit GitHub's rate limit and
+  // no third-party request is made before consent.
   const formatDate = value => {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return 'Date unavailable';
@@ -474,130 +502,44 @@ footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display
     label.innerHTML = '<span class="update-dot"></span>' + formatDate(date);
     label.title = sha
       ? 'Latest repository commit: ' + sha.slice(0,7) + '. Click Source to view it.'
-      : 'From the portfolio snapshot that the scheduled workflow refreshes.';
+      : 'Read from the update snapshot the scheduled workflow refreshes.';
   };
-  const now = () => Date.now();
-  const exhausted = () => limit.reset > now() && limit.remaining <= LOW_WATER;
-  const stale = project => {
-    const entry = cache[project.dataset.repo];
-    return !entry || !entry.checkedAt || now() - entry.checkedAt > FRESH_MS;
-  };
-
-  function paint() {
+  const fillPending = text => {
     for (const project of projects) {
-      const entry = cache[project.dataset.repo];
-      if (entry && entry.date) showDate(project, entry.date, entry.sha);
-    }
-  }
-
-  async function check(project) {
-    const repo = project.dataset.repo;
-    const known = cache[repo] || {};
-    try {
-      const response = await fetch('https://api.github.com/repos/' + repo + '/commits?per_page=1', {
-        headers: { Accept: 'application/vnd.github+json' },
-        cache: 'no-store'
-      });
-      const remainingHeader = response.headers.get('x-ratelimit-remaining');
-      const resetHeader = response.headers.get('x-ratelimit-reset');
-      if (remainingHeader !== null) {
-        const remaining = Number(remainingHeader);
-        const reset = Number(resetHeader);
-        if (Number.isFinite(remaining)) {
-          limit = {remaining, reset: Number.isFinite(reset) ? reset * 1000 : limit.reset};
-          write(LIMIT_KEY, limit);
-        }
-      }
-      if (!response.ok) throw new Error('GitHub returned ' + response.status);
-      const commits = await response.json();
-      if (!Array.isArray(commits) || !commits[0]) throw new Error('No public commit found');
-      const sha = commits[0].sha;
-      const date = commits[0].commit?.committer?.date || commits[0].commit?.author?.date;
-      cache[repo] = {date, sha, checkedAt: now()};
-      write(CACHE_KEY, cache);
-      project.dataset.latestCommit = sha;
-      if (known.sha && known.sha !== sha) {
-        const label = labelOf(project);
-        if (label) {
-          label.classList.add('changed');
-          label.innerHTML = '<span class="update-dot"></span>New update detected';
-          label.title = 'A new commit was detected. Latest commit: ' + sha.slice(0,7);
-          setTimeout(() => {
-            label.classList.remove('changed');
-            showDate(project, date, sha);
-          }, 7000);
-        }
-      } else {
-        showDate(project, date, sha);
-      }
-    } catch (error) {
-      // Never trade a date we already know for a warning: keep showing it and
-      // explain the staleness in the tooltip instead.
-      if (known.date) {
-        showDate(project, known.date, known.sha);
-        const label = labelOf(project);
-        if (label) label.title = 'GitHub could not be reached just now — this is the last known date.';
-      } else {
-        const label = labelOf(project);
-        if (label) {
-          label.textContent = 'Update status unavailable';
-          label.title = 'GitHub public API could not be reached. The project link still works.';
-        }
-      }
-    }
-  }
-
-  let sweeping = false;
-  const lastChecked = () => {
-    const times = Object.values(cache).map(entry => entry && entry.checkedAt).filter(Boolean);
-    if (!times.length) return null;
-    return new Date(Math.max(...times)).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  };
-  const markUnknown = text => {
-    for (const project of projects) {
-      const entry = cache[project.dataset.repo];
-      if (entry && entry.date) continue;
       const label = labelOf(project);
-      if (!label || label.textContent.trim() !== 'Checking update…') continue;
-      label.textContent = text;
+      if (label && label.textContent.trim() === 'Checking update…') label.textContent = text;
     }
   };
-  async function sweep() {
-    if (sweeping || document.hidden) return;
-    if (exhausted()) {
-      if (status) {
-        const mins = Math.max(1, Math.round((limit.reset - now()) / 60000));
-        status.textContent = 'github limit reached · retrying in ' + mins + ' min';
-      }
-      // never leave a card claiming to check something that will not run
-      markUnknown('Rate limited — retrying later');
-      return;
-    }
-    const queue = projects.filter(stale);
-    if (!queue.length) {
-      // nothing is stale, so report the newest cached check instead of leaving
-      // the initial "checking …" text on screen forever
-      const stamp = lastChecked();
-      if (status && stamp) status.textContent = 'checked ' + stamp;
-      return;
-    }
-    sweeping = true;
-    if (status) status.textContent = 'refreshing…';
-    for (const project of queue) {
-      if (exhausted()) break;
-      await check(project);
-      await new Promise(resolve => setTimeout(resolve, GAP_MS));
-    }
-    sweeping = false;
-    if (status && !exhausted()) {
-      status.textContent = 'checked ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    }
-  }
 
-  paint();
-  sweep();
-  window.setInterval(sweep, SWEEP_MS);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) sweep(); });
+  if (!projects.length) return;
+
+  fetch('data/published.json', {cache:'no-cache'})
+    .then(response => {
+      if (!response.ok) throw new Error('snapshot ' + response.status);
+      return response.json();
+    })
+    .then(snapshot => {
+      const rows = Array.isArray(snapshot.repos) ? snapshot.repos : [];
+      const byName = new Map(rows.map(row => [String(row.name).toLowerCase(), row]));
+      let shown = 0;
+      for (const project of projects) {
+        const row = byName.get(project.dataset.repo.split('/').pop().toLowerCase());
+        if (!row || !row.pushed_at) continue;
+        showDate(project, row.pushed_at, row.sha);
+        shown++;
+      }
+      fillPending('No snapshot entry');
+      const generated = snapshot.generated_at ? new Date(snapshot.generated_at) : null;
+      if (status) {
+        status.textContent = generated && !Number.isNaN(generated.getTime())
+          ? 'snapshot ' + generated.toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+          : (shown ? 'snapshot loaded' : 'snapshot empty');
+      }
+    })
+    .catch(() => {
+      fillPending('Update status unavailable');
+      if (status) status.textContent = 'snapshot unavailable';
+    });
 })();
 </script>
 </body>
