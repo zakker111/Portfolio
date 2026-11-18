@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f0f12">
+<meta name="description" content="About zakker111 — a builder of browser games and small tools, working mainly in Python, JavaScript and HTML.">
+<title>About — zakker111</title>
+<link rel="canonical" href="https://zakker111.github.io/Portfolio/about.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230f0f12'/%3E%3Ctext x='50' y='72' font-size='60' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%237dedc3'%3Ez%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#0f0f12;--panel:#09090c;--ink:#eceae2;--dim:#92918d;--line:rgba(236,234,226,.14);--mint:#7dedc3;
+--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+--display:"Syne","Arial Black","Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 var(--mono)}
+a{color:inherit}
+.wrap{width:min(760px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:10;background:rgba(15,15,18,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:800 21px var(--display);text-decoration:none}
+.brand span{color:var(--mint)}
+.nav-links{display:flex;gap:18px;margin-left:auto}
+.nav-links a{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:3px 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--ink);border-bottom-color:var(--mint)}
+.nav-links a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--mint)}
+.nav-note{color:var(--dim);font-size:8px;letter-spacing:.16em;text-transform:uppercase}
+main{padding:70px 0 60px}
+.kicker{display:flex;align-items:center;gap:9px;color:var(--dim);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.kicker:before{content:"";width:7px;height:7px;background:var(--mint);display:inline-block}
+h1{font:800 clamp(30px,7vw,58px)/1.03 var(--display);text-transform:uppercase;margin:16px 0 22px}
+h1 span{color:var(--mint)}
+.lede{font-size:15px;color:var(--ink);max-width:56ch}
+p{max-width:62ch}
+h2{font:700 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:44px 0 0;padding-bottom:12px;border-bottom:1px solid var(--line)}
+ul.langs{list-style:none;padding:0;margin:0}
+ul.langs li{display:grid;grid-template-columns:130px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+ul.langs b{font:800 15px var(--display);letter-spacing:.04em;text-transform:uppercase}
+ul.langs span{color:var(--dim)}
+.btn-back{text-decoration:none;color:var(--mint);border-bottom:1px solid var(--line);padding-bottom:2px}
+.btn-back:hover{border-bottom-color:var(--mint)}
+footer{border-top:1px solid var(--line);padding:22px 0 34px}
+.footer-inner{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;color:var(--dim);font-size:11px}
+footer a{text-decoration:none;color:var(--ink)}
+footer a:hover{color:var(--mint)}
+@media(max-width:520px){.nav-note{display:none}.nav-links{gap:14px;margin-left:0}
+ul.langs li{grid-template-columns:1fr;gap:4px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="brand" href="./">zakker<span>111</span></a>
+<nav class="nav-links" aria-label="Sections"><a href="./#projects">Projects</a><a href="./#tools">Tools</a><a href="about.html" aria-current="page">About</a></nav>
+<div class="nav-note">Independent projects · Finland</div>
+</div></header>
+
+<main class="wrap">
+<div class="kicker">About</div>
+<h1>Hi, I'm <span>zakker111</span>.</h1>
+<p class="lede">I build browser games and small tools. Most of what ends up on this site starts as an experiment and grows from there.</p>
+
+<h2>Languages I work with</h2>
+<ul class="langs">
+<li><b>Python</b><span>My main language for scripts, tools and backend experiments.</span></li>
+<li><b>JavaScript</b><span>For anything that runs in the browser — games, interactions, small apps.</span></li>
+<li><b>HTML</b><span>The structure of every page I ship, written by hand.</span></li>
+</ul>
+
+<p style="margin-top:34px"><a class="btn-back" href="./#projects">← Back to the projects</a></p>
+</main>
+
+<footer><div class="wrap footer-inner">
+<span>© zakker111 · Built for the browser</span>
+<span><a href="./">Portfolio home ↑</a></span>
+</div></footer>
+</body>
+</html>
