@@ -15,14 +15,17 @@ The canonical, approved version is commit **`3a3d6b3`**. At any time:
 git diff 3a3d6b3 -- index.html    # must be empty, or only the one link explicitly requested
 ```
 
-must show nothing except changes the user asked for **in that same request**.
+must show nothing except changes the user asked for **in that same request** — currently exactly two
+approved items: the footer link `Other stuff ↗` and the approved card-layout block at the end of
+the inline `<style>` (see "Approved card look" below).
 
 ### Never do this to `index.html`
 
 - Do not restructure it: no reordering of the hero, `#projects` or `#tools`, no new sections.
 - Do not restyle it: do not touch the inline `<style>` block, the CSS variables, the
   `.card-grid` breakpoints (1 col ≤760px, 2 cols 761–1079px, 3 cols ≥1080px), the type scale,
-  the colours or the spacing.
+  the colours or the spacing — with the single exception of the approved card-layout block
+  described below, which must stay exactly as it is.
 - Do not edit, replace or remove the 9 project cards: their order, `--accent` colours, preview
   SVGs, numbers, descriptions, tags and the 21 project/source links stay byte-identical.
 - Do not change the header nav (`Projects` · `Tools`) or add nav items on your own.
@@ -39,6 +42,23 @@ Explicitly requested, additive, one at a time:
   written with the existing footer/affordance markup and no new CSS.
 
 If a request seems to need more than that on `index.html`, stop and ask.
+
+### Approved card look (do not change)
+
+The project and tool cards render as **big cards**: preview block on top, then the number, title,
+description, tags and buttons underneath, inside a 1px bordered panel. One card per row on phones,
+two on tablet, three on desktop, 26 px between rows, accent-coloured border on hover. This is
+implemented only by the block at the end of the inline `<style>` in `index.html` (and mirrored at
+the end of `assets/site.css`):
+
+```css
+.card-grid>article.project{grid-template-columns:minmax(0,1fr);gap:0;align-items:stretch;padding:0;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.card-grid>article.project .preview{order:0;border:0;border-bottom:1px solid var(--line)}
+.card-grid>article.project .project-info{order:1;padding:22px 20px 24px}
+.card-grid{row-gap:26px}
+.card-grid>article.project{border-color:var(--line);transition:border-color .25s}
+.card-grid>article.project:hover{border-color:var(--accent)}
+```
 
 ## Extra content lives on separate pages
 
