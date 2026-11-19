@@ -69,7 +69,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | `about.html` | extra page ("Other stuff"): languages + tools cards |
 | `assets/site.css` | shared stylesheet copied from `index.html`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
-| `robots.txt`, `sitemap.xml` | crawling; keep the sitemap listing exactly the pages that exist |
+| `robots.txt`, `sitemap.xml` | crawling; the sitemap lists the homepage (extra pages get an entry only when they should be indexed) |
 | `data/published.json` | CI-generated; never hand-edit |
 | `.github/` | snapshot workflow + script |
 
@@ -79,7 +79,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 2. Fetch the live page and confirm 200 plus the expected markup.
 3. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 4. No requests to `api.github.com`; no console errors.
-5. `sitemap.xml` parses and lists only existing pages.
+5. `sitemap.xml` parses, and every URL it lists returns 200.
 
 ## Deployment and secrets
 
