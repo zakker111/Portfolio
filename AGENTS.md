@@ -9,10 +9,11 @@ Live: https://zakker111.github.io/Portfolio/
 `index.html` is **standalone and frozen**. It is the whole site as designed; it must keep
 looking and behaving exactly as it does today.
 
-The canonical, approved version is commit **`3a3d6b3`**. At any time:
+The canonical, approved version is commit **`68a6c59`** (after the approved move of the Tools
+section to its own `tools.html` page). At any time:
 
 ```bash
-git diff 3a3d6b3 -- index.html    # must be empty, or only the one link explicitly requested
+git diff 68a6c59 -- index.html    # must be empty, or only the change explicitly requested
 ```
 
 must show nothing except changes the user asked for **in that same request** — currently exactly two
@@ -85,7 +86,8 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | Path | Rule |
 | --- | --- |
 | `index.html` | the projects page — frozen, see above |
-| `about.html` | extra page ("Other stuff"): languages + tools cards |
+| `about.html` | extra page ("Other stuff"): bio, languages, tools cards and other links |
+| `tools.html` | extra page: the 3 tools (Qwen, Freebuff, Google AI Studio), moved out of `index.html` |
 | `assets/site.css` | shared stylesheet copied from `index.html`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
 | `robots.txt`, `sitemap.xml` | crawling; the sitemap lists the homepage (extra pages get an entry only when they should be indexed) |
@@ -94,7 +96,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 
 ## Verification before reporting done
 
-1. `git diff 3a3d6b3 -- index.html` — only the requested change, nothing else.
+1. `git diff 68a6c59 -- index.html` — only the requested change, nothing else.
 2. Fetch the live page and confirm 200 plus the expected markup.
 3. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 4. No requests to `api.github.com`; no console errors.
