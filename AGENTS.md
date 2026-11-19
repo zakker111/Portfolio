@@ -9,11 +9,11 @@ Live: https://zakker111.github.io/Portfolio/
 `index.html` is **standalone and frozen**. It is the whole site as designed; it must keep
 looking and behaving exactly as it does today.
 
-The canonical, approved version is commit **`68a6c59`** (after the approved move of the Tools
+The canonical, approved version is commit **`a8a8354`** (after the approved move of the Tools
 section to its own `tools.html` page). At any time:
 
 ```bash
-git diff 68a6c59 -- index.html    # must be empty, or only the change explicitly requested
+git diff a8a8354 -- index.html    # must be empty, or only the change explicitly requested
 ```
 
 must show nothing except changes the user asked for **in that same request** — currently exactly two
@@ -98,7 +98,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 
 ## Verification before reporting done
 
-1. `git diff 68a6c59 -- index.html` — only the requested change, nothing else.
+1. `git diff a8a8354 -- index.html` — only the requested change, nothing else.
 2. Fetch the live page and confirm 200 plus the expected markup.
 3. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 4. No requests to `api.github.com`; no console errors.
