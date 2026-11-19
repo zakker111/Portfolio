@@ -22,7 +22,8 @@ already folded into baseline `a8a8354`.
 
 ### Never do this to `index.html`
 
-- Do not restructure it: no reordering of the hero, `#projects` or `#tools`, no new sections.
+- Do not restructure it: no reordering of the hero or `#projects`, no new sections.
+  (`index.html` now holds one section, `#projects`; the Tools cards live in `tools.html`.)
 - Do not restyle it: do not touch the inline `<style>` block, the CSS variables, the
   `.card-grid` breakpoints (1 col ≤760px, 2 cols 761–1079px, 3 cols ≥1080px), the type scale,
   the colours or the spacing — with the single exception of the approved card look described
@@ -31,20 +32,22 @@ already folded into baseline `a8a8354`.
   SVGs, numbers, descriptions, tags and their primary action links stay byte-identical.
   (The secondary `Source ↗` GitHub links were removed on request; GitHub links remain on
   `links.html`.)
-- Do not change the header nav (`Projects` · `Tools`) or add nav items on your own.
+- Do not change the header nav (`Projects` → `#projects`, `Tools` → `tools.html`) or add nav
+  items on your own.
 - Do not change the hero copy, the section headers, the footer text or the cookie banner.
 - Do not re-add a link or page that was removed unless the user asks for it again.
 - Do not reformat, "tidy" or prettify the file. It is one long line-per-block by design.
 
 ### The only allowed edits to `index.html`
 
-Explicitly requested, additive, one at a time:
+Explicitly requested, one at a time:
 
-- one new card in the existing `#tools` grid, using the existing card markup, or
-- one new link pointing at an extra page (e.g. the footer link `Other stuff ↗` → `about.html`),
-  written with the existing footer/affordance markup and no new CSS.
+- one new small link pointing at an extra page (e.g. the footer link `Other stuff ↗` →
+  `about.html`), written with the existing footer/affordance markup and no new CSS; or
+- the single change the user just asked for, after which the baseline in this file moves.
 
-If a request seems to need more than that on `index.html`, stop and ask.
+Cards, copy, nav, CSS and the rest of the page are otherwise frozen. If a request seems to need
+more than that on `index.html`, stop and ask.
 
 ### Approved card look (do not change)
 
@@ -61,12 +64,19 @@ folded into the original rules (not a trailing override block):
 .project-info{padding:22px 20px 24px}
 ```
 
+## Extra pages
+
+- `about.html`, `tools.html`, `links.html` all share the same header nav:
+  `Projects` (`./#projects`) · `Tools` (`tools.html`) · `About` · `Links`.
+- Each ends with a `.page-back` "← Back to the projects" link and the shared `.site-foot`.
+
 ## Extra content lives on separate pages
 
 New material (about me, languages, tools, notes, anything else) goes into its **own page**
 next to `index.html`, never into `index.html`:
 
-- reuse `assets/site.css` (the stylesheet extracted from `index.html`) so the style is identical;
+- reuse `assets/site.css` (the stylesheet extracted from `index.html`, plus the shared
+  `.site-foot` and `.page-back` helpers) so the style is identical;
 - use the existing components: `section.hero` + `.kicker` + `h1` + `p.intro` + `.hero-link`,
   `.section-head`, `.card-grid` > `article.project.tool` with `.preview`, `.monogram`,
   `.project-info`, `.number`, `.tags`, `.tag`, `.actions`, `.btn primary`;
@@ -89,7 +99,8 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | `index.html` | the projects page — frozen, see above |
 | `about.html` | extra page ("Other stuff"): bio, languages and other links (tools moved to `tools.html`) |
 | `tools.html` | extra page: the 3 tools (Qwen, Freebuff, Google AI Studio), moved out of `index.html` |
-| `assets/site.css` | shared stylesheet copied from `index.html`; keep in sync when the homepage style legitimately changes |
+| `links.html` | extra page: every site/project/tool/language/profile link in one list |
+| `assets/site.css` | shared stylesheet copied from `index.html` + `.site-foot`/`.page-back`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
 | `robots.txt`, `sitemap.xml` | crawling; the sitemap lists the homepage (extra pages get an entry only when they should be indexed) |
 | `data/published.json` | CI-generated; never hand-edit |
