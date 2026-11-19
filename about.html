@@ -15,6 +15,9 @@
 .site-foot .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;color:var(--dim);font-size:11px}
 .site-foot a{color:var(--ink);text-decoration:none}
 .site-foot a:hover{color:var(--mint)}
+.about-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.about-nav a{border:1px solid var(--line);padding:6px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;transition:.2s ease}
+.about-nav a:hover{border-color:var(--mint);color:var(--mint)}
 </style>
 </head>
 <body>
@@ -25,7 +28,8 @@
 </div></header>
 
 <main id="top">
-<section class="hero"><div class="wrap"><div class="kicker">About — GitHub Pages</div><h1>Hi, I'm<br><span>zakker111</span>.</h1><p class="intro">I build browser games and small tools. Everything I work with lives here: the languages I actually reach for, then the tools I keep open while building. Each card is its own link.</p><a class="hero-link" href="#bio">Bio, languages and tools ↓</a></div></section>
+<section class="hero"><div class="wrap"><div class="kicker">About — GitHub Pages</div><h1>Hi, I'm<br><span>zakker111</span>.</h1><p class="intro">I build browser games and small tools. Everything I work with lives here: the languages I actually reach for, then the tools I keep open while building. Each card is its own link.</p><a class="hero-link" href="#bio">Bio, languages and tools ↓</a>
+<nav class="about-nav" aria-label="On this page"><a href="#bio">Bio</a><a href="#languages">Languages</a><a href="#tools">Tools</a><a href="#other">Other stuff</a></nav></div></section>
 
 <section id="bio" style="scroll-margin-top:80px"><div class="wrap">
 <div class="section-head"><span>Bio</span><span>who I am · what I build</span></div>
