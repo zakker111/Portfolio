@@ -16,16 +16,17 @@ git diff 3a3d6b3 -- index.html    # must be empty, or only the one link explicit
 ```
 
 must show nothing except changes the user asked for **in that same request** — currently exactly two
-approved items: the footer link `Other stuff ↗` and the approved card-layout block at the end of
-the inline `<style>` (see "Approved card look" below).
+approved items: the footer link `Other stuff ↗` and the approved card look, which is now folded
+into the original `.card-grid`, `.project`, `.preview` and `.project-info` rules (see
+"Approved card look" below).
 
 ### Never do this to `index.html`
 
 - Do not restructure it: no reordering of the hero, `#projects` or `#tools`, no new sections.
 - Do not restyle it: do not touch the inline `<style>` block, the CSS variables, the
   `.card-grid` breakpoints (1 col ≤760px, 2 cols 761–1079px, 3 cols ≥1080px), the type scale,
-  the colours or the spacing — with the single exception of the approved card-layout block
-  described below, which must stay exactly as it is.
+  the colours or the spacing — with the single exception of the approved card look described
+  below, which must stay exactly as it is.
 - Do not edit, replace or remove the 9 project cards: their order, `--accent` colours, preview
   SVGs, numbers, descriptions, tags and the 21 project/source links stay byte-identical.
 - Do not change the header nav (`Projects` · `Tools`) or add nav items on your own.
@@ -48,16 +49,14 @@ If a request seems to need more than that on `index.html`, stop and ask.
 The project and tool cards render as **big cards**: preview block on top, then the number, title,
 description, tags and buttons underneath, inside a 1px bordered panel. One card per row on phones,
 two on tablet, three on desktop, 26 px between rows, accent-coloured border on hover. This is
-implemented only by the block at the end of the inline `<style>` in `index.html` (and mirrored at
-the end of `assets/site.css`):
+folded into the original rules (not a trailing override block):
 
 ```css
-.card-grid>article.project{grid-template-columns:minmax(0,1fr);gap:0;align-items:stretch;padding:0;border:1px solid var(--line);background:var(--panel);overflow:hidden}
-.card-grid>article.project .preview{order:0;border:0;border-bottom:1px solid var(--line)}
-.card-grid>article.project .project-info{order:1;padding:22px 20px 24px}
-.card-grid{row-gap:26px}
-.card-grid>article.project{border-color:var(--line);transition:border-color .25s}
-.card-grid>article.project:hover{border-color:var(--accent)}
+.card-grid{display:grid;grid-template-columns:1fr;gap:26px 32px;width:100%}
+.project{--accent:var(--mint);display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:stretch;padding:0;border:1px solid var(--line);background:var(--panel);overflow:hidden;animation:appear .7s both;transition:border-color .25s}
+.preview{min-width:0;border:0;border-bottom:1px solid var(--line);background:var(--panel);transition:border-color .25s}
+.project:hover{border-color:var(--accent)}
+.project-info{padding:22px 20px 24px}
 ```
 
 ## Extra content lives on separate pages
