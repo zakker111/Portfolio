@@ -253,6 +253,11 @@ footer{padding:32px 0 45px;color:var(--dim);font-size:10px}.footer-inner{display
 .tool .monogram{aspect-ratio:16/10;border-bottom:1px solid var(--line);background:#17140f}
 .tool .monogram svg{display:block;width:100%;height:100%}
 @media(max-width:520px){.nav-note{display:none}.nav-links{gap:14px;margin-left:0}}
+
+/* Big card look inside the grid: preview on top, text underneath */
+.card-grid>article.project{grid-template-columns:minmax(0,1fr);gap:0;align-items:stretch;padding:0;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.card-grid>article.project .preview{order:0;border:0;border-bottom:1px solid var(--line)}
+.card-grid>article.project .project-info{order:1;padding:22px 20px 24px}
 </style>
 </head>
 <body>
