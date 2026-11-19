@@ -29,7 +29,9 @@ into the original `.card-grid`, `.project`, `.preview` and `.project-info` rules
   the colours or the spacing — with the single exception of the approved card look described
   below, which must stay exactly as it is.
 - Do not edit, replace or remove the 9 project cards: their order, `--accent` colours, preview
-  SVGs, numbers, descriptions, tags and the 21 project/source links stay byte-identical.
+  SVGs, numbers, descriptions, tags and their primary action links stay byte-identical.
+  (The secondary `Source ↗` GitHub links were removed on request; GitHub links remain on
+  `links.html`.)
 - Do not change the header nav (`Projects` · `Tools`) or add nav items on your own.
 - Do not change the hero copy, the section headers, the footer text or the cookie banner.
 - Do not re-add a link or page that was removed unless the user asks for it again.
