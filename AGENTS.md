@@ -16,10 +16,9 @@ section to its own `tools.html` page). At any time:
 git diff a8a8354 -- index.html    # must be empty, or only the change explicitly requested
 ```
 
-must show nothing except changes the user asked for **in that same request** — currently exactly two
-approved items: the footer link `Other stuff ↗` and the approved card look, which is now folded
-into the original `.card-grid`, `.project`, `.preview` and `.project-info` rules (see
-"Approved card look" below).
+must show nothing except changes the user asked for **in that same request**. All approved
+changes to date (footer link, card look, Tools moved to `tools.html`, Source links removed) are
+already folded into baseline `a8a8354`.
 
 ### Never do this to `index.html`
 
@@ -88,7 +87,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | Path | Rule |
 | --- | --- |
 | `index.html` | the projects page — frozen, see above |
-| `about.html` | extra page ("Other stuff"): bio, languages, tools cards and other links |
+| `about.html` | extra page ("Other stuff"): bio, languages and other links (tools moved to `tools.html`) |
 | `tools.html` | extra page: the 3 tools (Qwen, Freebuff, Google AI Studio), moved out of `index.html` |
 | `assets/site.css` | shared stylesheet copied from `index.html`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
