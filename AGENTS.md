@@ -80,7 +80,9 @@ next to `index.html`, never into `index.html`:
 - use the existing components: `section.hero` + `.kicker` + `h1` + `p.intro` + `.hero-link`,
   `.section-head`, `.card-grid` > `article.project.tool` with `.preview`, `.monogram`,
   `.project-info`, `.number`, `.tags`, `.tag`, `.actions`, `.btn primary`;
-- give each page `<title>`, `meta description`, `link rel="canonical"` and the shared favicon;
+- give each page `<title>`, `meta description`, `link rel="canonical"`, the shared favicon and the
+  same Open Graph / Twitter block as `index.html` (per-page `og:title`/`og:description`/`og:url`,
+  shared `og-image.png`), so shared links get a preview;
 - link it from `index.html` with **one** small link, only when asked.
 
 ## Data: update labels come from the CI snapshot
