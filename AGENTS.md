@@ -102,7 +102,7 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | `links.html` | extra page: every site/project/tool/language/profile link in one list |
 | `assets/site.css` | shared stylesheet copied from `index.html` + `.site-foot`/`.page-back`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
-| `robots.txt`, `sitemap.xml` | crawling; the sitemap lists the homepage (extra pages get an entry only when they should be indexed) |
+| `robots.txt`, `sitemap.xml` | crawling; the sitemap lists all four pages (homepage + the three extra pages). Add an entry whenever a new indexed page is added |
 | `data/published.json` | CI-generated; never hand-edit |
 | `.github/` | snapshot workflow + script |
 
