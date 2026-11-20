@@ -69,6 +69,10 @@ folded into the original rules (not a trailing override block):
 - `about.html`, `tools.html`, `links.html` all share the same header nav:
   `Projects` (`./#projects`) · `Tools` (`tools.html`) · `About` · `Links`.
 - Each ends with a `.page-back` "← Back to the projects" link and the shared `.site-foot`.
+- `404.html` follows the same shell but must use **absolute** `/Portfolio/…` paths for its
+  stylesheet and links (GitHub Pages serves it at the missing URL, so relative paths break on
+  deeper paths), sets `<meta name="robots" content="noindex">`, and its link list mirrors
+  `links.html` — update both when a link is added or removed.
 
 ## Extra content lives on separate pages
 
@@ -102,9 +106,10 @@ every six hours by `.github/workflows/refresh-snapshot.yml` (generator:
 | `about.html` | extra page ("Other stuff"): bio, languages and other links (tools moved to `tools.html`) |
 | `tools.html` | extra page: the 3 tools (Qwen, Freebuff, Google AI Studio), moved out of `index.html` |
 | `links.html` | extra page: every site/project/tool/language/profile link in one list |
+| `404.html` | extra page served by GitHub Pages for any missing URL: branded hero, client-side search over the links, cards back to the projects. Not in the sitemap, `noindex`, no canonical |
 | `assets/site.css` | shared stylesheet copied from `index.html` + `.site-foot`/`.page-back`; keep in sync when the homepage style legitimately changes |
 | `og-image.png` | 1200×630 social card |
-| `robots.txt`, `sitemap.xml` | crawling; the sitemap lists all four pages (homepage + the three extra pages). Add an entry whenever a new indexed page is added |
+| `robots.txt`, `sitemap.xml` | crawling; the sitemap lists all four indexed pages (homepage + `tools`/`about`/`links`). Add an entry whenever a new indexed page is added — never for `404.html` |
 | `data/published.json` | CI-generated; never hand-edit |
 | `.github/` | snapshot workflow + script |
 
