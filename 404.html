@@ -7,6 +7,34 @@
 <meta name="description" content="That page is not part of zakker111's portfolio — search every link on the site or jump back to the projects.">
 <meta name="robots" content="noindex">
 <title>Page not found — zakker111</title>
+<script>
+/* GitHub Pages serves this page at every URL that does not exist. A trailing
+   slash, a missing ".html", a different letter case or an old page name almost
+   always means the visitor meant a real page — a typed address, an old
+   bookmark or a link from before a rename — so send them straight there.
+   Truly unknown URLs stay here and use the search below. */
+(function () {
+  var BASE = '/Portfolio/';
+  var PAGES = {
+    '': 'index.html', 'index': 'index.html', 'index.html': 'index.html',
+    'projects': '', 'project': '', 'work': '', 'home': '', 'start': '',
+    'tools': 'tools.html', 'tool': 'tools.html', 'tools.html': 'tools.html',
+    'about': 'about.html', 'other': 'about.html', 'other-stuff': 'about.html',
+    'about.html': 'about.html',
+    'links': 'links.html', 'link': 'links.html', 'all-links': 'links.html',
+    'links.html': 'links.html'
+  };
+  if (location.pathname.indexOf(BASE) !== 0) return;
+  var rest = location.pathname.slice(BASE.length);
+  try { rest = decodeURIComponent(rest); } catch (e) { return; }
+  rest = rest.replace(/\/+$/, '').toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(PAGES, rest)) return;
+  var target = BASE + PAGES[rest] + location.search + location.hash;
+  if (target !== location.pathname + location.search + location.hash) {
+    location.replace(target);
+  }
+})();
+</script>
 <!-- No canonical and no social preview: this page answers any missing URL, so it is kept out of search. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230f0f12'/%3E%3Ctext x='50' y='72' font-size='60' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%237dedc3'%3Ez%3C/text%3E%3C/svg%3E">
 <!-- Absolute path on purpose: GitHub Pages serves this page at the missing URL,
