@@ -12,6 +12,9 @@
    slash, a missing ".html", a different letter case or an old page name almost
    always means the visitor meant a real page — a typed address, an old
    bookmark or a link from before a rename — so send them straight there.
+   A link saved with a trailing space or a zero-width character (common when a
+   URL is pasted into a profile field on a phone) turns /Portfolio/ into
+   /Portfolio/%20, so those invisible characters are ignored too.
    Truly unknown URLs stay here and use the search below. */
 (function () {
   var BASE = '/Portfolio/';
@@ -27,6 +30,7 @@
   if (location.pathname.indexOf(BASE) !== 0) return;
   var rest = location.pathname.slice(BASE.length);
   try { rest = decodeURIComponent(rest); } catch (e) { return; }
+  rest = rest.replace(/[\s\u00a0\u200b-\u200d\ufeff]/g, '');
   rest = rest.replace(/\/+$/, '').toLowerCase();
   if (!Object.prototype.hasOwnProperty.call(PAGES, rest)) return;
   var target = BASE + PAGES[rest] + location.search + location.hash;
