@@ -4,6 +4,11 @@
 //
 // Repos are discovered from the cards in index.html (data-repo="owner/name"),
 // so adding a card is enough — no list to keep in sync here.
+//
+// generated_at is the time the project data last changed, not the last time
+// this script ran. When nothing changed, the file is left untouched, so the
+// page's "snapshot <time>" stays honest instead of claiming a refresh that
+// changed no data.
 import fs from 'node:fs';
 
 const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '';
@@ -51,11 +56,40 @@ if (!rows.length) {
   process.exit(1);
 }
 
+const OUT = 'data/published.json';
+
+// Compare only the fields the page uses. Key order and formatting do not
+// matter, and a new generated_at alone must not cause a commit.
+function fingerprint(repos) {
+  return (Array.isArray(repos) ? repos : [])
+    .map(row => [row.name, row.full_name, row.pushed_at, row.sha].join('\u0000'))
+    .sort()
+    .join('\n');
+}
+
+let previous = null;
+try {
+  previous = JSON.parse(fs.readFileSync(OUT, 'utf8'));
+} catch {
+  // No readable snapshot yet: write a fresh one below.
+}
+
+const sorted = rows.sort((a, b) => a.name.localeCompare(b.name));
+const unchanged =
+  previous &&
+  typeof previous.generated_at === 'string' &&
+  fingerprint(previous.repos) === fingerprint(sorted);
+
+if (unchanged) {
+  console.log('Project data unchanged — keeping the snapshot and its generated_at');
+  process.exit(0);
+}
+
 const out = {
   generated_at: new Date().toISOString(),
-  repos: rows.sort((a, b) => a.name.localeCompare(b.name)),
+  repos: sorted,
 };
 
 fs.mkdirSync('data', { recursive: true });
-fs.writeFileSync('data/published.json', JSON.stringify(out, null, 2) + '\n');
-console.log(`Wrote data/published.json with ${rows.length} repos`);
+fs.writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
+console.log(`Wrote ${OUT} with ${rows.length} repos`);
