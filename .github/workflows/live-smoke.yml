@@ -13,8 +13,11 @@ permissions:
   contents: read
 
 concurrency:
+  # One check at a time, and never cancel a running one: it would leave the
+  # deployment it was checking unverified. A newer run replaces only a
+  # still-pending one, and it tests the same live site anyway.
   group: live-smoke
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   smoke:
