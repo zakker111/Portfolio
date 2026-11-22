@@ -4,10 +4,16 @@ on:
   schedule:
     - cron: '43 */6 * * *'   # every six hours, offset from the snapshot job
   workflow_dispatch:
-  # GitHub Pages reports each finished deployment to the github-pages
-  # environment; running right after a successful one catches a broken deploy
-  # immediately instead of at the next six-hour check.
-  deployment_status:
+  # GitHub's internal Pages workflow runs once per deployment and finishes only
+  # after the new version is published, so this starts exactly one run per
+  # deploy — instead of one per status event of the github-pages environment,
+  # most of which were skipped — and catches a broken deploy immediately rather
+  # than at the next six-hour check. The glob matches that workflow's name
+  # however GitHub renders it in the payload (it reports both
+  # "pages build and deployment" and "pages-build-deployment").
+  workflow_run:
+    workflows: ["pages*build*deployment"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -21,12 +27,11 @@ concurrency:
 
 jobs:
   smoke:
-    # deployment_status also fires for other environments and for failed or
-    # superseded deployments; only test the live site after a real success.
+    # A failed Pages build leaves the previous version live, so there is nothing
+    # new to smoke-test; skip the job rather than report the old site as a pass.
     if: >-
-      github.event_name != 'deployment_status' ||
-      (github.event.deployment.environment == 'github-pages' &&
-       github.event.deployment_status.state == 'success')
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
