@@ -101,6 +101,23 @@ commit a snapshot (that would start a second Pages build and cancel the build fo
 - The page must never call `api.github.com` from the browser.
 - Do not remove the `.github/` workflow or script, and do not add a client-side GitHub fetch.
 
+## CI: the snapshot job and the live smoke test
+
+Two workflows run on a six-hour schedule (offset from each other), and neither may be deleted:
+
+- **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
+  that touch the HTML or its own files. Only scheduled/manual runs update `data/published.json`;
+  a push only runs the 404 test, so a push never produces a snapshot commit that would start a
+  second Pages build.
+- **`live-smoke.yml` — live smoke test.** Runs after every **successful GitHub Pages
+  deployment** (so a broken deploy is caught immediately) and every six hours, plus by hand. It
+  checks the live site at https://zakker111.github.io/Portfolio/ — status and `<title>` for each
+  page, the redirects for near-miss URLs, and that an unknown URL really 404s. A running check is
+  never cancelled, so the deployment it is testing stays verified.
+
+`index.html` stays frozen throughout: CI only reads the site and refreshes
+`data/published.json`, and no workflow or script may rewrite, reformat or "fix" the pages.
+
 ## Files
 
 | Path | Rule |
@@ -114,7 +131,7 @@ commit a snapshot (that would start a second Pages build and cancel the build fo
 | `og-image.png` | 1200×630 social card |
 | `robots.txt`, `sitemap.xml` | crawling; the sitemap lists all four indexed pages (homepage + `tools`/`about`/`links`). Add an entry whenever a new indexed page is added — never for `404.html` |
 | `data/published.json` | CI-generated; never hand-edit |
-| `.github/` | snapshot workflow + script |
+| `.github/` | snapshot and live-smoke workflows + scripts (see CI above) |
 
 ## Verification before reporting done
 
