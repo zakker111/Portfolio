@@ -1,0 +1,42 @@
+name: Live portfolio smoke test
+
+on:
+  schedule:
+    - cron: '43 */6 * * *'   # every six hours, offset from the snapshot job
+  workflow_dispatch:
+  # GitHub Pages reports each finished deployment to the github-pages
+  # environment; running right after a successful one catches a broken deploy
+  # immediately instead of at the next six-hour check.
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    # deployment_status also fires for other environments and for failed or
+    # superseded deployments; only test the live site after a real success.
+    if: >-
+      github.event_name != 'deployment_status' ||
+      (github.event.deployment.environment == 'github-pages' &&
+       github.event.deployment_status.state == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.65.1
+          npx playwright install --with-deps chromium
+
+      - name: Run live smoke test
+        run: node .github/scripts/live-smoke.mjs
