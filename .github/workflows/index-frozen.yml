@@ -1,0 +1,50 @@
+name: Frozen index.html
+
+# index.html is frozen at a8a8354: it may not be edited, reformatted or "fixed".
+# AGENTS.md states the rule; this job is what enforces it, so the rule holds even
+# when nobody remembers to run `git diff a8a8354 -- index.html` by hand.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen:
+    name: index.html matches a8a8354
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The baseline is an ancestor of main, so full history is normally
+          # enough; the fetch below covers shallow or odd refs.
+          fetch-depth: 0
+
+      - name: Compare index.html against the frozen baseline
+        run: |
+          BASE=a8a83544075ea94ddb7e2a519c2a000fd7caec56
+          if ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            git fetch --no-tags --quiet origin "$BASE" || true
+          fi
+          if ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            echo "::error::Baseline commit $BASE is not in this checkout, so index.html could not be checked."
+            exit 1
+          fi
+
+          if git diff --quiet "$BASE" -- index.html; then
+            echo "index.html is unchanged since $BASE."
+            exit 0
+          fi
+
+          echo "::error file=index.html::index.html is frozen at $BASE and must not be edited. Put the change on another page, or ask the owner first."
+          echo
+          echo "Diff against the frozen baseline:"
+          git --no-pager diff --stat "$BASE" -- index.html
+          echo
+          git --no-pager diff --unified=3 "$BASE" -- index.html | head -200 || true
+          exit 1
