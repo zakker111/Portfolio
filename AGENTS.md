@@ -95,8 +95,9 @@ The "Updated …" labels under each project read `data/published.json`, refreshe
 `.github/workflows/refresh-snapshot.yml` (generator: `.github/scripts/build-snapshot.mjs`)
 on a six-hour schedule or by hand. It commits only when a project's latest commit changes;
 `generated_at` is the time the data last changed, so the page's snapshot timestamp stays
-honest instead of advancing on every check. Portfolio pushes only run the 404 test and never
-commit a snapshot (that would start a second Pages build and cancel the build for the push).
+honest instead of advancing on every check. Portfolio pushes only run the two tests — the 404
+redirect map and the honest-copy check — and never commit a snapshot (that would start a second
+Pages build and cancel the build for the push).
 
 - The page must never call `api.github.com` from the browser.
 - Do not remove the `.github/` workflow or script, and do not add a client-side GitHub fetch.

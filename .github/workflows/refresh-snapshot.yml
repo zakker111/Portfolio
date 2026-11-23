@@ -36,7 +36,7 @@ jobs:
 
   snapshot:
     # A snapshot commit on a portfolio push starts a second Pages build and
-    # cancels the build for the push itself. Pushes only run the test; the
+    # cancels the build for the push itself. Pushes only run the tests; the
     # snapshot job runs on the schedule or when dispatched by hand.
     if: github.event_name != 'push'
     needs: test
