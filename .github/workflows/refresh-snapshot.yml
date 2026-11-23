@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - '*.html'
+      - '.github/scripts/check-honest-copy.mjs'
       - '.github/scripts/test-404.mjs'
       - '.github/workflows/refresh-snapshot.yml'
 
@@ -16,6 +17,9 @@ permissions:
 
 jobs:
   test:
+    # Every push runs these checks directly, so a broken page or a hand-built
+    # claim fails the push run itself instead of only after the deployment has
+    # finished and live-smoke.yml has reviewed the deployed site.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +27,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Check pages for hand-built claims
+        run: node .github/scripts/check-honest-copy.mjs
 
       - name: Test 404 redirect map
         run: node --test .github/scripts/test-404.mjs

@@ -108,8 +108,9 @@ none of them may be deleted:
 
 - **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
   that touch the HTML or its own files. Only scheduled/manual runs update `data/published.json`;
-  a push only runs the 404 test, so a push never produces a snapshot commit that would start a
-  second Pages build.
+  a push only runs the tests, so a push never produces a snapshot commit that would start a
+  second Pages build. Those tests are the 404 redirect map and the honest-copy check, so
+  hand-built copy fails the push run itself instead of only after the deploy has gone live.
 - **`live-smoke.yml` — live smoke test and honest-copy check.** Runs after every **successful
   GitHub Pages deployment** (so a broken deploy is caught immediately) and every six hours, plus
   by hand. Its `smoke` job checks the live site at https://zakker111.github.io/Portfolio/ — status
@@ -148,7 +149,8 @@ none of them may be deleted:
 1. `git diff a8a8354 -- index.html` — only the requested change, nothing else.
    `index-frozen.yml` fails the push if this is not empty.
 2. `node .github/scripts/check-honest-copy.mjs` — exits 0, and the copy still says the projects
-   are vibe coded rather than hand-built. `live-smoke.yml` fails the run if this is not clean.
+   are vibe coded rather than hand-built. `refresh-snapshot.yml` runs it on every push and
+   `live-smoke.yml` on every deploy, so either run fails if this is not clean.
 3. Fetch the live page and confirm 200 plus the expected markup.
 4. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 5. No requests to `api.github.com`; no console errors.
