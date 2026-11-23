@@ -106,7 +106,8 @@ the build for the push).
 ## CI: the frozen-index guard, the honest-copy check, the snapshot job and the live smoke test
 
 Two workflows run on a six-hour schedule (offset from each other); pushes run the guards, and pull
-requests run the copy and 404 checks too. None of them may be deleted:
+requests run the copy and 404 checks too. A fourth workflow turns a red guard run into a GitHub
+issue, so a failure is not missed between deploys. None of them may be deleted:
 
 - **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
   and pull requests that touch the HTML or its own files. Only scheduled/manual runs update
@@ -133,6 +134,14 @@ requests run the copy and 404 checks too. None of them may be deleted:
   and by hand. It fails when `git diff a8a8354 -- index.html` is non-empty, so the freezing rule
   above is enforced by CI rather than remembered. It only reads the repository; it never
   rewrites the page.
+- **`guard-alert.yml` — failed-guard issue.** Runs after `refresh-snapshot.yml`, `index-frozen.yml`
+  or `live-smoke.yml` finishes **red**, and opens the single **`CI guard failed`** issue — or
+  comments on the one already open, one comment per failure — naming the failed guard, run, commit
+  and step. That is how a red guard run on a push or pull request between two deploys gets noticed;
+  a second issue is never opened. It reports only guard failures, so the live-smoke `smoke` job and
+  the snapshot job are not reported, and it writes nothing but that issue. Dispatching it by hand
+  with a failed run's id checks the alert itself without breaking a guard; close the issue once the
+  guards are green again.
 
 `index.html` stays frozen throughout: CI only reads the site and refreshes
 `data/published.json`, and no workflow or script may rewrite, reformat or "fix" the pages.

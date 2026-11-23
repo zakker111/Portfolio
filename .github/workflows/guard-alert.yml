@@ -1,0 +1,51 @@
+name: Guard failure issue
+
+# The guards (honest-copy check, 404 redirect-map test, frozen index.html) can
+# fail on a push or a pull request between two Pages deployments, when nothing
+# else is watching. This opens one issue — or comments on the issue already open
+# — whenever one of those workflows finishes red, so the failure is not missed.
+on:
+  workflow_run:
+    workflows:
+      - Refresh update snapshot
+      - Frozen index.html
+      - Live portfolio smoke test
+    types: [completed]
+  # For checking the alert itself without breaking a guard: open a failed run in
+  # the Actions tab (its URL ends in /runs/<id>) and dispatch this with that id.
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Id of the failed workflow run to report
+        required: true
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  # One issue writer at a time, so two failures cannot both open the issue.
+  group: guard-alert
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Open or update the guard failure issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ inputs.run_id || github.event.workflow_run.id }}
+        run: node .github/scripts/guard-alert.mjs
