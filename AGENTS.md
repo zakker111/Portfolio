@@ -101,7 +101,7 @@ commit a snapshot (that would start a second Pages build and cancel the build fo
 - The page must never call `api.github.com` from the browser.
 - Do not remove the `.github/` workflow or script, and do not add a client-side GitHub fetch.
 
-## CI: the frozen-index guard, the snapshot job and the live smoke test
+## CI: the frozen-index guard, the honest-copy check, the snapshot job and the live smoke test
 
 Two workflows run on a six-hour schedule (offset from each other) and one runs on every push;
 none of them may be deleted:
@@ -110,11 +110,16 @@ none of them may be deleted:
   that touch the HTML or its own files. Only scheduled/manual runs update `data/published.json`;
   a push only runs the 404 test, so a push never produces a snapshot commit that would start a
   second Pages build.
-- **`live-smoke.yml` — live smoke test.** Runs after every **successful GitHub Pages
-  deployment** (so a broken deploy is caught immediately) and every six hours, plus by hand. It
-  checks the live site at https://zakker111.github.io/Portfolio/ — status and `<title>` for each
-  page, the redirects for near-miss URLs, and that an unknown URL really 404s. A running check is
-  never cancelled, so the deployment it is testing stays verified.
+- **`live-smoke.yml` — live smoke test and honest-copy check.** Runs after every **successful
+  GitHub Pages deployment** (so a broken deploy is caught immediately) and every six hours, plus
+  by hand. Its `smoke` job checks the live site at https://zakker111.github.io/Portfolio/ — status
+  and `<title>` for each page, the redirects for near-miss URLs, and that an unknown URL really
+  404s. A running check is never cancelled, so the deployment it is testing stays verified. Its
+  `copy` job runs alongside it and fails the same run when hand-built copy reappears on any page:
+  `about.html` says most projects are **vibe coded**, and that claim has to stay true. The banned
+  phrasings ("by hand", "hand-built", "from scratch", "built by me", "every line of code", …)
+  live in `.github/scripts/check-honest-copy.mjs`; close a gap by adding a phrasing there, never
+  by wording a page around it.
 - **`index-frozen.yml` — frozen `index.html` guard.** Runs on every push, on every pull request
   and by hand. It fails when `git diff a8a8354 -- index.html` is non-empty, so the freezing rule
   above is enforced by CI rather than remembered. It only reads the repository; it never
@@ -142,10 +147,12 @@ none of them may be deleted:
 
 1. `git diff a8a8354 -- index.html` — only the requested change, nothing else.
    `index-frozen.yml` fails the push if this is not empty.
-2. Fetch the live page and confirm 200 plus the expected markup.
-3. No horizontal overflow at 320 / 390 / 768 / 1280 px.
-4. No requests to `api.github.com`; no console errors.
-5. `sitemap.xml` parses, and every URL it lists returns 200.
+2. `node .github/scripts/check-honest-copy.mjs` — exits 0, and the copy still says the projects
+   are vibe coded rather than hand-built. `live-smoke.yml` fails the run if this is not clean.
+3. Fetch the live page and confirm 200 plus the expected markup.
+4. No horizontal overflow at 320 / 390 / 768 / 1280 px.
+5. No requests to `api.github.com`; no console errors.
+6. `sitemap.xml` parses, and every URL it lists returns 200.
 
 ## Deployment and secrets
 
