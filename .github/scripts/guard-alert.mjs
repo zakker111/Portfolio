@@ -142,7 +142,10 @@ async function main() {
   }
 
   const comments = await api(token, `/repos/${repo}/issues/${issue.number}/comments?per_page=100`);
-  if (comments.some(comment => (comment.body || '').includes(marker))) {
+  // The first failure is recorded in the issue body, later ones in comments, so
+  // a re-run of this job for a failure that is already there adds nothing.
+  const reported = [issue.body || '', ...comments.map(comment => comment.body || '')];
+  if (reported.some(text => text.includes(marker))) {
     console.log(`This failure is already reported in ${issue.html_url}.`);
     return;
   }
