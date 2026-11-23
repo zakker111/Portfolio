@@ -26,6 +26,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  copy:
+    # The About page says most projects are vibe coded, and that has to stay
+    # true: this job fails the run when hand-built copy ("by hand", "from
+    # scratch", "built by me", ...) reappears on any page. It reads the
+    # repository and never edits it, and it does not depend on the deployment,
+    # so it also catches copy that arrives through the snapshot commits.
+    name: honest copy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check pages for hand-built claims
+        run: node .github/scripts/check-honest-copy.mjs
+
   smoke:
     # A failed Pages build leaves the previous version live, so there is nothing
     # new to smoke-test; skip the job rather than report the old site as a pass.
