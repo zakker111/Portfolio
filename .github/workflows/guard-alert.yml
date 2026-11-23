@@ -3,7 +3,9 @@ name: Guard failure issue
 # The guards (honest-copy check, 404 redirect-map test, frozen index.html) can
 # fail on a push or a pull request between two Pages deployments, when nothing
 # else is watching. This opens one issue — or comments on the issue already open
-# — whenever one of those workflows finishes red, so the failure is not missed.
+# — whenever one of those workflows finishes red, and closes that issue once a
+# run on main is green again with no guard still red, naming the passing run, so
+# the failure is not missed and does not linger after it is fixed.
 on:
   workflow_run:
     workflows:
@@ -11,12 +13,13 @@ on:
       - Frozen index.html
       - Live portfolio smoke test
     types: [completed]
-  # For checking the alert itself without breaking a guard: open a failed run in
-  # the Actions tab (its URL ends in /runs/<id>) and dispatch this with that id.
+  # For checking the alert itself without breaking a guard: pass the id of a
+  # finished run (its URL ends in /runs/<id>) — a failed one reports, a green one
+  # closes the open issue.
   workflow_dispatch:
     inputs:
       run_id:
-        description: Id of the failed workflow run to report
+        description: Id of the finished workflow run to report
         required: true
 
 permissions:
@@ -25,7 +28,8 @@ permissions:
   issues: write
 
 concurrency:
-  # One issue writer at a time, so two failures cannot both open the issue.
+  # One issue writer at a time, so two failures cannot both open the issue and a
+  # close cannot race a new failure.
   group: guard-alert
   cancel-in-progress: false
 
@@ -33,7 +37,8 @@ jobs:
   alert:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'failure'
+      github.event.workflow_run.conclusion == 'failure' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -43,7 +48,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Open or update the guard failure issue
+      - name: Open, update or close the guard failure issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}

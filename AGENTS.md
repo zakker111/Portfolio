@@ -107,7 +107,8 @@ the build for the push).
 
 Two workflows run on a six-hour schedule (offset from each other); pushes run the guards, and pull
 requests run the copy and 404 checks too. A fourth workflow turns a red guard run into a GitHub
-issue, so a failure is not missed between deploys. None of them may be deleted:
+issue and closes it once the guards pass, so a failure is neither missed between deploys nor left
+lying after it is fixed. None of them may be deleted:
 
 - **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
   and pull requests that touch the HTML or its own files. Only scheduled/manual runs update
@@ -135,13 +136,16 @@ issue, so a failure is not missed between deploys. None of them may be deleted:
   above is enforced by CI rather than remembered. It only reads the repository; it never
   rewrites the page.
 - **`guard-alert.yml` — failed-guard issue.** Runs after `refresh-snapshot.yml`, `index-frozen.yml`
-  or `live-smoke.yml` finishes **red**, and opens the single **`CI guard failed`** issue — or
-  comments on the one already open, one comment per failure — naming the failed guard, run, commit
-  and step. That is how a red guard run on a push or pull request between two deploys gets noticed;
-  a second issue is never opened. It reports only guard failures, so the live-smoke `smoke` job and
-  the snapshot job are not reported, and it writes nothing but that issue. Dispatching it by hand
-  with a failed run's id checks the alert itself without breaking a guard; close the issue once the
-  guards are green again.
+  or `live-smoke.yml` finishes. On a **red** run it opens the single **`CI guard failed`** issue —
+  or comments on the one already open, one comment per failure — naming the failed guard, run,
+  commit and step. That is how a red guard run on a push or pull request between two deploys gets
+  noticed; a second issue is never opened. On a **green** run of the default branch it closes that
+  issue with a one-line note naming the passing run, but only after checking that no watched
+  workflow is still guard-red — a green run of one guard must not close a report another guard
+  still earns. Only the *open* issue is reused, so the next failure after a close opens a fresh
+  one. It reports only guard failures, so the live-smoke `smoke` job and the snapshot job are not
+  reported, and it writes nothing but that issue. Dispatching it by hand with a finished run's id
+  checks the alert itself without breaking a guard.
 
 `index.html` stays frozen throughout: CI only reads the site and refreshes
 `data/published.json`, and no workflow or script may rewrite, reformat or "fix" the pages.

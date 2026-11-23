@@ -1,23 +1,36 @@
 #!/usr/bin/env node
-// Report a failed guard run as one GitHub issue.
+// Report failed guard runs, and close the report when the guards recover.
 //
 // The guards that keep this repository honest — the honest-copy check, the 404
 // redirect-map test and the frozen-index check — can go red on a push or a pull
 // request between two Pages deployments, when nothing else is watching. This
-// runs from guard-alert.yml when one of those workflows finishes red and either
-// opens the single guard-failure issue or adds a comment to it, so every failure
-// lands in one place instead of a new issue per run.
+// runs from guard-alert.yml when one of those workflows finishes, and:
 //
-// It only reads the failing run and writes the issue; it never touches the
+// - on a failure, opens the single guard-failure issue or comments on it, so
+//   every failure lands in one place instead of a new issue per run;
+// - on a green run of the default branch, closes that issue once no watched
+//   workflow is still red, naming the passing run — a closed issue means the
+//   next failure opens a fresh one, so nothing is swallowed.
+//
+// It only reads workflow runs and writes that one issue; it never touches the
 // pages, data or workflows.
 
 import { pathToFileURL } from 'node:url';
 
 // The one issue every guard failure is reported in. Keep it stable: it is how
-// the open issue is found again, so a second issue is never opened.
+// the open issue is found again, so a second issue is never opened, and how a
+// recovery finds what to close.
 const TITLE = 'CI guard failed';
 
-const INTRO = `A guard that keeps the portfolio honest failed. This issue is reused for every later failure — one comment per new failure, no second issue — so a red run between two deploys is not missed. Close it once the guards are green again.
+// Workflow name → workflow file, for the workflows that carry a guard. The
+// name is what GitHub reports on a run, the file is what the runs API accepts.
+export const WATCHED = {
+  'Refresh update snapshot': 'refresh-snapshot.yml',
+  'Frozen index.html': 'index-frozen.yml',
+  'Live portfolio smoke test': 'live-smoke.yml',
+};
+
+const INTRO = `A guard that keeps the portfolio honest failed. This issue is reused for every later failure — one comment per new failure, no second issue — so a red run between two deploys is not missed. It closes itself when the guards pass again on the default branch.
 
 The guards reported here:
 
@@ -86,6 +99,15 @@ export function failureDetails(run, failures) {
   return lines.join('\n');
 }
 
+// The comment posted when the guards recover; it names the run that proved it.
+// Its marker is deliberately different from the failure marker so a later
+// failure is never mistaken for something already reported.
+export function recoveredNote(run) {
+  return `Guards are green again, so this issue is closed.\n\n` +
+    `- **Passing run:** [${run.name}](${run.html_url}) — commit \`${run.head_sha.slice(0, 7)}\` on \`${run.head_branch}\`\n\n` +
+    `<!-- guard-alert-recovered:${run.head_sha} -->`;
+}
+
 async function api(token, path, init = {}) {
   const response = await fetch(`https://api.github.com${path}`, {
     ...init,
@@ -106,6 +128,57 @@ async function api(token, path, init = {}) {
   return response.status === 204 ? null : response.json();
 }
 
+// Latest completed run of every watched workflow on `branch` that still shows a
+// guard failure. A green run of one guard workflow must not close the issue
+// while another guard is still red.
+async function stillFailing(token, repo, branch) {
+  const failing = [];
+
+  for (const [name, workflow] of Object.entries(WATCHED)) {
+    const { workflow_runs: runs } = await api(
+      token,
+      `/repos/${repo}/actions/workflows/${workflow}/runs?branch=${encodeURIComponent(branch)}&status=completed&per_page=1`
+    );
+    const latest = runs[0];
+    if (!latest || latest.conclusion !== 'failure') continue;
+
+    const { jobs } = await api(token, `/repos/${repo}/actions/runs/${latest.id}/jobs?filter=latest&per_page=100`);
+    const failures = guardFailures(name, jobs);
+    if (failures.length > 0) failing.push({ name, failures });
+  }
+
+  return failing;
+}
+
+// Close the issue from a green run, but only for the default branch (that is
+// where "the guards are green" is meaningful) and only when nothing else is
+// still red.
+async function closeIfRecovered(token, repo, run, issue) {
+  const { default_branch: branch } = await api(token, `/repos/${repo}`);
+
+  if (run.head_branch !== branch) {
+    console.log(`${run.name} passed on a branch other than ${branch}, so ${issue.html_url} stays open until a run on ${branch} passes.`);
+    return;
+  }
+
+  const failing = await stillFailing(token, repo, branch);
+  if (failing.length > 0) {
+    const detail = failing.map(item => `${item.name} (${item.failures.map(failure => failure.guard).join(', ')})`).join('; ');
+    console.log(`Leaving ${issue.html_url} open: still failing on ${branch} in ${detail}.`);
+    return;
+  }
+
+  await api(token, `/repos/${repo}/issues/${issue.number}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({ body: recoveredNote(run) }),
+  });
+  await api(token, `/repos/${repo}/issues/${issue.number}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ state: 'closed', state_reason: 'completed' }),
+  });
+  console.log(`::notice::Closed ${issue.html_url}: ${run.name} passed on ${branch}.`);
+}
+
 async function main() {
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   const repo = process.env.REPO || process.env.GITHUB_REPOSITORY;
@@ -115,8 +188,20 @@ async function main() {
   }
 
   const run = await api(token, `/repos/${repo}/actions/runs/${runId}`);
-  if (run.conclusion !== 'failure') {
+  if (run.conclusion !== 'failure' && run.conclusion !== 'success') {
     console.log(`Run ${run.id} (${run.name}) concluded ${run.conclusion}, so there is nothing to report.`);
+    return;
+  }
+
+  const openIssues = await api(token, `/repos/${repo}/issues?state=open&per_page=100`);
+  const issue = openIssues.find(open => !open.pull_request && open.title === TITLE);
+
+  if (run.conclusion === 'success') {
+    if (!issue) {
+      console.log(`No open "${TITLE}" issue, so the passing ${run.name} run needed nothing.`);
+      return;
+    }
+    await closeIfRecovered(token, repo, run, issue);
     return;
   }
 
@@ -129,8 +214,6 @@ async function main() {
 
   const details = failureDetails(run, failures);
   const marker = markerFor(run, failures);
-  const openIssues = await api(token, `/repos/${repo}/issues?state=open&per_page=100`);
-  const issue = openIssues.find(open => !open.pull_request && open.title === TITLE);
 
   if (!issue) {
     const created = await api(token, `/repos/${repo}/issues`, {
