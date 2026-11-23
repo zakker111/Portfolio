@@ -1,6 +1,8 @@
 // Tests the redirect map in 404.html by running its real <script> against fake
 // locations. The map is read from the file, never duplicated here, so a change
-// that stops recovering a near-miss URL fails this test.
+// that stops recovering a near-miss URL fails this test. Set PORTFOLIO_404_PAGE
+// to point it at a fixture page instead (guard-selftest.mjs uses that to prove
+// this test can fail).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -8,7 +10,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const html = readFileSync(join(repoRoot, '404.html'), 'utf8');
+const pageFile = process.env.PORTFOLIO_404_PAGE || join(repoRoot, '404.html');
+const html = readFileSync(pageFile, 'utf8');
 
 const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]);
 const redirectCode = scripts.find(code => /var\s+BASE\s*=/.test(code) && /var\s+PAGES\s*=/.test(code));

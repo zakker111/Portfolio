@@ -9,12 +9,14 @@ on:
     paths:
       - '*.html'
       - '.github/scripts/check-honest-copy.mjs'
+      - '.github/scripts/guard-selftest.mjs'
       - '.github/scripts/test-404.mjs'
       - '.github/workflows/refresh-snapshot.yml'
   pull_request:
     paths:
       - '*.html'
       - '.github/scripts/check-honest-copy.mjs'
+      - '.github/scripts/guard-selftest.mjs'
       - '.github/scripts/test-404.mjs'
       - '.github/workflows/refresh-snapshot.yml'
 
@@ -39,6 +41,9 @@ jobs:
 
       - name: Test 404 redirect map
         run: node --test .github/scripts/test-404.mjs
+
+      - name: Prove the guards can fail
+        run: node --test .github/scripts/guard-selftest.mjs
 
   snapshot:
     # A snapshot commit on a portfolio push starts a second Pages build and

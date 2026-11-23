@@ -95,9 +95,10 @@ The "Updated …" labels under each project read `data/published.json`, refreshe
 `.github/workflows/refresh-snapshot.yml` (generator: `.github/scripts/build-snapshot.mjs`)
 on a six-hour schedule or by hand. It commits only when a project's latest commit changes;
 `generated_at` is the time the data last changed, so the page's snapshot timestamp stays
-honest instead of advancing on every check. Portfolio pushes and pull requests only run the two
-tests — the 404 redirect map and the honest-copy check — and never commit a snapshot (on a push
-that would start a second Pages build and cancel the build for the push).
+honest instead of advancing on every check. Portfolio pushes and pull requests only run the three
+guard steps — the honest-copy check, the 404 redirect map and the check that proves those two can
+fail — and never commit a snapshot (on a push that would start a second Pages build and cancel
+the build for the push).
 
 - The page must never call `api.github.com` from the browser.
 - Do not remove the `.github/` workflow or script, and do not add a client-side GitHub fetch.
@@ -110,9 +111,14 @@ requests run the copy and 404 checks too. None of them may be deleted:
 - **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
   and pull requests that touch the HTML or its own files. Only scheduled/manual runs update
   `data/published.json`; pushes and pull requests only run the tests, so a push never produces a
-  snapshot commit that would start a second Pages build. Those tests are the 404 redirect map and
-  the honest-copy check, so hand-built copy fails the branch's own run before it lands on `main`,
-  not only after the deploy has gone live.
+  snapshot commit that would start a second Pages build. Those steps are the honest-copy check,
+  the 404 redirect map and `.github/scripts/guard-selftest.mjs`, so hand-built copy fails the
+  branch's own run before it lands on `main`, not only after the deploy has gone live. The
+  self-test is what keeps the other two honest: it runs the copy check against a throwaway fixture
+  page saying "built by hand" (must exit 1, and exit 0 on clean copy) and the 404 test against a
+  fixture page whose redirect map handles a near-miss URL (must pass) and one with the map broken
+  (must fail). Fixtures are built in the system temp directory, so bad copy never enters the
+  repository and nothing bad is ever deployed.
 - **`live-smoke.yml` — live smoke test and honest-copy check.** Runs after every **successful
   GitHub Pages deployment** (so a broken deploy is caught immediately) and every six hours, plus
   by hand. Its `smoke` job checks the live site at https://zakker111.github.io/Portfolio/ — status
@@ -153,6 +159,8 @@ requests run the copy and 404 checks too. None of them may be deleted:
 2. `node .github/scripts/check-honest-copy.mjs` — exits 0, and the copy still says the projects
    are vibe coded rather than hand-built. `refresh-snapshot.yml` runs it on every push and pull
    request and `live-smoke.yml` on every deploy, so any of those runs fails if this is not clean.
+   `node --test .github/scripts/guard-selftest.mjs` — exits 0, proving both the copy check and the
+   404 test still fail when they should; run it after changing either guard or `404.html`.
 3. Fetch the live page and confirm 200 plus the expected markup.
 4. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 5. No requests to `api.github.com`; no console errors.
