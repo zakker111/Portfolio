@@ -45,6 +45,14 @@ function fixtureDir() {
   return mkdtempSync(join(tmpdir(), 'guard-selftest-'));
 }
 
+// Pass/fail counts from a node:test run, whichever reporter ran: the spec
+// reporter on a TTY (or Node 22+) prints "ℹ pass 6", a TAP run prints
+// "# pass 6".
+function testCounts(stdout) {
+  const count = label => Number((stdout.match(new RegExp(`(?:ℹ|#) ${label} (\\d+)`)) || [])[1]);
+  return { pass: count('pass'), fail: count('fail') };
+}
+
 const copyCheck = join(scripts, 'check-honest-copy.mjs');
 const redirectTest = join(scripts, 'test-404.mjs');
 
@@ -108,8 +116,9 @@ test('404 test passes on a fixture page whose redirect map handles a near-miss U
       0,
       `expected the 404 test to pass on a working redirect map, got exit ${result.status}:\n${result.stdout}${result.stderr}`
     );
-    assert.match(result.stdout, /ℹ pass [1-9]\d*/, `the 404 test ran no tests:\n${result.stdout}`);
-    assert.match(result.stdout, /ℹ fail 0/, result.stdout);
+    const counts = testCounts(result.stdout);
+    assert.ok(counts.pass >= 1, `the 404 test ran no tests:\n${result.stdout}`);
+    assert.equal(counts.fail, 0, `the 404 test reported failures on a working map:\n${result.stdout}`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
