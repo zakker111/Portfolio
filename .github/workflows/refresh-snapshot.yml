@@ -11,15 +11,21 @@ on:
       - '.github/scripts/check-honest-copy.mjs'
       - '.github/scripts/test-404.mjs'
       - '.github/workflows/refresh-snapshot.yml'
+  pull_request:
+    paths:
+      - '*.html'
+      - '.github/scripts/check-honest-copy.mjs'
+      - '.github/scripts/test-404.mjs'
+      - '.github/workflows/refresh-snapshot.yml'
 
 permissions:
   contents: read
 
 jobs:
   test:
-    # Every push runs these checks directly, so a broken page or a hand-built
-    # claim fails the push run itself instead of only after the deployment has
-    # finished and live-smoke.yml has reviewed the deployed site.
+    # Every push and pull request runs these checks directly, so a broken page
+    # or a hand-built claim fails the branch's own run instead of only after it
+    # has landed on main and live-smoke.yml has reviewed the deployed site.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,9 +42,10 @@ jobs:
 
   snapshot:
     # A snapshot commit on a portfolio push starts a second Pages build and
-    # cancels the build for the push itself. Pushes only run the tests; the
-    # snapshot job runs on the schedule or when dispatched by hand.
-    if: github.event_name != 'push'
+    # cancels the build for the push itself. Pushes and pull requests only run
+    # the tests; the snapshot job runs on the schedule or when dispatched by
+    # hand.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs: test
     runs-on: ubuntu-latest
     permissions:

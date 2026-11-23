@@ -95,23 +95,24 @@ The "Updated …" labels under each project read `data/published.json`, refreshe
 `.github/workflows/refresh-snapshot.yml` (generator: `.github/scripts/build-snapshot.mjs`)
 on a six-hour schedule or by hand. It commits only when a project's latest commit changes;
 `generated_at` is the time the data last changed, so the page's snapshot timestamp stays
-honest instead of advancing on every check. Portfolio pushes only run the two tests — the 404
-redirect map and the honest-copy check — and never commit a snapshot (that would start a second
-Pages build and cancel the build for the push).
+honest instead of advancing on every check. Portfolio pushes and pull requests only run the two
+tests — the 404 redirect map and the honest-copy check — and never commit a snapshot (on a push
+that would start a second Pages build and cancel the build for the push).
 
 - The page must never call `api.github.com` from the browser.
 - Do not remove the `.github/` workflow or script, and do not add a client-side GitHub fetch.
 
 ## CI: the frozen-index guard, the honest-copy check, the snapshot job and the live smoke test
 
-Two workflows run on a six-hour schedule (offset from each other) and one runs on every push;
-none of them may be deleted:
+Two workflows run on a six-hour schedule (offset from each other); pushes run the guards, and pull
+requests run the copy and 404 checks too. None of them may be deleted:
 
 - **`refresh-snapshot.yml` — snapshot.** Runs on the schedule, by hand, and on pushes to `main`
-  that touch the HTML or its own files. Only scheduled/manual runs update `data/published.json`;
-  a push only runs the tests, so a push never produces a snapshot commit that would start a
-  second Pages build. Those tests are the 404 redirect map and the honest-copy check, so
-  hand-built copy fails the push run itself instead of only after the deploy has gone live.
+  and pull requests that touch the HTML or its own files. Only scheduled/manual runs update
+  `data/published.json`; pushes and pull requests only run the tests, so a push never produces a
+  snapshot commit that would start a second Pages build. Those tests are the 404 redirect map and
+  the honest-copy check, so hand-built copy fails the branch's own run before it lands on `main`,
+  not only after the deploy has gone live.
 - **`live-smoke.yml` — live smoke test and honest-copy check.** Runs after every **successful
   GitHub Pages deployment** (so a broken deploy is caught immediately) and every six hours, plus
   by hand. Its `smoke` job checks the live site at https://zakker111.github.io/Portfolio/ — status
@@ -150,8 +151,8 @@ none of them may be deleted:
 1. `git diff a8a8354 -- index.html` — only the requested change, nothing else.
    `index-frozen.yml` fails the push if this is not empty.
 2. `node .github/scripts/check-honest-copy.mjs` — exits 0, and the copy still says the projects
-   are vibe coded rather than hand-built. `refresh-snapshot.yml` runs it on every push and
-   `live-smoke.yml` on every deploy, so either run fails if this is not clean.
+   are vibe coded rather than hand-built. `refresh-snapshot.yml` runs it on every push and pull
+   request and `live-smoke.yml` on every deploy, so any of those runs fails if this is not clean.
 3. Fetch the live page and confirm 200 plus the expected markup.
 4. No horizontal overflow at 320 / 390 / 768 / 1280 px.
 5. No requests to `api.github.com`; no console errors.
