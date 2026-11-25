@@ -41,12 +41,12 @@ jobs:
           PY
           echo '--- leftovers that should only be visible words ---'
           grep -rn 'Portfolio' --include=*.html --include=*.mjs --include=*.xml --include=*.txt --include=*.md . \
-            | grep -viE 'portfolio home|Portfolio \u2014 GitHub|Portfolio pushes|<h1>Portfolio</h1>|of \*\*zakker111\*\*|github\.com/zakker111' || true
+            | grep -viE 'portfolio home|Portfolio pushes|<h1>Portfolio</h1>|of \*\*zakker111\*\*|github\.com/zakker111' || true
           node .github/scripts/test-404.mjs
           node .github/scripts/check-honest-copy.mjs
           node .github/scripts/guard-selftest.mjs
 
-      - name: Commit the migration and move the frozen baseline
+      - name: Commit the migration and record the new baseline
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -54,8 +54,12 @@ jobs:
           git add -A
           git commit -m "Serve the site from the lowercase /portfolio/ path"
           NEW=$(git rev-parse HEAD)
-          echo "migration commit: $NEW"
-          sed -i "s|a8a83544075ea94ddb7e2a519c2a000fd7caec56|$NEW|g" AGENTS.md
+          SHORT=$(git rev-parse --short HEAD)
+          echo "migration commit: $NEW ($SHORT)"
+          sed -i "s|a8a8354|$SHORT|g" AGENTS.md
           git add -A
-          git commit -m "Record the frozen index.html baseline as $NEW"
+          if ! git diff --cached --quiet; then
+            git commit -m "Record the frozen index.html baseline as $SHORT"
+          fi
           git push origin HEAD:main
+          git --no-pager log --oneline -3
