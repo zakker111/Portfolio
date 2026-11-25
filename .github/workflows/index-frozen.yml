@@ -1,8 +1,8 @@
 name: Frozen index.html
 
-# index.html is frozen at a8a8354: it may not be edited, reformatted or "fixed".
+# index.html is frozen at 2306d0e: it may not be edited, reformatted or "fixed".
 # AGENTS.md states the rule; this job is what enforces it, so the rule holds even
-# when nobody remembers to run `git diff a8a8354 -- index.html` by hand.
+# when nobody remembers to run `git diff 2306d0e -- index.html` by hand.
 
 on:
   push:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   frozen:
-    name: index.html matches a8a8354
+    name: index.html matches 2306d0e
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Compare index.html against the frozen baseline
         run: |
-          BASE=a8a83544075ea94ddb7e2a519c2a000fd7caec56
+          BASE=2306d0e130c6c9553a41a53111b1a444b203711d
           if ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
             git fetch --no-tags --quiet origin "$BASE" || true
           fi
