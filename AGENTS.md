@@ -9,16 +9,16 @@ Live: https://zakker111.github.io/portfolio/
 `index.html` is **standalone and frozen**. It is the whole site as designed; it must keep
 looking and behaving exactly as it does today.
 
-The canonical, approved version is commit **`a8a8354`** (after the approved move of the Tools
+The canonical, approved version is commit **`2306d0e`** (after the approved move of the Tools
 section to its own `tools.html` page). At any time:
 
 ```bash
-git diff a8a8354 -- index.html    # must be empty, or only the change explicitly requested
+git diff 2306d0e -- index.html    # must be empty, or only the change explicitly requested
 ```
 
 must show nothing except changes the user asked for **in that same request**. All approved
 changes to date (footer link, card look, Tools moved to `tools.html`, Source links removed) are
-already folded into baseline `a8a8354`.
+already folded into baseline `2306d0e`.
 
 ### Never do this to `index.html`
 
@@ -132,7 +132,7 @@ lying after it is fixed. None of them may be deleted:
   live in `.github/scripts/check-honest-copy.mjs`; close a gap by adding a phrasing there, never
   by wording a page around it.
 - **`index-frozen.yml` — frozen `index.html` guard.** Runs on every push, on every pull request
-  and by hand. It fails when `git diff a8a8354 -- index.html` is non-empty, so the freezing rule
+  and by hand. It fails when `git diff 2306d0e -- index.html` is non-empty, so the freezing rule
   above is enforced by CI rather than remembered. It only reads the repository; it never
   rewrites the page.
 - **`guard-alert.yml` — failed-guard issue.** Runs after `refresh-snapshot.yml`, `index-frozen.yml`
@@ -167,7 +167,7 @@ lying after it is fixed. None of them may be deleted:
 
 ## Verification before reporting done
 
-1. `git diff a8a8354 -- index.html` — only the requested change, nothing else.
+1. `git diff 2306d0e -- index.html` — only the requested change, nothing else.
    `index-frozen.yml` fails the push if this is not empty.
 2. `node .github/scripts/check-honest-copy.mjs` — exits 0, and the copy still says the projects
    are vibe coded rather than hand-built. `refresh-snapshot.yml` runs it on every push and pull
