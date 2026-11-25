@@ -2,7 +2,7 @@
 
 Portfolio site of **zakker111**, served by GitHub Pages (legacy build, source `main:/`).
 
-Live: https://zakker111.github.io/Portfolio/
+Live: https://zakker111.github.io/portfolio/
 
 ## The strict rule: `index.html` is the projects page and must stay as it is
 
@@ -69,7 +69,7 @@ folded into the original rules (not a trailing override block):
 - `about.html`, `tools.html`, `links.html` all share the same header nav:
   `Projects` (`./#projects`) · `Tools` (`tools.html`) · `About` · `Links`.
 - Each ends with a `.page-back` "← Back to the projects" link and the shared `.site-foot`.
-- `404.html` follows the same shell but must use **absolute** `/Portfolio/…` paths for its
+- `404.html` follows the same shell but must use **absolute** `/portfolio/…` paths for its
   stylesheet and links (GitHub Pages serves it at the missing URL, so relative paths break on
   deeper paths), sets `<meta name="robots" content="noindex">`, and its link list mirrors
   `links.html` — update both when a link is added or removed.
@@ -123,7 +123,7 @@ lying after it is fixed. None of them may be deleted:
   repository and nothing bad is ever deployed.
 - **`live-smoke.yml` — live smoke test and honest-copy check.** Runs after every **successful
   GitHub Pages deployment** (so a broken deploy is caught immediately) and every six hours, plus
-  by hand. Its `smoke` job checks the live site at https://zakker111.github.io/Portfolio/ — status
+  by hand. Its `smoke` job checks the live site at https://zakker111.github.io/portfolio/ — status
   and `<title>` for each page, the redirects for near-miss URLs, and that an unknown URL really
   404s. A running check is never cancelled, so the deployment it is testing stays verified. Its
   `copy` job runs alongside it and fails the same run when hand-built copy reappears on any page:

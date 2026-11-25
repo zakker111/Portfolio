@@ -13,11 +13,11 @@
    always means the visitor meant a real page — a typed address, an old
    bookmark or a link from before a rename — so send them straight there.
    A link saved with a trailing space or a zero-width character (common when a
-   URL is pasted into a profile field on a phone) turns /Portfolio/ into
-   /Portfolio/%20, so those invisible characters are ignored too.
+   URL is pasted into a profile field on a phone) turns /portfolio/ into
+   /portfolio/%20, so those invisible characters are ignored too.
    Truly unknown URLs stay here and use the search below. */
 (function () {
-  var BASE = '/Portfolio/';
+  var BASE = '/portfolio/';
   var PAGES = {
     '': 'index.html', 'index': 'index.html', 'index.html': 'index.html',
     'projects': '', 'project': '', 'work': '', 'home': '', 'start': '',
@@ -42,8 +42,8 @@
 <!-- No canonical and no social preview: this page answers any missing URL, so it is kept out of search. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230f0f12'/%3E%3Ctext x='50' y='72' font-size='60' font-family='monospace' font-weight='bold' text-anchor='middle' fill='%237dedc3'%3Ez%3C/text%3E%3C/svg%3E">
 <!-- Absolute path on purpose: GitHub Pages serves this page at the missing URL,
-     so relative paths would break for anything deeper than /Portfolio/. -->
-<link rel="stylesheet" href="/Portfolio/assets/site.css">
+     so relative paths would break for anything deeper than /portfolio/. -->
+<link rel="stylesheet" href="/portfolio/assets/site.css">
 <style>
 .search-box{margin:22px 0 30px;max-width:520px}
 .search-box label{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
@@ -64,8 +64,8 @@
 </head>
 <body>
 <header><div class="wrap nav">
-<a class="brand" href="/Portfolio/">zakker<span>111</span></a>
-<nav class="nav-links" aria-label="Sections"><a href="/Portfolio/#projects">Projects</a><a href="/Portfolio/tools.html">Tools</a><a href="/Portfolio/about.html">About</a><a href="/Portfolio/links.html">Links</a></nav>
+<a class="brand" href="/portfolio/">zakker<span>111</span></a>
+<nav class="nav-links" aria-label="Sections"><a href="/portfolio/#projects">Projects</a><a href="/portfolio/tools.html">Tools</a><a href="/portfolio/about.html">About</a><a href="/portfolio/links.html">Links</a></nav>
 <div class="nav-note">Independent projects · Finland</div>
 </div></header>
 
@@ -107,10 +107,10 @@
 <li data-k="javascript language docs mdn"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">JavaScript <span class="sub">developer.mozilla.org ↗</span></a></li>
 <li data-k="html language docs mdn"><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener">HTML <span class="sub">developer.mozilla.org ↗</span></a></li>
 <li data-k="github profile"><a href="https://github.com/zakker111" target="_blank" rel="noopener">GitHub profile <span class="sub">github.com/zakker111 ↗</span></a></li>
-<li data-k="portfolio home"><a href="/Portfolio/">Portfolio home <span class="sub">zakker111.github.io ↗</span></a></li>
-<li data-k="about other stuff"><a href="/Portfolio/about.html">About (Other stuff) <span class="sub">about.html ↗</span></a></li>
+<li data-k="portfolio home"><a href="/portfolio/">Portfolio home <span class="sub">zakker111.github.io ↗</span></a></li>
+<li data-k="about other stuff"><a href="/portfolio/about.html">About (Other stuff) <span class="sub">about.html ↗</span></a></li>
 </ul>
-<p class="no-results" id="no-results" hidden>No link matches that — try “game”, “python” or “github”, or open the full <a href="/Portfolio/links.html">links page</a>.</p>
+<p class="no-results" id="no-results" hidden>No link matches that — try “game”, “python” or “github”, or open the full <a href="/portfolio/links.html">links page</a>.</p>
 </div>
 </div></section>
 
@@ -128,7 +128,7 @@
 <h2>The projects</h2>
 <p class="description">All nine browser games and experiments, with their previews, tags and live links.</p>
 <div class="tags"><span class="tag">Games</span><span class="tag">Experiments</span><span class="tag">Browser</span></div>
-<div class="actions"><a class="btn primary" href="/Portfolio/#projects">Open the projects ↗</a></div>
+<div class="actions"><a class="btn primary" href="/portfolio/#projects">Open the projects ↗</a></div>
 </div>
 </article>
 
@@ -143,7 +143,7 @@
 <h2>Tools</h2>
 <p class="description">The three tools that stay open while building, each card its own external link.</p>
 <div class="tags"><span class="tag">Chat</span><span class="tag">Coding agent</span><span class="tag">Prompts</span></div>
-<div class="actions"><a class="btn primary" href="/Portfolio/tools.html">Open tools ↗</a></div>
+<div class="actions"><a class="btn primary" href="/portfolio/tools.html">Open tools ↗</a></div>
 </div>
 </article>
 
@@ -158,17 +158,17 @@
 <h2>Links</h2>
 <p class="description">Projects, tools, languages and profiles on one page, if the search above is not what you need.</p>
 <div class="tags"><span class="tag">Index</span><span class="tag">Profiles</span><span class="tag">Docs</span></div>
-<div class="actions"><a class="btn primary" href="/Portfolio/links.html">Open links ↗</a></div>
+<div class="actions"><a class="btn primary" href="/portfolio/links.html">Open links ↗</a></div>
 </div>
 </article>
 </div>
-<div class="page-back"><a class="btn" href="/Portfolio/#projects">← Back to the projects</a></div>
+<div class="page-back"><a class="btn" href="/portfolio/#projects">← Back to the projects</a></div>
 </div></section>
 </main>
 
 <footer class="site-foot"><div class="wrap">
 <span>© zakker111 · Built for the browser</span>
-<span><a href="/Portfolio/">Portfolio home ↑</a></span>
+<span><a href="/portfolio/">Portfolio home ↑</a></span>
 </div></footer>
 <script>
 (function(){

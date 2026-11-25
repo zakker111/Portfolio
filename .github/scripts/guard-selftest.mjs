@@ -128,11 +128,11 @@ test('404 test fails on a fixture page whose redirect map is broken', () => {
   const dir = fixtureDir();
   try {
     const html = readFileSync(join(repoRoot, '404.html'), 'utf8');
-    const broken = html.replace("var BASE = '/Portfolio/';", "var BASE = '/';");
+    const broken = html.replace("var BASE = '/portfolio/';", "var BASE = '/';");
     assert.notEqual(
       broken,
       html,
-      '404.html no longer declares BASE as "/Portfolio/", so this fixture cannot break it — update the replacement'
+      '404.html no longer declares BASE as "/portfolio/", so this fixture cannot break it — update the replacement'
     );
 
     const page = join(dir, '404.html');

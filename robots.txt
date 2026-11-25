@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zakker111.github.io/Portfolio/sitemap.xml
+Sitemap: https://zakker111.github.io/portfolio/sitemap.xml

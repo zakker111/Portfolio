@@ -9,7 +9,7 @@
 //          node .github/scripts/live-smoke.mjs
 import { chromium } from 'playwright';
 
-const BASE = (process.env.BASE_URL || 'https://zakker111.github.io/Portfolio/').replace(
+const BASE = (process.env.BASE_URL || 'https://zakker111.github.io/portfolio/').replace(
   /\/?$/,
   '/'
 );

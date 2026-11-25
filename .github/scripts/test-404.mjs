@@ -36,7 +36,7 @@ function redirect(pathname, search = '', hash = '') {
 
 test('every alias in the map points at a real page', () => {
   for (const [alias, page] of Object.entries(PAGES)) {
-    // An empty target means the site root (/Portfolio/), which serves index.html.
+    // An empty target means the site root (/portfolio/), which serves index.html.
     const file = page || 'index.html';
     assert.ok(
       SITE_PAGES.includes(file),
@@ -47,29 +47,29 @@ test('every alias in the map points at a real page', () => {
 });
 
 test('the redirect map is rooted at the project site path', () => {
-  assert.match(redirectCode, /var\s+BASE\s*=\s*['"]\/Portfolio\/['"];/);
+  assert.match(redirectCode, /var\s+BASE\s*=\s*['"]\/portfolio\/['"];/);
 });
 
 test('near-miss URLs recover to the intended page', () => {
   const cases = [
-    ['/Portfolio/tools/', '/Portfolio/tools.html'],
-    ['/Portfolio/tools', '/Portfolio/tools.html'],
-    ['/Portfolio/TOOLS', '/Portfolio/tools.html'],
-    ['/Portfolio/Tools/', '/Portfolio/tools.html'],
-    ['/Portfolio/tool', '/Portfolio/tools.html'],
-    ['/Portfolio/about', '/Portfolio/about.html'],
-    ['/Portfolio/about/', '/Portfolio/about.html'],
-    ['/Portfolio/other-stuff', '/Portfolio/about.html'],
-    ['/Portfolio/links/', '/Portfolio/links.html'],
-    ['/Portfolio/link', '/Portfolio/links.html'],
-    ['/Portfolio/all-links', '/Portfolio/links.html'],
-    ['/Portfolio/projects', '/Portfolio/'],
-    ['/Portfolio/project', '/Portfolio/'],
-    ['/Portfolio/home/', '/Portfolio/'],
-    ['/Portfolio/start', '/Portfolio/'],
-    ['/Portfolio/index', '/Portfolio/index.html'],
-    ['/Portfolio/index.html/', '/Portfolio/index.html'],
-    ['/Portfolio/tools%2F', '/Portfolio/tools.html']
+    ['/portfolio/tools/', '/portfolio/tools.html'],
+    ['/portfolio/tools', '/portfolio/tools.html'],
+    ['/portfolio/TOOLS', '/portfolio/tools.html'],
+    ['/portfolio/Tools/', '/portfolio/tools.html'],
+    ['/portfolio/tool', '/portfolio/tools.html'],
+    ['/portfolio/about', '/portfolio/about.html'],
+    ['/portfolio/about/', '/portfolio/about.html'],
+    ['/portfolio/other-stuff', '/portfolio/about.html'],
+    ['/portfolio/links/', '/portfolio/links.html'],
+    ['/portfolio/link', '/portfolio/links.html'],
+    ['/portfolio/all-links', '/portfolio/links.html'],
+    ['/portfolio/projects', '/portfolio/'],
+    ['/portfolio/project', '/portfolio/'],
+    ['/portfolio/home/', '/portfolio/'],
+    ['/portfolio/start', '/portfolio/'],
+    ['/portfolio/index', '/portfolio/index.html'],
+    ['/portfolio/index.html/', '/portfolio/index.html'],
+    ['/portfolio/tools%2F', '/portfolio/tools.html']
   ];
   for (const [pathname, expected] of cases) {
     assert.equal(redirect(pathname), expected, pathname);
@@ -78,13 +78,13 @@ test('near-miss URLs recover to the intended page', () => {
 
 test('trailing spaces and zero-width characters are ignored', () => {
   const cases = [
-    ['/Portfolio/%20', '/Portfolio/index.html'],
-    ['/Portfolio/%20/', '/Portfolio/index.html'],
-    ['/Portfolio/%C2%A0', '/Portfolio/index.html'],
-    ['/Portfolio/%E2%80%8B', '/Portfolio/index.html'],
-    ['/Portfolio/%0A', '/Portfolio/index.html'],
-    ['/Portfolio/tools/%20', '/Portfolio/tools.html'],
-    ['/Portfolio/%20tools', '/Portfolio/tools.html']
+    ['/portfolio/%20', '/portfolio/index.html'],
+    ['/portfolio/%20/', '/portfolio/index.html'],
+    ['/portfolio/%C2%A0', '/portfolio/index.html'],
+    ['/portfolio/%E2%80%8B', '/portfolio/index.html'],
+    ['/portfolio/%0A', '/portfolio/index.html'],
+    ['/portfolio/tools/%20', '/portfolio/tools.html'],
+    ['/portfolio/%20tools', '/portfolio/tools.html']
   ];
   for (const [pathname, expected] of cases) {
     assert.equal(redirect(pathname), expected, pathname);
@@ -92,19 +92,19 @@ test('trailing spaces and zero-width characters are ignored', () => {
 });
 
 test('query string and hash survive the redirect', () => {
-  assert.equal(redirect('/Portfolio/tools', '?utm=x', '#tools'), '/Portfolio/tools.html?utm=x#tools');
-  assert.equal(redirect('/Portfolio/%20', '?fbclid=1', '#top'), '/Portfolio/index.html?fbclid=1#top');
+  assert.equal(redirect('/portfolio/tools', '?utm=x', '#tools'), '/portfolio/tools.html?utm=x#tools');
+  assert.equal(redirect('/portfolio/%20', '?fbclid=1', '#top'), '/portfolio/index.html?fbclid=1#top');
 });
 
 test('unknown, malformed and out-of-scope URLs stay on the 404 page', () => {
   const cases = [
-    '/Portfolio/no-such-page',
-    '/Portfolio/index.htm',
-    '/Portfolio/Portfolio/tools',
-    '/Portfolio/index.html',
-    '/Portfolio/links.html',
+    '/portfolio/no-such-page',
+    '/portfolio/index.htm',
+    '/portfolio/portfolio/tools',
+    '/portfolio/index.html',
+    '/portfolio/links.html',
     '/other/tools/',
-    '/Portfolio/%E0%A4%A'
+    '/portfolio/%E0%A4%A'
   ];
   for (const pathname of cases) {
     assert.equal(redirect(pathname), null, pathname);
